@@ -35,7 +35,7 @@ namespace Testity.EngineServices
 		/// This may not be accurate to the time passed since the begining of the current frame.
 		/// Is NOT modified by <see cref="GlobalTimeScale"/>.
 		/// WARNING: May be platform dependent and unstable.
-		/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Time-unscaledTime.html
+		/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Time-unscaledTime.html.
 		/// Based on UnrealEngine 4's: https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Engine/UWorld/GetRealTimeSeconds/index.html
 		/// </summary>
 		float AbsoluteTimePassed { get; }
