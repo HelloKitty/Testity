@@ -1,7 +1,16 @@
 # Testity
 
-A custom build process for Unity3D that allows for easier dependency injection and unit testing.
+####What is Testity?
+Testity is more than just a library. Testity is a custom workflow for .Net class library projects that target games engines such as: Unity3D and UnrealEngine 4 (when C# bindings are implemented).
 
+####Goals
+
+*Primary*
+* Allow for the creation of unit testable, or generally testable, game logic.
+* Support practices of inversion of control and dependency injection.
+
+*Secondary*
+* Allow for the creation of engine agnostic game logic.
 
 ####Builds
 
