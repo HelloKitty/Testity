@@ -10,6 +10,7 @@ namespace Testity.EngineServices
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Time.html
 	/// Based on methods in UnrealEngine 4's: https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/Engine/UWorld/index.html
 	/// </summary>
+	[EngineServiceInterface]
 	public interface IEngineTimeService
 	{
 		/// <summary>
