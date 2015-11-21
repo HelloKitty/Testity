@@ -105,7 +105,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Vector3<TMathType>.OneValue, Vector3<TMathType>.OneValue, Vector3<TMathType>.OneValue);
+				return new Vector3<TMathType>(Vector3<TMathType>.OneValue, Operator<TMathType>.Zero, Operator<TMathType>.Zero);
 
 			}
 		}
@@ -139,17 +139,11 @@ namespace Testity.EngineMath
 				switch (index)
 				{
 					case 0:
-						{
-							return this.x;
-						}
+						return this.x;
 					case 1:
-						{
-							return this.y;
-						}
+						return this.y;
 					case 2:
-						{
-							return this.z;
-						}
+						return this.z;
 				}
 				throw new IndexOutOfRangeException("Invalid " + nameof(Vector3<TMathType>) + " index!");
 			}
@@ -158,24 +152,16 @@ namespace Testity.EngineMath
 				switch (index)
 				{
 					case 0:
-						{
-							this.x = value;
-							break;
-						}
+						this.x = value;
+						break;
 					case 1:
-						{
-							this.y = value;
-							break;
-						}
+						this.y = value;
+						break;
 					case 2:
-						{
-							this.z = value;
-							break;
-						}
+						this.z = value;
+						break;
 					default:
-						{
-							throw new IndexOutOfRangeException("Invalid " + nameof(Vector3<TMathType>) + " index!");
-						}
+						throw new IndexOutOfRangeException("Invalid " + nameof(Vector3<TMathType>) + " index!");
 				}
 			}
 		}
@@ -371,6 +357,12 @@ namespace Testity.EngineMath
 				Operator.Add(a.z, b.z));
 		}
 
+		/// <summary>
+		/// Scales the components of the vector by 1/d.
+		/// </summary>
+		/// <param name="a">Vector to scale.</param>
+		/// <param name="d">Scale</param>
+		/// <returns></returns>
 		public static Vector3<TMathType> operator /(Vector3<TMathType> a, TMathType d)
 		{
 			return new Vector3<TMathType>(Operator.Divide(a.x, d), Operator.Divide(a.y, d), Operator.Divide(a.z, d));
@@ -386,21 +378,54 @@ namespace Testity.EngineMath
 			return Operator.GreaterThanOrEqual(Vector3<TMathType>.SqrMagnitude(lhs - rhs), Vector3<TMathType>.validCompareError);
 		}
 
+		/// <summary>
+		/// Scales the components of the vector by d.
+		/// </summary>
+		/// <param name="a">Vector to scale.</param>
+		/// <param name="d">cale</param>
+		/// <returns></returns>
 		public static Vector3<TMathType> operator *(Vector3<TMathType> a, TMathType d)
 		{
 			return new Vector3<TMathType>(Operator.Multiply(a.x, d), Operator.Multiply(a.y, d), Operator.Multiply(a.z, d));
 		}
 
+		/// <summary>
+		/// Scales the components of the vector by d.
+		/// </summary>
+		/// <param name="a">Vector to scale.</param>
+		/// <param name="d">cale</param>
 		public static Vector3<TMathType> operator *(TMathType d, Vector3<TMathType> a)
 		{
 			return new Vector3<TMathType>(Operator.Multiply(a.x, d), Operator.Multiply(a.y, d), Operator.Multiply(a.z, d));
 		}
 
+		/// <summary>
+		/// Preformance dot product multiplication between two vectors.
+		/// </summary>
+		/// <param name="a">Vector one.</param>
+		/// <param name="b">Vector two.</param>
+		/// <returns></returns>
+		public static TMathType operator *(Vector3<TMathType> a, Vector3<TMathType> b)
+		{
+			return Dot(a, b);
+		}
+
+		/// <summary>
+		/// Preforms component-wise vector subtraction.
+		/// </summary>
+		/// <param name="a">Vector one.</param>
+		/// <param name="b">Vector two.</param>
+		/// <returns></returns>
 		public static Vector3<TMathType> operator -(Vector3<TMathType> a, Vector3<TMathType> b)
 		{
 			return new Vector3<TMathType>(Operator.Subtract(a.x, b.x), Operator.Subtract(a.y, b.y), Operator.Subtract(a.z, b.z));
 		}
 
+		/// <summary>
+		/// Negates the vector's components.
+		/// </summary>
+		/// <param name="a">Vector to negate.</param>
+		/// <returns></returns>
 		public static Vector3<TMathType> operator -(Vector3<TMathType> a)
 		{
 			return new Vector3<TMathType>(Operator.Negate(a.x), Operator.Negate(a.y), Operator.Negate(a.z));
