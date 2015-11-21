@@ -3,7 +3,7 @@ solution: ./Testity.sln
 sudo: required
 
 install:
-  - sudo apt-get install nunit-console=3
+  - sudo apt-get install nunit-console
   - nuget restore ./Testity.sln
 
 before_script:
