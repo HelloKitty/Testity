@@ -14,11 +14,47 @@ namespace Testity.EngineMath
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Vector3.html
 	/// </summary>
 	/// <typeparam name="TMathType">Value type of the vector that must overload math operators (Ex. int, float, double).</typeparam>
-	public struct Vector3<TMathType>
-		where TMathType : struct
+	public struct Vector3<TMathType> : IEquatable<Vector3<TMathType>>, IComparable<Vector3<TMathType>>
+		where TMathType : struct, IEquatable<TMathType>, IComparable<TMathType>
     {
-		public static TMathType kEpsilon = (TMathType)Convert.ChangeType(1E-05f, typeof(TMathType));
-		private static TMathType validCompareError = (TMathType)Convert.ChangeType(9.99999944E-11f, typeof(TMathType));
+		public static TMathType kEpsilon = GenerateKEpslion();
+
+		private static TMathType GenerateKEpslion()
+		{
+			try
+			{
+				return (TMathType)Convert.ChangeType(1E-05f, typeof(TMathType));
+			}
+			catch(InvalidCastException)
+			{
+#if DEBUG || DEBBUGBUILD
+				//These are known types that cause issues with kEpsilon
+				if (typeof(TMathType) != typeof(char))
+					throw;
+#endif
+				return Operator<TMathType>.Zero;
+			}
+		}
+
+		private static TMathType validCompareError = ValidCompareErrorGenerator();
+
+		private static TMathType ValidCompareErrorGenerator()
+		{
+			try
+			{
+				return (TMathType)Convert.ChangeType(9.99999944E-11f, typeof(TMathType));
+			}
+			catch(InvalidCastException)
+			{
+#if DEBUG || DEBUGBUILD
+				//These are known types that cause issues with kEpsilon
+				if (typeof(TMathType) != typeof(char))
+					throw;
+#endif
+				return Operator<TMathType>.Zero;
+			}
+			
+		}
 
 		/// <summary>
 		///   <para>X component of the vector.</para>
@@ -165,16 +201,32 @@ namespace Testity.EngineMath
 				}
 			}
 		}
+		
+		//We must keep this generic so that users can request high percision magnitude.
+		public TRequestValueType Magnitude<TRequestValueType>()
+			where TRequestValueType : struct, IEquatable<TRequestValueType>, IComparable<TRequestValueType>
+		{
+			//This isn't as accurate as it could be. Maybe provide a secondary more accurate method.
+			return MathT.Sqrt(Operator.Convert<TMathType, TRequestValueType>(SqrMagnitude));
+		}
+
+		public TMathType Magnitude()
+		{
+			//This isn't as accurate as it could be. Maybe provide a secondary more accurate method.
+			return MathT.Sqrt(SqrMagnitude);
+		}
 
 		/// <summary>
-		///   <para>Returns the length of this vector (Read Only).</para>
+		/// Returns the non-square rooted magnitude of the vector.
 		/// </summary>
-		public TMathType magnitude
+		/// <typeparam name="TRequestValueType">Desired value type to return.</typeparam>
+		/// <returns>Non-rooted magnitude.</returns>
+		public TMathType SqrMagnitude
 		{
 			get
 			{
-				//Hopefully this gets inlined to reduce copying.
-				return MathT.Sqrt(sqrMagnitude);
+				TMathType firstTerm = Operator<TMathType>.Add(Operator.Multiply(x, x), Operator.Multiply(y, y));
+				return Operator.Add(firstTerm, Operator.Multiply(z, z));
 			}
 		}
 
@@ -186,18 +238,6 @@ namespace Testity.EngineMath
 			get
 			{
 				return Vector3<TMathType>.Normalize(this);
-			}
-		}
-
-		/// <summary>
-		///   <para>Returns the squared length of this vector (Read Only).</para>
-		/// </summary>
-		public TMathType sqrMagnitude
-		{
-			get
-			{
-				TMathType firstTerm = Operator.Add(Operator.Multiply(this.x, this.x),  Operator.Multiply(this.y, this.y));
-				return Operator.Add(firstTerm, Operator.Multiply(this.z, this.z));
 			}
 		}
 
@@ -232,7 +272,8 @@ namespace Testity.EngineMath
 		/// <param name="maxLength"></param>
 		public static Vector3<TMathType> ClampMagnitude(Vector3<TMathType> vector, TMathType maxLength)
 		{
-			if (Operator.LessThanOrEqual(vector.sqrMagnitude, Operator.Multiply(maxLength, maxLength)))
+			//TODO: Check if this type will provide value results.
+			if (Operator.LessThanOrEqual(vector.SqrMagnitude, Operator.Multiply(maxLength, maxLength)))
 			{
 				return vector;
 			}
@@ -259,10 +300,11 @@ namespace Testity.EngineMath
 		/// </summary>
 		/// <param name="a"></param>
 		/// <param name="b"></param>
-		public static TMathType Distance(Vector3<TMathType> a, Vector3<TMathType> b)
+		public static TRequestedValueType Distance<TRequestedValueType>(Vector3<TMathType> a, Vector3<TMathType> b)
+			where TRequestedValueType : struct, IEquatable<TRequestedValueType>, IComparable<TRequestedValueType>
 		{
 			Vector3<TMathType> vec3 = new Vector3<TMathType>(Operator.Subtract(a.x, b.x), Operator.Subtract(a.x, b.x), Operator.Subtract(a.z, b.z));
-			return vec3.magnitude;
+			return vec3.Magnitude<TRequestedValueType>();
 		}
 
 		/// <summary>
@@ -276,6 +318,7 @@ namespace Testity.EngineMath
 			return Operator.Add(firstTerm, Operator.Multiply(lhs.z, rhs.z));
 		}
 
+		
 		public override bool Equals(object other)
 		{
 			if (!(other is Vector3<TMathType>))
@@ -284,17 +327,24 @@ namespace Testity.EngineMath
 			}
 
 			Vector3<TMathType> Vector3 = (Vector3<TMathType>)other;
-			return (!this.x.Equals(Vector3.x) || !this.y.Equals(Vector3.y) ? false : this.z.Equals(Vector3.z));
+			return this.Equals(Vector3); //calls generic version
 		}
 
+		public bool Equals(Vector3<TMathType> other)
+		{
+			return (!this.x.Equals(other.x) || !this.y.Equals(other.y) ? false : this.z.Equals(other.z));
+		}
+
+		//No idea what is going on here... This is Unity3D's decompiled GetHashCode implementation.
 		public override int GetHashCode()
 		{
 			return this.x.GetHashCode() ^ this.y.GetHashCode() << 2 ^ this.z.GetHashCode() >> 2;
 		}
 
-		public static TMathType Magnitude(Vector3<TMathType> a)
+		public static TRequestedValueType Magnitude<TRequestedValueType>(Vector3<TMathType> a)
+			where TRequestedValueType : struct, IEquatable<TRequestedValueType>, IComparable<TRequestedValueType>
 		{
-			return a.magnitude;
+			return a.Magnitude<TRequestedValueType>();
 		}
 
 		/// <summary>
@@ -318,27 +368,33 @@ namespace Testity.EngineMath
 		}
 
 		/// <summary>
-		///   <para></para>
+		///   <para>Normalizes the vector to the best precision allowed by <see cref="TMathType"/>.</para>
+		/// (Ex. if int won't normalize as the result is a vector of ints)
 		/// </summary>
-		/// <param name="value"></param>
+		/// <param name="value">Vector to normalize.</param>
 		public static Vector3<TMathType> Normalize(Vector3<TMathType> value)
 		{
-			TMathType single = Vector3<TMathType>.Magnitude(value);
+			//This is valid because users can't expect to normalize a vector of ints and such.
+			//If they're Type permits they can normalize.
+			TMathType single = Vector3<TMathType>.Magnitude<TMathType>(value);
 
 			if (Operator.LessThanOrEqual(single, kEpsilon))
 			{
 				return Vector3<TMathType>.zero;
 			}
 
-			return value / single;
+			return value * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
 		}
 
 		/// <summary>
-		///   <para>Makes this vector have a magnitude of 1.</para>
+		///   <para>Normalizes the vector to the best precision allowed by <see cref="TMathType"/>.</para>
+		/// (Ex. if int won't normalize as the result is a vector of ints)
 		/// </summary>
 		public void Normalize()
 		{
-			TMathType single = Vector3<TMathType>.Magnitude(this);
+			//This is valid because users can't expect to normalize a vector of ints and such.
+			//If they're Type permits they can normalize.
+			TMathType single = Vector3<TMathType>.Magnitude<TMathType>(this);
 
 			if (Operator.LessThanOrEqual(single, kEpsilon))
 			{
@@ -346,7 +402,7 @@ namespace Testity.EngineMath
 			}
 			else
 			{
-				this = this / single;
+				this = this * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
 			}
 		}
 
@@ -357,7 +413,7 @@ namespace Testity.EngineMath
 				Operator.Add(a.z, b.z));
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Scales the components of the vector by 1/d.
 		/// </summary>
 		/// <param name="a">Vector to scale.</param>
@@ -366,16 +422,25 @@ namespace Testity.EngineMath
 		public static Vector3<TMathType> operator /(Vector3<TMathType> a, TMathType d)
 		{
 			return new Vector3<TMathType>(Operator.Divide(a.x, d), Operator.Divide(a.y, d), Operator.Divide(a.z, d));
-		}
+		}*/
 
 		public static bool operator ==(Vector3<TMathType> lhs, Vector3<TMathType> rhs)
 		{
-			return Operator.LessThan(Vector3<TMathType>.SqrMagnitude(lhs - rhs), Vector3<TMathType>.validCompareError);
+			//Do componentwise comaparision instead since it's more reliable
+			for (int i = 0; i < 3; i++)
+				if (!lhs[i].Equals(rhs[i]))
+					return false;
+
+			return true;
+			//Don't do it like this. We can't be 100% sure it will work for all types.
+			//return Operator.LessThan(Vector3<TMathType>.SqrMagnitude<TMathType>(lhs - rhs), Vector3<TMathType>.validCompareError);
 		}
 
 		public static bool operator !=(Vector3<TMathType> lhs, Vector3<TMathType> rhs)
 		{
-			return Operator.GreaterThanOrEqual(Vector3<TMathType>.SqrMagnitude(lhs - rhs), Vector3<TMathType>.validCompareError);
+			return !(lhs == rhs);
+			//Don't do it like this. We can't be 100% sure it will work for all types.
+			//return Operator.GreaterThanOrEqual(Vector3<TMathType>.SqrMagnitude(lhs - rhs), Vector3<TMathType>.validCompareError);
 		}
 
 		/// <summary>
@@ -446,7 +511,7 @@ namespace Testity.EngineMath
 				return Vector3<TMathType>.zero;
 			}
 
-			return (onNormal * Vector3<TMathType>.Dot(vector, onNormal)) / single;
+			return (onNormal * Vector3<TMathType>.Dot(vector, onNormal)) * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
 		}
 
 		/// <summary>
@@ -507,9 +572,20 @@ namespace Testity.EngineMath
 			this.z = new_z;
 		}
 
-		public static TMathType SqrMagnitude(Vector3<TMathType> a)
+		public static TMathType SquarMagnitude(Vector3<TMathType> a)
 		{
-			return a.sqrMagnitude;
+			return a.SqrMagnitude;
+		}
+
+		public int CompareTo(Vector3<TMathType> other)
+		{
+			TMathType otherMag = other.SqrMagnitude;
+			TMathType thisMag = SqrMagnitude;
+
+			if (otherMag.Equals(thisMag))
+				return 0;
+			else
+				return Operator.GreaterThan(thisMag, otherMag) ? 1 : -1;
 		}
 
 		/*

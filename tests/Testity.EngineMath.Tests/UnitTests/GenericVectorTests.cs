@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Numerics;
 
 namespace Testity.EngineMath.UnitTests
 {
@@ -30,15 +29,24 @@ namespace Testity.EngineMath.UnitTests
 		[TestCase(1, 2, 3d)]
 		[TestCase(0d, 0, 0)]
 		public static void Test_Vector3_Generic_Init<TMathType>(TMathType a, TMathType b, TMathType c) //NUnit can infer best fit type
-			where TMathType : struct
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
 			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = new Vector3<TMathType>();
+			Vector3<TMathType> vec3Three = new Vector3<TMathType>(a, b);
+			vec3Two.Set(vec3.x, vec3.y, vec3.z);
 
 			//assert
+			Assert.IsTrue(vec3 == vec3Two);
 			Assert.AreEqual(vec3.x, a, nameof(Vector3<TMathType>) + " failed to initialize x value.");
 			Assert.AreEqual(vec3.y, b, nameof(Vector3<TMathType>) + " failed to initialize y value.");
 			Assert.AreEqual(vec3.z, c, nameof(Vector3<TMathType>) + " failed to initialize z value.");
+			Assert.AreEqual(Operator<TMathType>.Zero, vec3Three.z);
+
+			//Don't check z
+			for (int i = 0; i < 2; i++)
+				Assert.AreEqual(vec3[i], vec3Three[i]);
 		}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type addition operator.", TestOf = typeof(Vector3<>))]
@@ -60,7 +68,7 @@ namespace Testity.EngineMath.UnitTests
 		[TestCase(1, 2, 3d)]
 		[TestCase(0d, 0, 0)]
 		public static void Test_Vector3_Generic_Addition<TMathType>(TMathType a, TMathType b, TMathType c) //NUnit can infer best fit type
-			where TMathType : struct
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
 			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
@@ -98,7 +106,7 @@ namespace Testity.EngineMath.UnitTests
 		[TestCase(1, 2, 3d)]
 		[TestCase(0d, 0, 0)]
 		public static void Test_Vector3_Generic_MultiplicationDot<TMathType>(TMathType a, TMathType b, TMathType c) //NUnit can infer best fit type
-			where TMathType : struct
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
 			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
@@ -145,7 +153,7 @@ namespace Testity.EngineMath.UnitTests
 		[TestCase(1, 2, 3d)]
 		[TestCase(0d, 0, 0)]
 		public static void Test_Vector3_Generic_Multiplcation_With_Scalar<TMathType>(TMathType a, TMathType b, TMathType c) //NUnit can infer best fit type
-			where TMathType : struct
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
 			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
@@ -223,8 +231,15 @@ namespace Testity.EngineMath.UnitTests
 		[TestCase(1, 1, 1, nameof(Vector3<int>.one))] //int
 		[TestCase(1f, 1f, 1f, nameof(Vector3<float>.one))] //float
 		[TestCase(1d, 1d, 1d, nameof(Vector3<double>.one))] //double
+
+		//zero
+		[TestCase(0, 0, 0, nameof(Vector3<int>.zero))] //int
+		[TestCase(0f, 0f, 0f, nameof(Vector3<float>.zero))] //float
+		[TestCase(0d, 0d, 0d, nameof(Vector3<double>.zero))] //double
+		[TestCase((char)0, (char)0, (char)0, nameof(Vector3<char>.zero))] //char
+		[TestCase((byte)0, (byte)0, (byte)0, nameof(Vector3<byte>.zero))] //byte
 		public static void Test_Vector3_Generic_Directions<TMathType>(TMathType a, TMathType b, TMathType c, string directionName) //pass in expected values
-			where TMathType : struct
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
 			//grabs the property that corresponds to the string in the test case
@@ -241,23 +256,148 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(vecDirection, new Vector3<TMathType>(a, b, c));
 		}
 
-		/*[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> magnitude methods.", TestOf = typeof(Vector3<>))]
-		public static void Test_Vector3_NonGeneric_Magnitude<TMathType>(TMathType a, TMathType b, TMathType c, TMathType expectedResult)
-			where TMathType : struct
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> magnitude methods.", TestOf = typeof(Vector3<>))]
+		[TestCase(1,1,1,3)]
+		[TestCase(2, 2, 2, 12)]
+		[TestCase(2f, 2f, 2f, 12f)]
+		[TestCase(2d, 2d, 2d, 12d)]
+		[TestCase(1d, 2.5d, 6.7d, 1d + 2.5d * 2.5d + 6.7d * 6.7d)]
+		[TestCase(-1d, -2.5d, -6.7d, 1d + 2.5d * 2.5d + 6.7d * 6.7d)]
+		public static void Test_Vector3_Generic_Magnitude<TMathType>(TMathType a, TMathType b, TMathType c, TMathType expectedResult)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
 			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
 
-			TMathType result = vec3.sqrMagnitude;
+			//act
+			//test both static and instance computations
+			TMathType result = vec3.SqrMagnitude;
+			TMathType resultTwo = Vector3<TMathType>.SquarMagnitude(vec3);
+			double resultSquared = vec3.Magnitude<double>();
 
-			//System.Numerics
+			//assert
+			Assert.IsTrue(result.Equals(resultTwo));
+			Assert.AreEqual(result, expectedResult, "Failed to compute magnitude with {1}:{2}:{3}.", nameof(Vector3<TMathType>.SquarMagnitude), a, b, c);
+			Assert.AreEqual(Math.Sqrt((double)Convert.ChangeType(expectedResult, typeof(double))), resultSquared, "Failed to compute magnitude with {1}:{2}:{3}.", nameof(Vector3<TMathType>.SquarMagnitude), a, b, c);
+		}
 
-			//Assert
-			//Assert.AreEqual(result, null, "Failed to compute {0} with {1}:{2}:{3}." + nameof(Vector3<TMathType>.sqrMagnitude), a, b, c);
-		}*/
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> equivalence methods.", TestOf = typeof(Vector3<>))]
+		//test zeros
+		[TestCase(0, 0, 0)]
+		[TestCase(0f, 0f, 0f)]
+		[TestCase(0d, 0d, 0d)]
+		//positives
+		[TestCase(1, 3, 5)]
+		[TestCase(1.3f, 3.7f, 5.999f)]
+		[TestCase(1.3d, 3.7d, 5.999d)]
+		//negatives
+		[TestCase(1, -3, 5)]
+		[TestCase(-1.3f, 3.7f, 5.999f)]
+		[TestCase(1.3d, 3.7d, -5.999d)]
+		//odd cases
+		[TestCase(int.MaxValue, int.MinValue, 0)]
+		[TestCase(float.Epsilon, float.NaN, float.MaxValue)]
+		[TestCase(double.MaxValue, double.Epsilon, double.MinValue)]
+		public static void Test_Vector3_Generic_Equals<TMathType>(TMathType a, TMathType b, TMathType c)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = vec3One;
+
+			Assert.AreEqual(vec3One, vec3Two, 
+				"Equivalence for {0} is not working for values {0}:{1}:{2}", nameof(Vector3<TMathType>), a, b, c);
+
+			Assert.IsTrue(vec3Two == vec3Two);
+			Assert.IsFalse(vec3Two != vec3Two);
+
+            Assert.IsTrue(vec3Two == vec3One);
+			Assert.IsFalse(vec3Two != vec3One);
+
+			Assert.IsTrue(vec3Two.Equals(vec3One));
+		}
+
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> equivalence methods when not equal.", TestOf = typeof(Vector3<>))]
+		[TestCase(0,0,0 ,0,0,1)]
+		[TestCase(0, 0, 0, 0, 0, -1)]
+		[TestCase(1.5f, 1.3f, 1.5f, 1.2f, 3.6f, 0)]
+		public static void Test_Vector3_Generic_Equals_When_Not_Equal<TMathType>(TMathType a, TMathType b, TMathType c, 
+			TMathType d, TMathType e, TMathType f)
+				where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = new Vector3<TMathType>(d, e, f);
+
+			//assert
+			Assert.IsFalse(vec3One == vec3Two);
+			Assert.IsFalse(vec3Two == vec3One);
+			Assert.IsTrue(vec3Two != vec3One);
+			Assert.IsFalse(vec3Two.Equals(vec3One));
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> negation methods.", TestOf = typeof(Vector3<>))]
+		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
+		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
+		[TestCase(int.MaxValue, int.MinValue, -0)]
+		[TestCase(float.NegativeInfinity, float.PositiveInfinity, float.NaN)]
+		[TestCase(float.MaxValue, float.MinValue, float.Epsilon)]
+		[TestCase(-5.3f, 6.5f, 7.6f)]
+		[TestCase(5.3f, 6.5f, 7.6f)]
+		[TestCase(1, 3, -4)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3)]
+		[TestCase(-0, 0, 0)]
+		[TestCase(-5.3f, 6.5d, 7.6d)]
+		[TestCase(5.3f, 6.5d, -7.6d)]
+		[TestCase(1d, 3d, -4d)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3d)]
+		[TestCase(0d, 0, 0)]
+		public static void Test_Vector3_Generic_Negate<TMathType>(TMathType a, TMathType b, TMathType c)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
+
+			//acrt
+			Vector3<TMathType> vec3Negated = -vec3;
+
+			//assert
+			for (int i = 0; i < 3; i++)
+				Assert.AreEqual(Operator.Negate(vec3[i]), vec3Negated[i], "Negation for Type: {0} failed for values {1}:{2}:{3}.", nameof(Vector3<TMathType>), a, b, c);
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> normalization methods.", TestOf = typeof(Vector3<>))]
+		[TestCase(1f,2f,3f, null)]
+		[TestCase(1.005f, 5.6f, 2.4f, null)]
+		[TestCase(1d, 2d, 3d, null)]
+		[TestCase(1.33d, 2.5343d, 3.643d, null)]
+		public static void Test_Vector3_Generic_Normalize<TMathType>(TMathType a, TMathType b, TMathType c, TMathType? optionalExpectedValue = null)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3UnNormalized = vec3;
+
+			//act
+			Vector3<TMathType> nVec3 = vec3.normalized;
+			Vector3<TMathType> nVec3Two = Vector3<TMathType>.Normalize(vec3);
+			vec3.Normalize();
+
+			//assert
+			Assert.AreEqual(nVec3, nVec3Two);
+			Assert.AreEqual(nVec3, vec3);
+			Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), Operator.Convert<TMathType, double>(nVec3.Magnitude()), Operator.Convert<TMathType, double>(Operator.Convert<double, TMathType>(1E-05f)));
+
+			if (optionalExpectedValue.HasValue)
+				for (int i = 0; i < 3; i++)
+					Assert.AreEqual(Operator.Divide(vec3UnNormalized[i], vec3UnNormalized.Magnitude()), nVec3[i]);
+        }
 
 		private static TMathType AddAll<TMathType>(IEnumerable<TMathType> vals)
-			where TMathType : struct
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			return vals.Aggregate(Operator<TMathType>.Zero, (a, b) => Operator.Add(a, b));
 		}
