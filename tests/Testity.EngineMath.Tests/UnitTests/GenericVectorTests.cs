@@ -12,6 +12,27 @@ namespace Testity.EngineMath.UnitTests
 	[TestFixture]
 	public static class GenericVectorTests
 	{
+		[Test]
+		public static void Test_Blah()
+		{
+
+		}
+
+		[Test]
+		[TestCase(1)]
+		public static void Test_Blah(int i)
+		{
+
+		}
+
+		[Test]
+		[TestCase(1)]
+		public static void Test_Blah_Generic<TMathType>(TMathType i)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+
+		}
+
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type intialization/ctor.", TestOf = typeof(Vector3<>))]
 		[TestCase(int.MaxValue, int.MinValue, -0)]
 		[TestCase(float.NegativeInfinity, float.PositiveInfinity, float.NaN)]
@@ -65,6 +86,7 @@ namespace Testity.EngineMath.UnitTests
 				Assert.AreEqual(vec3[i], vec3Three[i]);
 		}
 
+		
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type addition operator.", TestOf = typeof(Vector3<>))]
 		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
@@ -103,6 +125,7 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(Operator.Add(b, a), resultTwo.y);
 		}
 
+		
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type multiplcation dot operator.", TestOf = typeof(Vector3<>))]
 		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
@@ -150,6 +173,7 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(resultThree, dotResult);
 		}
 
+		
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type multiplication against a scaler.", TestOf = typeof(Vector3<>))]
 		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
@@ -190,6 +214,7 @@ namespace Testity.EngineMath.UnitTests
 					Assert.AreEqual(results[i][index], Operator.Multiply(parameters[i], vec3[index]));
 		}
 
+		
 		//this is needed to verify that TMathType is being handled correctly.
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector<int> non-generic scalar multiplication.", TestOf = typeof(Vector3<>))]
 		[TestCase(1, 3, -4, 0, 0, 0, 0)]
@@ -212,6 +237,7 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(result.z, scale * c);
 		}
 
+		
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> static direction vectors.", TestOf = typeof(Vector3<>))]
 		[Test]
 		//forward
@@ -273,6 +299,7 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(vecDirection, new Vector3<TMathType>(a, b, c));
 		}
 
+		
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> magnitude methods.", TestOf = typeof(Vector3<>))]
 		[TestCase(1,1,1,3)]
 		[TestCase(2, 2, 2, 12)]
@@ -334,7 +361,7 @@ namespace Testity.EngineMath.UnitTests
 			Assert.IsTrue(vec3Two.Equals(vec3One));
 		}
 
-
+		
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> equivalence methods when not equal.", TestOf = typeof(Vector3<>))]
 		[TestCase(0,0,0 ,0,0,1)]
 		[TestCase(0, 0, 0, 0, 0, -1)]
@@ -386,14 +413,15 @@ namespace Testity.EngineMath.UnitTests
 				Assert.AreEqual(Operator.Negate(vec3[i]), vec3Negated[i], "Negation for Type: {0} failed for values {1}:{2}:{3}.", nameof(Vector3<TMathType>), a, b, c);
 		}
 
+		
 		//int vectors don't work. Can't normalize them.
 		//[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> normalization methods.", TestOf = typeof(Vector3<>))]
-		[TestCase(1f,2f,3f, null)]
-		[TestCase(1.005f, 5.6f, 2.4f, null)]
-		[TestCase(1d, 2d, 3d, null)]
-		[TestCase(1.33d, 2.5343d, 3.643d, null)]
-		[TestCase(0.00000001f, 0.00000001f, 0.00000001f, null)]
-		public static void Test_Vector3_Generic_Normalize<TMathType>(TMathType a, TMathType b, TMathType c, TMathType? optionalExpectedValue = null)
+		[TestCase(1f,2f,3f)]
+		[TestCase(1.005f, 5.6f, 2.4f)]
+		[TestCase(1d, 2d, 3d)]
+		[TestCase(1.33d, 2.5343d, 3.643d)]
+		[TestCase(0.00000001f, 0.00000001f, 0.00000001f)]
+		public static void Test_Vector3_Generic_Normalize<TMathType>(TMathType a, TMathType b, TMathType c)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			//arrange
@@ -415,10 +443,6 @@ namespace Testity.EngineMath.UnitTests
 				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), Operator.Convert<TMathType, double>(nVec3.Magnitude()), Operator.Convert<TMathType, double>(Operator.Convert<double, TMathType>(1E-05f)));
 			else
 				Assert.AreEqual(Operator<TMathType>.Zero, nVec3.Magnitude<TMathType>()); //if the vector is too small we expect it to become the 0 vector.
-
-			if (optionalExpectedValue.HasValue)
-				for (int i = 0; i < 3; i++)
-					Assert.AreEqual(Operator.Divide(vec3UnNormalized[i], vec3UnNormalized.Magnitude()), nVec3[i]);
         }
 
 		/*[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
