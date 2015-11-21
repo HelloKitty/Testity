@@ -28,6 +28,8 @@ namespace Testity.EngineMath.UnitTests
 		[TestCase(-1, 3, 4)]
 		[TestCase(1, 2, 3d)]
 		[TestCase(0d, 0, 0)]
+		[TestCase('a', '0', '&')]
+		[TestCase(byte.MaxValue, byte.MinValue, (byte)50)]
 		public static void Test_Vector3_Generic_Init<TMathType>(TMathType a, TMathType b, TMathType c) //NUnit can infer best fit type
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
@@ -35,13 +37,27 @@ namespace Testity.EngineMath.UnitTests
 			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
 			Vector3<TMathType> vec3Two = new Vector3<TMathType>();
 			Vector3<TMathType> vec3Three = new Vector3<TMathType>(a, b);
+			Vector3<TMathType> vec3Four = new Vector3<TMathType>();
 			vec3Two.Set(vec3.x, vec3.y, vec3.z);
+			vec3Four.x = a;
+			vec3Four.y = b;
+			vec3Four.z = c;
+
+			var vecCollection = new List<Vector3<TMathType>>() { vec3, vec3Two, vec3Four };
 
 			//assert
-			Assert.IsTrue(vec3 == vec3Two);
-			Assert.AreEqual(vec3.x, a, nameof(Vector3<TMathType>) + " failed to initialize x value.");
-			Assert.AreEqual(vec3.y, b, nameof(Vector3<TMathType>) + " failed to initialize y value.");
-			Assert.AreEqual(vec3.z, c, nameof(Vector3<TMathType>) + " failed to initialize z value.");
+			foreach(var v in vecCollection)
+			{
+				//these should all be equal
+				foreach(var v2 in vecCollection)
+					Assert.IsTrue(v == v2);
+
+				Assert.AreEqual(v.x, a, nameof(Vector3<TMathType>) + " failed to initialize x value.");
+				Assert.AreEqual(v.y, b, nameof(Vector3<TMathType>) + " failed to initialize y value.");
+				Assert.AreEqual(v.z, c, nameof(Vector3<TMathType>) + " failed to initialize z value.");
+			}
+
+			//Make sure last one init to default value
 			Assert.AreEqual(Operator<TMathType>.Zero, vec3Three.z);
 
 			//Don't check z
@@ -369,11 +385,13 @@ namespace Testity.EngineMath.UnitTests
 				Assert.AreEqual(Operator.Negate(vec3[i]), vec3Negated[i], "Negation for Type: {0} failed for values {1}:{2}:{3}.", nameof(Vector3<TMathType>), a, b, c);
 		}
 
+		//int vectors don't work. Can't normalize them.
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> normalization methods.", TestOf = typeof(Vector3<>))]
 		[TestCase(1f,2f,3f, null)]
 		[TestCase(1.005f, 5.6f, 2.4f, null)]
 		[TestCase(1d, 2d, 3d, null)]
 		[TestCase(1.33d, 2.5343d, 3.643d, null)]
+		[TestCase(0.00000001f, 0.00000001f, 0.00000001f, null)]
 		public static void Test_Vector3_Generic_Normalize<TMathType>(TMathType a, TMathType b, TMathType c, TMathType? optionalExpectedValue = null)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
@@ -389,12 +407,113 @@ namespace Testity.EngineMath.UnitTests
 			//assert
 			Assert.AreEqual(nVec3, nVec3Two);
 			Assert.AreEqual(nVec3, vec3);
-			Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), Operator.Convert<TMathType, double>(nVec3.Magnitude()), Operator.Convert<TMathType, double>(Operator.Convert<double, TMathType>(1E-05f)));
+
+			//Change for case: [TestCase(0.00000001f, 0.00000001f, 0.00000001f, null)] it can return 0 vector which has 0 magnitude.
+			//We had to add an if to test small vector.
+			if (Operator<TMathType>.GreaterThan(vec3UnNormalized.Magnitude<TMathType>(), Vector3<TMathType>.kEpsilon))
+				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), Operator.Convert<TMathType, double>(nVec3.Magnitude()), Operator.Convert<TMathType, double>(Operator.Convert<double, TMathType>(1E-05f)));
+			else
+				Assert.AreEqual(Operator<TMathType>.Zero, nVec3.Magnitude<TMathType>()); //if the vector is too small we expect it to become the 0 vector.
 
 			if (optionalExpectedValue.HasValue)
 				for (int i = 0; i < 3; i++)
 					Assert.AreEqual(Operator.Divide(vec3UnNormalized[i], vec3UnNormalized.Magnitude()), nVec3[i]);
         }
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
+		//Don't expect these odd values to compare properly. They represent non-value value types essentially.
+		//[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
+		//[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
+		//[TestCase(int.MaxValue, int.MinValue, -0)]
+		//[TestCase(float.NegativeInfinity, float.PositiveInfinity, float.NaN)]
+		//[TestCase(float.MaxValue, float.MinValue, float.Epsilon)]
+		[TestCase(-5.3f, 6.5f, 7.6f)]
+		[TestCase(5.3f, 6.5f, 7.6f)]
+		[TestCase(1, 3, -4)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3)]
+		[TestCase(-0, 0, 0)]
+		[TestCase(-5.3f, 6.5d, 7.6d)]
+		[TestCase(5.3f, 6.5d, -7.6d)]
+		[TestCase(1d, 3d, -4d)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3d)]
+		[TestCase(0d, 0, 0)]
+		[TestCase((byte)5, (byte)7, (byte)255)]
+		[TestCase('a', '6', '&')]
+		public static void Test_Vector3_Generic_Min<TMathType>(TMathType a, TMathType b, TMathType c)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+
+			//arrange
+			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = new Vector3<TMathType>(b, c, a);
+
+			//act
+			Vector3<TMathType> minVec3 = Vector3<TMathType>.Min(vec3One, vec3Two);
+			//must cast back to TMathType or char fails as it is like a ushort or something.
+			Vector3<TMathType> minVec3Manual = new Vector3<TMathType>((TMathType)(dynamic)Math.Min((dynamic)vec3One.x, (dynamic)vec3Two.x),
+				(TMathType)(dynamic)Math.Min((dynamic)vec3One.y, (dynamic)vec3Two.y), (TMathType)(dynamic)Math.Min((dynamic)vec3One.z, (dynamic)vec3Two.z));
+
+			//Assert
+			//use dynamic DLR to test this without depending on anything else.
+			for (int index = 0; index < 3; index++)
+				Assert.AreEqual((dynamic)Math.Min((dynamic)vec3One[index], (dynamic)vec3Two[index]), minVec3[index]);
+			Assert.AreEqual(minVec3Manual, minVec3);
+
+			//check if equal values first
+			for (int index = 0; index < 3; index++)
+				if (!Operator.Equal(vec3One[index], vec3Two[index]))
+					Assert.AreNotEqual((dynamic)Math.Max((dynamic)vec3One[index], (dynamic)vec3Two[index]), minVec3[index]); //check that the max value isn't equal to the min.x
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> max method.", TestOf = typeof(Vector3<>))]
+		//Don't expect these odd values to compare properly. They represent non-value value types essentially.
+		//[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
+		//[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
+		//[TestCase(int.MaxValue, int.MinValue, -0)]
+		//[TestCase(float.NegativeInfinity, float.PositiveInfinity, float.NaN)]
+		//[TestCase(float.MaxValue, float.MinValue, float.Epsilon)]
+		[TestCase(-5.3f, 6.5f, 7.6f)]
+		[TestCase(5.3f, 6.5f, 7.6f)]
+		[TestCase(1, 3, -4)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3)]
+		[TestCase(-0, 0, 0)]
+		[TestCase(-5.3f, 6.5d, 7.6d)]
+		[TestCase(5.3f, 6.5d, -7.6d)]
+		[TestCase(1d, 3d, -4d)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3d)]
+		[TestCase(0d, 0, 0)]
+		[TestCase((byte)5, (byte)7, (byte)255)]
+		[TestCase('a', '6', '&')]
+		public static void Test_Vector3_Generic_Max<TMathType>(TMathType a, TMathType b, TMathType c)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+
+			//arrange
+			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = new Vector3<TMathType>(b, c, a);
+
+			//act
+			Vector3<TMathType> maxVec3 = Vector3<TMathType>.Max(vec3One, vec3Two);
+			//must cast back to TMathType or char fails as it is like a ushort or something.
+			Vector3<TMathType> maxVec3Manual = new Vector3<TMathType>((TMathType)(dynamic)Math.Max((dynamic)vec3One.x, (dynamic)vec3Two.x),
+				(TMathType)(dynamic)Math.Max((dynamic)vec3One.y, (dynamic)vec3Two.y), (TMathType)(dynamic)Math.Max((dynamic)vec3One.z, (dynamic)vec3Two.z));
+
+			//Assert
+			//use dynamic DLR to test this without depending on anything else.
+			for(int index = 0; index < 3; index++)
+				Assert.AreEqual((dynamic)Math.Max((dynamic)vec3One[index], (dynamic)vec3Two[index]), maxVec3[index]);
+
+			Assert.AreEqual(maxVec3Manual, maxVec3);
+
+			//check if equal values first
+			for(int index = 0; index < 3; index++)
+				if (!Operator.Equal(vec3One[index], vec3Two[index]))
+					Assert.AreNotEqual((dynamic)Math.Min((dynamic)vec3One[index], (dynamic)vec3Two[index]), maxVec3[index]); //check that the max value isn't equal to the min.x
+		}
 
 		private static TMathType AddAll<TMathType>(IEnumerable<TMathType> vals)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>

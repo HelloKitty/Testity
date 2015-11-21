@@ -588,6 +588,12 @@ namespace Testity.EngineMath
 				return Operator.GreaterThan(thisMag, otherMag) ? 1 : -1;
 		}
 
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+			return sb.AppendFormat("{0}: {1}:{2}:{3}", nameof(Vector3<TMathType>), x, y, z).ToString();
+		}
+
 		/*
 		/// <summary>
 		///   <para>Rotates a vector current towards target.</para>
