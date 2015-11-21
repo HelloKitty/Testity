@@ -513,12 +513,12 @@ namespace Testity.EngineMath.UnitTests
 			for(int index = 0; index < 3; index++)
 				if (!Operator.Equal(vec3One[index], vec3Two[index]))
 					Assert.AreNotEqual((dynamic)Math.Min((dynamic)vec3One[index], (dynamic)vec3Two[index]), maxVec3[index]); //check that the max value isn't equal to the min.x
-		}
+		}*/
 
 		private static TMathType AddAll<TMathType>(IEnumerable<TMathType> vals)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			return vals.Aggregate(Operator<TMathType>.Zero, (a, b) => Operator.Add(a, b));
 		}
-	}*/
+	}
 }
