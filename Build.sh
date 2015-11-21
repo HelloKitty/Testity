@@ -1,1 +1,1 @@
-xbuild ./Testity.sln
+xbuild ./Testity.sln /p:DebugSymbols=False
