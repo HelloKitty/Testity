@@ -420,7 +420,7 @@ namespace Testity.EngineMath.UnitTests
 					Assert.AreEqual(Operator.Divide(vec3UnNormalized[i], vec3UnNormalized.Magnitude()), nVec3[i]);
         }
 
-		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
+		/*[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
 		//Don't expect these odd values to compare properly. They represent non-value value types essentially.
 		//[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		//[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
@@ -520,5 +520,5 @@ namespace Testity.EngineMath.UnitTests
 		{
 			return vals.Aggregate(Operator<TMathType>.Zero, (a, b) => Operator.Add(a, b));
 		}
-	}
+	}*/
 }
