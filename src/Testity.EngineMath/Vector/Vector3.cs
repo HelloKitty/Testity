@@ -13,7 +13,7 @@ namespace Testity.EngineMath
 	/// Generic vector type with 3 components. Allows for use of int, float and double types.
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Vector3.html
 	/// </summary>
-	/// <typeparam name="TMathType"></typeparam>
+	/// <typeparam name="TMathType">Value type of the vector that must overload math operators (Ex. int, float, double).</typeparam>
 	public struct Vector3<TMathType>
 		where TMathType : struct
     {
