@@ -4,6 +4,7 @@ sudo: required
 
 install:
   - sudo apt-get install nunit-console
+  - sudo apt-show-versions nunit-console
   - nuget restore ./Testity.sln
 
 before_script:
