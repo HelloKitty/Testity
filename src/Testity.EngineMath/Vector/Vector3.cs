@@ -391,59 +391,8 @@ namespace Testity.EngineMath
 			return sb.AppendFormat("{0}: {1}:{2}:{3}", nameof(Vector3<TMathType>), x, y, z).ToString();
 		}
 
-		/*
-		/// <summary>
-		///   <para>Rotates a vector current towards target.</para>
-		/// </summary>
-		/// <param name="current"></param>
-		/// <param name="target"></param>
-		/// <param name="maxRadiansDelta"></param>
-		/// <param name="maxMagnitudeDelta"></param>
-		public static Vector3<TMathType> RotateTowards(Vector3<TMathType> current, Vector3<TMathType> target, float maxRadiansDelta, float maxMagnitudeDelta)
-		{
-			return Vector3<TMathType>.INTERNAL_CALL_RotateTowards(ref current, ref target, maxRadiansDelta, maxMagnitudeDelta);
-		}
-		/// <summary>
-		///   <para>Spherically interpolates between two vectors.</para>
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		/// <param name="t"></param>
-		public static Vector3<TMathType> Slerp(Vector3<TMathType> a, Vector3<TMathType> b, float t)
-		{
-			return Vector3<TMathType>.INTERNAL_CALL_Slerp(ref a, ref b, t);
-		}
-		/// <summary>
-		///   <para>Spherically interpolates between two vectors.</para>
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		/// <param name="t"></param>
-		public static Vector3<TMathType> SlerpUnclamped(Vector3<TMathType> a, Vector3<TMathType> b, float t)
-		{
-			return Vector3<TMathType>.INTERNAL_CALL_SlerpUnclamped(ref a, ref b, t);
-		}
-		/*public static Vector3<TMathType> SmoothDamp(Vector3<TMathType> current, Vector3<TMathType> target, ref Vector3<TMathType> currentVelocity, float smoothTime, [DefaultValue("Mathf.Infinity")] float maxSpeed, [DefaultValue("Time.deltaTime")] float deltaTime)
-		{
-			smoothTime = Mathf.Max(0.0001f, smoothTime);
-			float single = 2f / smoothTime;
-			float single1 = single * deltaTime;
-			float single2 = 1f / (1f + single1 + 0.48f * single1 * single1 + 0.235f * single1 * single1 * single1);
-			Vector3<TMathType> Vector3<TMathType> = current - target;
-			Vector3<TMathType> Vector3<TMathType>1 = target;
-			Vector3<TMathType> = Vector3<TMathType>.ClampMagnitude(Vector3<TMathType>, maxSpeed * smoothTime);
-			target = current - Vector3<TMathType>;
-			Vector3<TMathType> Vector3<TMathType>2 = (currentVelocity + (single * Vector3<TMathType>)) * deltaTime;
-			currentVelocity = (currentVelocity - (single * Vector3<TMathType>2)) * single2;
-			Vector3<TMathType> Vector3<TMathType>3 = target + ((Vector3<TMathType> + Vector3<TMathType>2) * single2);
-			if (Vector3<TMathType>.Dot(Vector3<TMathType>1 - current, Vector3<TMathType>3 - Vector3<TMathType>1) > 0f)
-			{
-				Vector3<TMathType>3 = Vector3<TMathType>1;
-				currentVelocity = (Vector3<TMathType>3 - Vector3<TMathType>1) / deltaTime;
-			}
-			return Vector3<TMathType>3;
-		}
-		/// <summary>
+		//TODO: Implement these methods.
+		/*/// <summary>
 		///   <para>Moves a point current in a straight line towards a target point.</para>
 		/// </summary>
 		/// <param name="current"></param>
@@ -457,7 +406,7 @@ namespace Testity.EngineMath
 			{
 				return target;
 			}
-			return current + ((Vector3<TMathType> / single) * maxDistanceDelta);
+			return current + ((Vector3 < TMathType > / single) * maxDistanceDelta);
 		}
 		/// <summary>
 		///   <para>Returns the angle in degrees between from and to.</para>
@@ -468,34 +417,7 @@ namespace Testity.EngineMath
 		{
 			return Mathf.Acos(Mathf.Clamp(Vector3<TMathType>.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
 		}
-		[Obsolete("Use Vector3<TMathType>.Angle instead. AngleBetween uses radians instead of degrees and was deprecated for this reason")]
-		public static float AngleBetween(Vector3<TMathType> from, Vector3<TMathType> to)
-		{
-			return Mathf.Acos(Mathf.Clamp(Vector3<TMathType>.Dot(from.normalized, to.normalized), -1f, 1f));
-		}
-		[Obsolete("Use Vector3<TMathType>.ProjectOnPlane instead.")]
-		public static Vector3<TMathType> Exclude(Vector3<TMathType> excludeThis, Vector3<TMathType> fromThat)
-		{
-			return fromThat - Vector3<TMathType>.Project(fromThat, excludeThis);
-		}
-		[WrapperlessIcall]
-		private static extern void INTERNAL_CALL_Internal_OrthoNormalize2(ref Vector3<TMathType> a, ref Vector3<TMathType> b);
-		[WrapperlessIcall]
-		private static extern void INTERNAL_CALL_Internal_OrthoNormalize3(ref Vector3<TMathType> a, ref Vector3<TMathType> b, ref Vector3<TMathType> c);
-		[WrapperlessIcall]
-		private static extern Vector3<TMathType> INTERNAL_CALL_RotateTowards(ref Vector3<TMathType> current, ref Vector3<TMathType> target, float maxRadiansDelta, float maxMagnitudeDelta);
-		[WrapperlessIcall]
-		private static extern Vector3<TMathType> INTERNAL_CALL_Slerp(ref Vector3<TMathType> a, ref Vector3<TMathType> b, float t);
-		[WrapperlessIcall]
-		private static extern Vector3<TMathType> INTERNAL_CALL_SlerpUnclamped(ref Vector3<TMathType> a, ref Vector3<TMathType> b, float t);
-		private static void Internal_OrthoNormalize2(ref Vector3<TMathType> a, ref Vector3<TMathType> b)
-		{
-			Vector3<TMathType>.INTERNAL_CALL_Internal_OrthoNormalize2(ref a, ref b);
-		}
-		private static void Internal_OrthoNormalize3(ref Vector3<TMathType> a, ref Vector3<TMathType> b, ref Vector3<TMathType> c)
-		{
-			Vector3<TMathType>.INTERNAL_CALL_Internal_OrthoNormalize3(ref a, ref b, ref c);
-		}
+		
 		/// <summary>
 		///   <para>Linearly interpolates between two vectors.</para>
 		/// </summary>
@@ -516,14 +438,6 @@ namespace Testity.EngineMath
 		public static Vector3<TMathType> LerpUnclamped(Vector3<TMathType> a, Vector3<TMathType> b, float t)
 		{
 			return new Vector3<TMathType>(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
-		}
-		public static void OrthoNormalize(ref Vector3<TMathType> normal, ref Vector3<TMathType> tangent)
-		{
-			Vector3<TMathType>.Internal_OrthoNormalize2(ref normal, ref tangent);
-		}
-		public static void OrthoNormalize(ref Vector3<TMathType> normal, ref Vector3<TMathType> tangent, ref Vector3<TMathType> binormal)
-		{
-			Vector3<TMathType>.Internal_OrthoNormalize3(ref normal, ref tangent, ref binormal);
 		}*/
 	}
 }
