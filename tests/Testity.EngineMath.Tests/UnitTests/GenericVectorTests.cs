@@ -215,17 +215,11 @@ namespace Testity.EngineMath.UnitTests
 
 			//act
 			//tests * operator for dot mutiplication
-			TMathType resultOne = vec3One * vec3Two;
-			TMathType resultTwo = Vector3<TMathType>.Dot(vec3Two, vec3One);
-
-			//tests static method for dot multiplication.
-			TMathType resultThree = (TMathType)typeof(Vector3Extensions).GetMethod("Dot", new Type[] { typeof(Vector3<TMathType>), typeof(Vector3<TMathType>) }, null)
+			TMathType resultOne = (TMathType)typeof(Vector3Extensions).GetMethod("Dot", new Type[] { typeof(Vector3<TMathType>), typeof(Vector3<TMathType>) }, null)
 				.Invoke(null, new object[] { vec3One, vec3Two });
 
 			//assert
-			Assert.AreEqual(resultOne, resultTwo);
-			Assert.AreEqual(dotResult, resultTwo);
-			Assert.AreEqual(resultThree, dotResult, (dynamic)Vector3<TMathType>.kEpsilon);
+			Assert.AreEqual(dotResult, resultOne, (dynamic)Vector3<TMathType>.kEpsilon);
 		}
 
 		

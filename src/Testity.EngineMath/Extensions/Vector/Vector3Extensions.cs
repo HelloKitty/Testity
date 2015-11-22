@@ -18,23 +18,6 @@ namespace Testity.EngineMath
 		#endregion
 
 		#region Normalization
-		//TODO: Post and ask Marc Gravell why generic math loses precision
-		//There is a slight loss of precision with generic math.
-		/*private static Vector3<TMathType> NormalizeInternalGeneric<TMathType>(Vector3<TMathType> value)
-			where TMathType : struct, IEquatable<TMathType>, IComparable<TMathType>
-		{
-			//This is valid because users can't expect to normalize a vector of ints and such.
-			//If they're Type permits they can normalize.
-			TMathType single = Vector3<TMathType>.Magnitude<TMathType>(value);
-
-			if (Operator.LessThanOrEqual(single, Vector3<TMathType>.kEpsilon))
-			{
-				return Vector3<TMathType>.zero;
-			}
-
-			return value * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
-		}*/
-
 		/// <summary>
 		///   <para>Normalizes the vector to the best precision allowed by <see cref="Vector3{Double}"/>.</para>
 		/// Only some Vector types have valid normalizations
@@ -46,7 +29,7 @@ namespace Testity.EngineMath
 			if (single <= Vector3<double>.kEpsilon)
 				return Vector3<double>.zero;
 			else
-				return vec * (1 / single);
+				return vec * (1.0d / single);
 		}
 
 		/// <summary>
@@ -60,7 +43,7 @@ namespace Testity.EngineMath
 			if (single <= Vector3<float>.kEpsilon)
 				return Vector3<float>.zero;
 			else
-				return vec * (1 / single);
+				return vec * (1.0f / single);
 		}
 		#endregion
 

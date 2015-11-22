@@ -268,17 +268,6 @@ namespace Testity.EngineMath
 			return new Vector3<TMathType>(MathT.Min(lhs.x, rhs.x), MathT.Min(lhs.y, rhs.y), MathT.Min(lhs.z, rhs.z));
 		}
 
-		/// <summary>
-		///   <para>Dot Product of two vectors.</para>
-		/// </summary>
-		/// <param name="lhs"></param>
-		/// <param name="rhs"></param>
-		public static TMathType Dot(Vector3<TMathType> lhs, Vector3<TMathType> rhs)
-		{
-			TMathType firstTerm = Operator.Add(Operator.Multiply(lhs.x, rhs.x), Operator.Multiply(lhs.y, rhs.y));
-			return Operator.Add(firstTerm, Operator.Multiply(lhs.z, rhs.z));
-		}
-
 		#region Operator Overloads
 		public static Vector3<TMathType> operator +(Vector3<TMathType> a, Vector3<TMathType> b)
 		{
@@ -327,17 +316,6 @@ namespace Testity.EngineMath
 		}
 
 		/// <summary>
-		/// Preformance dot product multiplication between two vectors.
-		/// </summary>
-		/// <param name="a">Vector one.</param>
-		/// <param name="b">Vector two.</param>
-		/// <returns></returns>
-		public static TMathType operator *(Vector3<TMathType> a, Vector3<TMathType> b)
-		{
-			return Dot(a, b);
-		}
-
-		/// <summary>
 		/// Preforms component-wise vector subtraction.
 		/// </summary>
 		/// <param name="a">Vector one.</param>
@@ -358,20 +336,6 @@ namespace Testity.EngineMath
 			return new Vector3<TMathType>(Operator.Negate(a.x), Operator.Negate(a.y), Operator.Negate(a.z));
 		}
 		#endregion
-
-		//Do not make an extension method. Closed for ints. It will work.
-		/// <summary>
-		///   <para>Reflects a vector off the plane defined by a normal.</para>
-		/// </summary>
-		/// <param name="inDirection"></param>
-		/// <param name="inNormal"></param>
-		public static Vector3<TMathType> Reflect(Vector3<TMathType> inDirection, Vector3<TMathType> inNormal)
-		{
-			//In case of ints it is -2 * some int (which is int). Dot product is closed under ints so this is valid for ints.
-			TMathType twoTimesDotNDir = Operator.Multiply(Operator.Negate(Operator.Add(Vector3<TMathType>.OneValue, Vector3<TMathType>.OneValue)), Vector3<TMathType>.Dot(inNormal, inDirection));
-			//this operation is also closed for ints. We do not need to make an extension method.
-			return (twoTimesDotNDir * inNormal) + inDirection;
-		}
 
 		/// <summary>
 		///   <para>Set x, y and z components of an existing Vector3<TMathType>.</para>
