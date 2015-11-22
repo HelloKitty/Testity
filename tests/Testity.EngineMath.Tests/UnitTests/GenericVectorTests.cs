@@ -444,7 +444,7 @@ namespace Testity.EngineMath.UnitTests
 				Assert.AreEqual(Operator<TMathType>.Zero, nVec3.Magnitude<TMathType>()); //if the vector is too small we expect it to become the 0 vector.
         }
 
-		/*[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
 		//Don't expect these odd values to compare properly. They represent non-value value types essentially.
 		//[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		//[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
@@ -537,7 +537,7 @@ namespace Testity.EngineMath.UnitTests
 			for(int index = 0; index < 3; index++)
 				if (!Operator.Equal(vec3One[index], vec3Two[index]))
 					Assert.AreNotEqual((dynamic)Math.Min((dynamic)vec3One[index], (dynamic)vec3Two[index]), maxVec3[index]); //check that the max value isn't equal to the min.x
-		}*/
+		}
 
 		private static TMathType AddAll<TMathType>(IEnumerable<TMathType> vals)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
