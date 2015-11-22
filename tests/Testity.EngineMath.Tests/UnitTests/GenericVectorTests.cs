@@ -180,6 +180,7 @@ namespace Testity.EngineMath.UnitTests
 
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type multiplcation dot operator.", TestOf = typeof(Vector3<>))]
+		[TestCase(float.NegativeInfinity, float.PositiveInfinity, float.NaN)]
 		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
 		[TestCase(int.MaxValue, int.MinValue, -0)]
@@ -203,27 +204,28 @@ namespace Testity.EngineMath.UnitTests
 			//arrange
 			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
 			Vector3<TMathType> vec3Two = new Vector3<TMathType>(c, a, b);
-			List<TMathType> manualDotProduct = new List<TMathType>(3);
+			List<dynamic> manualDotProduct = new List<dynamic>(3);
 
 			//manually compute the dot product
-			manualDotProduct.Add(Operator.Multiply(a, c));
-			manualDotProduct.Add(Operator.Multiply(b, a));
-			manualDotProduct.Add(Operator.Multiply(c, b));
+			manualDotProduct.Add((dynamic)a * (dynamic)c);
+			manualDotProduct.Add((dynamic)b * (dynamic)a);
+			manualDotProduct.Add((dynamic)c * (dynamic)b);
 
-			TMathType dotResult = AddAll(manualDotProduct);
+			TMathType dotResult = (dynamic)a * (dynamic)c + (dynamic)b * (dynamic)a + (dynamic)c * (dynamic)b;
 
 			//act
 			//tests * operator for dot mutiplication
 			TMathType resultOne = vec3One * vec3Two;
-			TMathType resultTwo = vec3Two * vec3One;
+			TMathType resultTwo = Vector3<TMathType>.Dot(vec3Two, vec3One);
 
 			//tests static method for dot multiplication.
-			TMathType resultThree = Vector3<TMathType>.Dot(vec3One, vec3Two);
+			TMathType resultThree = (TMathType)typeof(Vector3Extensions).GetMethod("Dot", new Type[] { typeof(Vector3<TMathType>), typeof(Vector3<TMathType>) }, null)
+				.Invoke(null, new object[] { vec3One, vec3Two });
 
 			//assert
 			Assert.AreEqual(resultOne, resultTwo);
-			Assert.AreEqual(dotResult, resultOne);
-			Assert.AreEqual(resultThree, dotResult);
+			Assert.AreEqual(dotResult, resultTwo);
+			Assert.AreEqual(resultThree, dotResult, (dynamic)Vector3<TMathType>.kEpsilon);
 		}
 
 		
@@ -367,14 +369,16 @@ namespace Testity.EngineMath.UnitTests
 
 			//act
 			//test both static and instance computations
-			TMathType result = vec3.SqrMagnitude;
-			TMathType resultTwo = Vector3<TMathType>.SquarMagnitude(vec3);
-			double resultSquared = Vector3<TMathType>.Magnitude<double>(vec3);
+			dynamic result = (dynamic)GrabExtensionMethod<Vector3<TMathType>>(typeof(Vector3Extensions), "SqrMagnitude").Invoke(null, new object[] { vec3 });
+			dynamic resultSquared = (dynamic)GrabExtensionMethod<Vector3<TMathType>>(typeof(Vector3Extensions), "Magnitude").Invoke(null, new object[] { vec3 });
+			dynamic computedSqr = Math.Sqrt((dynamic)expectedResult);
 
 			//assert
-			Assert.IsTrue(result.Equals(resultTwo));
-			Assert.AreEqual(result, expectedResult, "Failed to compute magnitude with {1}:{2}:{3}.", nameof(Vector3<TMathType>.SquarMagnitude), a, b, c);
-			Assert.AreEqual(Math.Sqrt((double)Convert.ChangeType(expectedResult, typeof(double))), resultSquared, "Failed to compute magnitude with {1}:{2}:{3}.", nameof(Vector3<TMathType>.SquarMagnitude), a, b, c);
+			Assert.AreEqual(result, expectedResult, "Failed to compute magnitude with {0}:{1}:{2}.", a, b, c);
+			if(computedSqr.GetType() == resultSquared.GetType())
+				Assert.AreEqual(Math.Sqrt((dynamic)expectedResult), resultSquared, "Failed to compute magnitude with {0}:{1}:{2}.", a, b, c);
+			else
+				Assert.AreEqual(Convert.ChangeType(Math.Sqrt((dynamic)expectedResult), resultSquared.GetType()), resultSquared, "Failed to compute magnitude with {0}:{1}:{2}.", a, b, c);
 		}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> equivalence methods.", TestOf = typeof(Vector3<>))]
@@ -404,10 +408,12 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(vec3One, vec3Two, 
 				"Equivalence for {0} is not working for values {0}:{1}:{2}", nameof(Vector3<TMathType>), a, b, c);
 
+#pragma warning disable CS1718 // Comparison made to same variable
 			Assert.IsTrue(vec3Two == vec3Two);
 			Assert.IsFalse(vec3Two != vec3Two);
+#pragma warning restore CS1718 // Comparison made to same variable
 
-            Assert.IsTrue(vec3Two == vec3One);
+			Assert.IsTrue(vec3Two == vec3One);
 			Assert.IsFalse(vec3Two != vec3One);
 
 			Assert.IsTrue(vec3Two.Equals(vec3One));
@@ -486,13 +492,13 @@ namespace Testity.EngineMath.UnitTests
 
 			//assert
 			//Asserts that 1 is equal to the magnitude
-			if (Operator<TMathType>.GreaterThan(vec3.SqrMagnitude, Vector3<TMathType>.kEpsilon))
-			{
-				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), nVec3.SqrMagnitude,
+			if (Operator<TMathType>.GreaterThan(InvokeVector3ExtensionMethod("SqrMagnitude", vec3), Vector3<TMathType>.kEpsilon))
+            {
+				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), InvokeVector3ExtensionMethod("SqrMagnitude", nVec3),
 					(dynamic)Vector3<TMathType>.kEpsilon);
 			}
 			else
-				Assert.AreEqual(Operator<TMathType>.Zero, nVec3.SqrMagnitude); //if the vector was too small the new magnitude is 0.
+				Assert.AreEqual(Operator<TMathType>.Zero, InvokeVector3ExtensionMethod("SqrMagnitude", nVec3)); //if the vector was too small the new magnitude is 0.
 		}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
@@ -613,7 +619,8 @@ namespace Testity.EngineMath.UnitTests
 			dynamic[] vals = new dynamic[] { a, b, c };
 
 			//act
-			vec3.Scale(vec3);
+			vec3 = (dynamic)typeof(Vector3Extensions).GetMethod("Scale", new Type[] { typeof(Vector3<TMathType>), typeof(Vector3<TMathType>) })
+				.Invoke(null, new object[] { vec3, vec3 });
 
 			//assert
 			for (int i = 0; i < 3; i++)
@@ -639,27 +646,32 @@ namespace Testity.EngineMath.UnitTests
 			//arrange
 			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
 			Vector3<TMathType> vec3Two = new Vector3<TMathType>(a, c, a);
+			MethodInfo distanceMethodInfo = typeof(Vector3Extensions).GetMethod("Distance", new Type[] { typeof(Vector3<TMathType>), typeof(Vector3<TMathType>) }, null);
 
 			//act
-			double distanceZero = Vector3<TMathType>.Distance<double>(vec3One, vec3One); //should be 0
-			double distance = Vector3<TMathType>.Distance<double>(vec3One, vec3Two);
+			double distanceZero = (dynamic)distanceMethodInfo.Invoke(null, new object[] { vec3One, vec3One }); //should be 0
+			double distance = (dynamic)distanceMethodInfo.Invoke(null, new object[] { vec3One, vec3Two });
 
 			//assert
 			Assert.AreEqual(distanceZero, 0d);
-			Assert.AreEqual(distance, (vec3Two - vec3One).Magnitude<double>(), (dynamic)Vector3<TMathType>.kEpsilon);
+			Assert.AreEqual(distance, InvokeVector3ExtensionMethod("Magnitude", (vec3Two - vec3One)), (dynamic)Vector3<TMathType>.kEpsilon);
 		}
 
-
-		private static TMathType AddAll<TMathType>(IEnumerable<TMathType> vals)
-			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		private static dynamic InvokeVector3ExtensionMethod<TParameterType>(string methodName, TParameterType objVal)
 		{
-			return vals.Aggregate(Operator<TMathType>.Zero, (a, b) => Operator.Add(a, b));
+			return GrabExtensionMethodWithInvoke(typeof(Vector3Extensions), methodName, objVal);
 		}
 
 		private static MethodInfo GrabExtensionMethod<TParameterType>(Type extensionClassType, string methodName)
 		{
 			return extensionClassType
 				.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(TParameterType) }, null);
+		}
+
+		private static dynamic GrabExtensionMethodWithInvoke<TParameterType>(Type extensionClassType, string methodName, TParameterType objVal)
+		{
+			return extensionClassType
+				.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(TParameterType) }, null).Invoke(null, new object[] { objVal });
 		}
 	}
 }
