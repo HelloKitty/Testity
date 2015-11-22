@@ -14,7 +14,7 @@ namespace Testity.EngineMath
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Vector3.html
 	/// </summary>
 	/// <typeparam name="TMathType">Value type of the vector that must overload math operators (Ex. int, float, double).</typeparam>
-	public struct Vector3<TMathType> : IEquatable<Vector3<TMathType>>, IComparable<Vector3<TMathType>>
+	public struct Vector3<TMathType> : IEquatable<Vector3<TMathType>>
 		where TMathType : struct, IEquatable<TMathType>, IComparable<TMathType>
     {
 		public static TMathType kEpsilon = GenerateKEpslion();
@@ -231,17 +231,6 @@ namespace Testity.EngineMath
 		}
 
 		/// <summary>
-		///   <para>Returns this vector with a magnitude of 1 (Read Only).</para>
-		/// </summary>
-		public Vector3<TMathType> normalized
-		{
-			get
-			{
-				return Vector3<TMathType>.Normalize(this);
-			}
-		}
-
-		/// <summary>
 		///   <para>Creates a new vector with given x, y, z components.</para>
 		/// </summary>
 		/// <param name="x"></param>
@@ -266,36 +255,6 @@ namespace Testity.EngineMath
         }
 
 		/// <summary>
-		///   <para>Returns a copy of vector with its magnitude clamped to maxLength.</para>
-		/// </summary>
-		/// <param name="vector"></param>
-		/// <param name="maxLength"></param>
-		public static Vector3<TMathType> ClampMagnitude(Vector3<TMathType> vector, TMathType maxLength)
-		{
-			//TODO: Check if this type will provide value results.
-			if (Operator.LessThanOrEqual(vector.SqrMagnitude, Operator.Multiply(maxLength, maxLength)))
-			{
-				return vector;
-			}
-
-			return vector.normalized * maxLength;
-		}
-
-		/// <summary>
-		///   <para>Cross Product of two vectors.</para>
-		/// </summary>
-		/// <param name="lhs"></param>
-		/// <param name="rhs"></param>
-		public static Vector3<TMathType> Cross(Vector3<TMathType> lhs, Vector3<TMathType> rhs)
-		{
-			TMathType newX = Operator.Subtract(Operator.Multiply(lhs.y, rhs.z), Operator.Multiply(lhs.z, rhs.y));
-			TMathType newY = Operator.Subtract(Operator.Multiply(lhs.z, rhs.x), Operator.Multiply(lhs.x, rhs.z));
-			TMathType newZ = Operator.Subtract(Operator.Multiply(lhs.x, rhs.y), Operator.Multiply(lhs.y, rhs.x));
-
-			return new Vector3<TMathType>(newX, newY, newZ);
-		}
-
-		/// <summary>
 		///   <para>Returns the distance between a and b.</para>
 		/// </summary>
 		/// <param name="a"></param>
@@ -303,8 +262,19 @@ namespace Testity.EngineMath
 		public static TRequestedValueType Distance<TRequestedValueType>(Vector3<TMathType> a, Vector3<TMathType> b)
 			where TRequestedValueType : struct, IEquatable<TRequestedValueType>, IComparable<TRequestedValueType>
 		{
-			Vector3<TMathType> vec3 = new Vector3<TMathType>(Operator.Subtract(a.x, b.x), Operator.Subtract(a.x, b.x), Operator.Subtract(a.z, b.z));
-			return vec3.Magnitude<TRequestedValueType>();
+				Vector3<TMathType> vec3 = new Vector3<TMathType>(Operator.Subtract(a.x, b.x), Operator.Subtract(a.y, b.y), Operator.Subtract(a.z, b.z));
+				return vec3.Magnitude<TRequestedValueType>(); //TODO: Make this faster if same type.
+
+			//Not needed. It's within kEplison
+			/*//else
+			{
+				//we check the above type so we can provid more accurate computations. This comes with a cost though which is reasonable
+				Vector3<TRequestedValueType> vec3 = new Vector3<TRequestedValueType>(Operator.Subtract(Operator.Convert<TMathType, TRequestedValueType>(a.x), Operator.Convert<TMathType, TRequestedValueType>(b.x)),
+					Operator.Subtract(Operator.Convert<TMathType, TRequestedValueType>(a.y), Operator.Convert<TMathType, TRequestedValueType>(b.y)), 
+					Operator.Subtract(Operator.Convert<TMathType, TRequestedValueType>(a.z), Operator.Convert<TMathType, TRequestedValueType>(b.z)));
+
+				return vec3.Magnitude<TRequestedValueType>();
+			}*/
 		}
 
 		/// <summary>
@@ -367,62 +337,12 @@ namespace Testity.EngineMath
 			return new Vector3<TMathType>(MathT.Min(lhs.x, rhs.x), MathT.Min(lhs.y, rhs.y), MathT.Min(lhs.z, rhs.z));
 		}
 
-		/// <summary>
-		///   <para>Normalizes the vector to the best precision allowed by <see cref="TMathType"/>.</para>
-		/// (Ex. if int won't normalize as the result is a vector of ints)
-		/// </summary>
-		/// <param name="value">Vector to normalize.</param>
-		public static Vector3<TMathType> Normalize(Vector3<TMathType> value)
-		{
-			//This is valid because users can't expect to normalize a vector of ints and such.
-			//If they're Type permits they can normalize.
-			TMathType single = Vector3<TMathType>.Magnitude<TMathType>(value);
-
-			if (Operator.LessThanOrEqual(single, kEpsilon))
-			{
-				return Vector3<TMathType>.zero;
-			}
-
-			return value * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
-		}
-
-		/// <summary>
-		///   <para>Normalizes the vector to the best precision allowed by <see cref="TMathType"/>.</para>
-		/// (Ex. if int won't normalize as the result is a vector of ints)
-		/// </summary>
-		public void Normalize()
-		{
-			//This is valid because users can't expect to normalize a vector of ints and such.
-			//If they're Type permits they can normalize.
-			TMathType single = Vector3<TMathType>.Magnitude<TMathType>(this);
-
-			if (Operator.LessThanOrEqual(single, kEpsilon))
-			{
-				this = Vector3<TMathType>.zero;
-			}
-			else
-			{
-				this = this * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
-			}
-		}
-
 		#region Operator Overloads
 		public static Vector3<TMathType> operator +(Vector3<TMathType> a, Vector3<TMathType> b)
 		{
 			return new Vector3<TMathType>(Operator.Add(a.x, b.x), Operator.Add(a.y, b.y), 
 				Operator.Add(a.z, b.z));
 		}
-
-		/*/// <summary>
-		/// Scales the components of the vector by 1/d.
-		/// </summary>
-		/// <param name="a">Vector to scale.</param>
-		/// <param name="d">Scale</param>
-		/// <returns></returns>
-		public static Vector3<TMathType> operator /(Vector3<TMathType> a, TMathType d)
-		{
-			return new Vector3<TMathType>(Operator.Divide(a.x, d), Operator.Divide(a.y, d), Operator.Divide(a.z, d));
-		}*/
 
 		public static bool operator ==(Vector3<TMathType> lhs, Vector3<TMathType> rhs)
 		{
@@ -497,33 +417,13 @@ namespace Testity.EngineMath
 		}
 		#endregion
 
-		/// <summary>
-		///   <para>Projects a vector onto another vector.</para>
-		/// </summary>
-		/// <param name="vector"></param>
-		/// <param name="onNormal"></param>
-		public static Vector3<TMathType> Project(Vector3<TMathType> vector, Vector3<TMathType> onNormal)
-		{
-			TMathType single = Vector3<TMathType>.Dot(onNormal, onNormal);
+		//This projection block must be made an extension method. It is not possible
+		//to support this operation for integer value types.
+		/*public static Vector3<TMathType> Project(Vector3<TMathType> vector, Vector3<TMathType> onNormal)
 
-			if (Operator.LessThanOrEqual(single, kEpsilon))
-			{
-				return Vector3<TMathType>.zero;
-			}
+		public static Vector3<TMathType> ProjectOnPlane(Vector3<TMathType> vector, Vector3<TMathType> planeNormal)*/
 
-			return (onNormal * Vector3<TMathType>.Dot(vector, onNormal)) * (Operator.Convert<double, TMathType>(Operator.DivideAlternative(1d, single)));
-		}
-
-		/// <summary>
-		///   <para>Projects a vector onto a plane defined by a normal orthogonal to the plane.</para>
-		/// </summary>
-		/// <param name="vector"></param>
-		/// <param name="planeNormal"></param>
-		public static Vector3<TMathType> ProjectOnPlane(Vector3<TMathType> vector, Vector3<TMathType> planeNormal)
-		{
-			return vector - Vector3<TMathType>.Project(vector, planeNormal);
-		}
-
+		//Do not make an extension method. Closed for ints. It will work.
 		/// <summary>
 		///   <para>Reflects a vector off the plane defined by a normal.</para>
 		/// </summary>
@@ -531,7 +431,9 @@ namespace Testity.EngineMath
 		/// <param name="inNormal"></param>
 		public static Vector3<TMathType> Reflect(Vector3<TMathType> inDirection, Vector3<TMathType> inNormal)
 		{
+			//In case of ints it is -2 * some int (which is int). Dot product is closed under ints so this is valid for ints.
 			TMathType twoTimesDotNDir = Operator.Multiply(Operator.Negate(Operator.Add(Vector3<TMathType>.OneValue, Vector3<TMathType>.OneValue)), Vector3<TMathType>.Dot(inNormal, inDirection));
+			//this operation is also closed for ints. We do not need to make an extension method.
 			return (twoTimesDotNDir * inNormal) + inDirection;
 		}
 
@@ -545,18 +447,35 @@ namespace Testity.EngineMath
             return new Vector3<TMathType>(Operator.Multiply(a.x, b.x), Operator.Multiply(a.y, b.y), Operator.Multiply(a.z, b.z));
 		}
 
+		//This is a valid operation for all types, well most, such as int, float and double.
+		//We don't need to extract it since multipliation and subtraction is closed for ints which
+		//is the biggest worry and most difficult popular type to support
+		/// <summary>
+		///   <para>Cross Product of two vectors.</para>
+		/// </summary>
+		/// <param name="lhs"></param>
+		/// <param name="rhs"></param>
+		public static Vector3<TMathType> Cross(Vector3<TMathType> lhs, Vector3<TMathType> rhs)
+		{
+			TMathType newX = Operator.Subtract(Operator.Multiply(lhs.y, rhs.z), Operator.Multiply(lhs.z, rhs.y));
+			TMathType newY = Operator.Subtract(Operator.Multiply(lhs.z, rhs.x), Operator.Multiply(lhs.x, rhs.z));
+			TMathType newZ = Operator.Subtract(Operator.Multiply(lhs.x, rhs.y), Operator.Multiply(lhs.y, rhs.x));
+
+			return new Vector3<TMathType>(newX, newY, newZ);
+		}
+
 		/// <summary>
 		///   <para>Multiplies every component of this vector by the same component of scale.</para>
 		/// </summary>
 		/// <param name="scale"></param>
 		public void Scale(Vector3<TMathType> scale)
 		{
-			Vector3<TMathType> vector3 = this;
-			vector3.x = Operator.Multiply(vector3.x, scale.x);
-			Vector3<TMathType> vector31 = this;
-			vector31.y = Operator.Multiply(vector31.y, scale.y);
-			Vector3<TMathType> vector32 = this;
-			vector32.z = Operator.Multiply(vector32.z, scale.z);
+			//Unity3D produced some odd code in the decompilation. It was not correct.
+			var vec3 = Scale(this, scale);
+
+			x = vec3.x;
+			y = vec3.y;
+			z = vec3.z;
 		}
 
 		/// <summary>
@@ -575,17 +494,6 @@ namespace Testity.EngineMath
 		public static TMathType SquarMagnitude(Vector3<TMathType> a)
 		{
 			return a.SqrMagnitude;
-		}
-
-		public int CompareTo(Vector3<TMathType> other)
-		{
-			TMathType otherMag = other.SqrMagnitude;
-			TMathType thisMag = SqrMagnitude;
-
-			if (otherMag.Equals(thisMag))
-				return 0;
-			else
-				return Operator.GreaterThan(thisMag, otherMag) ? 1 : -1;
 		}
 
 		public override string ToString()

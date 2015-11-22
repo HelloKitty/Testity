@@ -13,24 +13,15 @@ namespace Testity.EngineMath.UnitTests
 	public static class GenericVectorTests
 	{
 		[Test]
-		public static void Test_Blah()
-		{
-
-		}
-
-		[Test]
-		[TestCase(1)]
-		public static void Test_Blah(int i)
-		{
-
-		}
-
-		[Test]
-		[TestCase(1)]
-		public static void Test_Blah_Generic<TMathType>(TMathType i)
+		[TestCase(1, typeof(int))]
+		[TestCase(1.0f, typeof(float))]
+		[TestCase(1.0d, typeof(double))]
+		[TestCase('a', typeof(char))]
+		[TestCase((byte)55, typeof(byte))]
+		public static void Test_NUnit_AbilityTo_Infer_Type<TMathType>(TMathType i, Type expectedType)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
-
+			Assert.AreEqual(typeof(TMathType), expectedType, "NUnit failed to infer Type: {0}", expectedType);
 		}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type intialization/ctor.", TestOf = typeof(Vector3<>))]
@@ -59,12 +50,19 @@ namespace Testity.EngineMath.UnitTests
 			Vector3<TMathType> vec3Two = new Vector3<TMathType>();
 			Vector3<TMathType> vec3Three = new Vector3<TMathType>(a, b);
 			Vector3<TMathType> vec3Four = new Vector3<TMathType>();
+			Vector3<TMathType> vec3Five = new Vector3<TMathType>();
+
 			vec3Two.Set(vec3.x, vec3.y, vec3.z);
+			//four
 			vec3Four.x = a;
 			vec3Four.y = b;
 			vec3Four.z = c;
+			//five
+			vec3Five[0] = a;
+			vec3Five[1] = b;
+			vec3Five[2] = c;
 
-			var vecCollection = new List<Vector3<TMathType>>() { vec3, vec3Two, vec3Four };
+			var vecCollection = new List<Vector3<TMathType>>() { vec3, vec3Two, vec3Four, vec3Five };
 
 			//assert
 			foreach(var v in vecCollection)
@@ -84,6 +82,19 @@ namespace Testity.EngineMath.UnitTests
 			//Don't check z
 			for (int i = 0; i < 2; i++)
 				Assert.AreEqual(vec3[i], vec3Three[i]);
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector3<float> invalid index accessing.", TestOf = typeof(Vector3<float>))]
+		[TestCase(3)]
+		[TestCase(int.MaxValue)]
+		[TestCase(int.MinValue)]
+		[TestCase(-1)]
+		public static void Test_Vector3_Generic_Out_Of_Range_Index(int invalidIndex)
+		{
+			//arrange
+			Vector3<float> vec3 = new Vector3<float>();
+
+			Assert.Throws<IndexOutOfRangeException>(() => { float val = vec3[invalidIndex]; } );
 		}
 
 		
@@ -125,7 +136,49 @@ namespace Testity.EngineMath.UnitTests
 			Assert.AreEqual(Operator.Add(b, a), resultTwo.y);
 		}
 
-		
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type addition operator.", TestOf = typeof(Vector3<>))]
+		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
+		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
+		[TestCase(int.MaxValue, int.MinValue, -0)]
+		[TestCase(float.NegativeInfinity, float.PositiveInfinity, float.NaN)]
+		[TestCase(float.MaxValue, float.MinValue, float.Epsilon)]
+		[TestCase(-5.3f, 6.5f, 7.6f)]
+		[TestCase(5.3f, 6.5f, 7.6f)]
+		[TestCase(1, 3, -4)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3)]
+		[TestCase(-0, 0, 0)]
+		[TestCase(-5.3f, 6.5d, 7.6d)]
+		[TestCase(5.3f, 6.5d, -7.6d)]
+		[TestCase(1d, 3d, -4d)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3d)]
+		[TestCase(0d, 0, 0)]
+		public static void Test_Vector3_Generic_Subtraction<TMathType>(TMathType a, TMathType b, TMathType c) //NUnit can infer best fit type
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = new Vector3<TMathType>(c, a, b);
+
+			//operand pairs
+			IEnumerable<Tuple<TMathType, TMathType>> operandPairs =
+				new List<Tuple<TMathType, TMathType>>()
+				{
+					new Tuple<TMathType, TMathType>(a, c), new Tuple<TMathType, TMathType>(b, a),
+					new Tuple<TMathType, TMathType>(c, b)
+				};
+
+			//act
+			Vector3<TMathType> resultOne = vec3One - vec3Two;
+
+			//assert
+			for (int i = 0; i < 3; i++)
+				Assert.AreEqual(Operator.Subtract(operandPairs.ElementAt(i).Item1, operandPairs.ElementAt(i).Item2), resultOne[i]);
+        }
+
+
+
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector3<TMathType> type multiplcation dot operator.", TestOf = typeof(Vector3<>))]
 		[TestCase(double.NegativeInfinity, double.PositiveInfinity, double.NaN)]
 		[TestCase(double.MaxValue, double.MinValue, double.Epsilon)]
@@ -316,7 +369,7 @@ namespace Testity.EngineMath.UnitTests
 			//test both static and instance computations
 			TMathType result = vec3.SqrMagnitude;
 			TMathType resultTwo = Vector3<TMathType>.SquarMagnitude(vec3);
-			double resultSquared = vec3.Magnitude<double>();
+			double resultSquared = Vector3<TMathType>.Magnitude<double>(vec3);
 
 			//assert
 			Assert.IsTrue(result.Equals(resultTwo));
@@ -425,24 +478,22 @@ namespace Testity.EngineMath.UnitTests
 		{
 			//arrange
 			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
-			Vector3<TMathType> vec3UnNormalized = vec3;
 
 			//act
-			Vector3<TMathType> nVec3 = vec3.normalized;
-			Vector3<TMathType> nVec3Two = Vector3<TMathType>.Normalize(vec3);
-			vec3.Normalize();
+			//Can't directly call extension method. Cast to dynamic for testing purposes only
+            Vector3<TMathType> nVec3 = (Vector3<TMathType>)GrabExtensionMethod<Vector3<TMathType>>(typeof(Vector3Extensions), "Normalized")
+				.Invoke(null, new object[] { vec3 });
 
 			//assert
-			Assert.AreEqual(nVec3, nVec3Two);
-			Assert.AreEqual(nVec3, vec3);
-
-			//Change for case: [TestCase(0.00000001f, 0.00000001f, 0.00000001f, null)] it can return 0 vector which has 0 magnitude.
-			//We had to add an if to test small vector.
-			if (Operator<TMathType>.GreaterThan(vec3UnNormalized.Magnitude<TMathType>(), Vector3<TMathType>.kEpsilon))
-				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), Operator.Convert<TMathType, double>(nVec3.Magnitude()), Operator.Convert<TMathType, double>(Operator.Convert<double, TMathType>(1E-05f)));
+			//Asserts that 1 is equal to the magnitude
+			if (Operator<TMathType>.GreaterThan(vec3.SqrMagnitude, Vector3<TMathType>.kEpsilon))
+			{
+				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), nVec3.SqrMagnitude,
+					(dynamic)Vector3<TMathType>.kEpsilon);
+			}
 			else
-				Assert.AreEqual(Operator<TMathType>.Zero, nVec3.Magnitude<TMathType>()); //if the vector is too small we expect it to become the 0 vector.
-        }
+				Assert.AreEqual(Operator<TMathType>.Zero, nVec3.SqrMagnitude); //if the vector was too small the new magnitude is 0.
+		}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> min method.", TestOf = typeof(Vector3<>))]
 		//Don't expect these odd values to compare properly. They represent non-value value types essentially.
@@ -539,10 +590,76 @@ namespace Testity.EngineMath.UnitTests
 					Assert.AreNotEqual((dynamic)Math.Min((dynamic)vec3One[index], (dynamic)vec3Two[index]), maxVec3[index]); //check that the max value isn't equal to the min.x
 		}
 
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> scaling methods.", TestOf = typeof(Vector3<>))]
+		[TestCase(-5.3f, 6.5f, 7.6f)]
+		[TestCase(5.3f, 6.5f, 7.6f)]
+		[TestCase(1, 3, -4)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3)]
+		[TestCase(-0, 0, 0)]
+		[TestCase(-5.3f, 6.5d, 7.6d)]
+		[TestCase(5.3f, 6.5d, -7.6d)]
+		[TestCase(1d, 3d, -4d)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3d)]
+		[TestCase(0d, 0, 0)]
+		//[TestCase((byte)5, (byte)7, (byte)255)] //byte cannot be scaled. Doesn't implement * operator for some reason
+		//[TestCase('a', '6', '&')] //char cannot be scaled
+		public static void Test_Vector3_Generic_Scales<TMathType>(TMathType a, TMathType b, TMathType c)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3 = new Vector3<TMathType>(a, b, c);
+			dynamic[] vals = new dynamic[] { a, b, c };
+
+			//act
+			vec3.Scale(vec3);
+
+			//assert
+			for (int i = 0; i < 3; i++)
+				Assert.AreEqual(vals[i] * vals[i], vec3[i]);
+        }
+
+		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> distance methods.", TestOf = typeof(Vector3<>))]
+		[TestCase(-5.3f, 6.5f, 7.6f)]
+		[TestCase(5.3f, 6.5f, 7.6f)]
+		[TestCase(1, 3, -4)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3)]
+		[TestCase(-0, 0, 0)]
+		[TestCase(-5.3f, 6.5d, 7.6d)]
+		[TestCase(5.3f, 6.5d, -7.6d)]
+		[TestCase(1d, 3d, -4d)]
+		[TestCase(-1, 3, 4)]
+		[TestCase(1, 2, 3d)]
+		[TestCase(0d, 0, 0)]
+		public static void Test_Vector3_Generic_Distance<TMathType>(TMathType a, TMathType b, TMathType c)
+			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
+		{
+			//arrange
+			Vector3<TMathType> vec3One = new Vector3<TMathType>(a, b, c);
+			Vector3<TMathType> vec3Two = new Vector3<TMathType>(a, c, a);
+
+			//act
+			double distanceZero = Vector3<TMathType>.Distance<double>(vec3One, vec3One); //should be 0
+			double distance = Vector3<TMathType>.Distance<double>(vec3One, vec3Two);
+
+			//assert
+			Assert.AreEqual(distanceZero, 0d);
+			Assert.AreEqual(distance, (vec3Two - vec3One).Magnitude<double>(), (dynamic)Vector3<TMathType>.kEpsilon);
+		}
+
+
 		private static TMathType AddAll<TMathType>(IEnumerable<TMathType> vals)
 			where TMathType : struct, IComparable<TMathType>, IEquatable<TMathType>
 		{
 			return vals.Aggregate(Operator<TMathType>.Zero, (a, b) => Operator.Add(a, b));
+		}
+
+		private static MethodInfo GrabExtensionMethod<TParameterType>(Type extensionClassType, string methodName)
+		{
+			return extensionClassType
+				.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(TParameterType) }, null);
 		}
 	}
 }
