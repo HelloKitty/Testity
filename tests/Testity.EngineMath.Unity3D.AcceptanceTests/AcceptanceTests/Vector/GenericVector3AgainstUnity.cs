@@ -127,8 +127,6 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 
 			Vector3<float> operatorGenericCross = new Vector3<float>((float)newX, (float)newY, (float)newZ);
 
-			Assert.AreEqual(Operator<float>.Multiply(0.000000001005f, 0.00000443200050001f), 0.000000001005f * 0.00000443200050001f);
-
 			//assert
 			for (int i = 0; i < 3; i++) //we have to accept a higher delta of error since cross product has so much float math.
 			{
@@ -137,6 +135,39 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 				Assert.AreEqual(unityVec3Cross[i], genericVec3Cross[i], UnityEngine.Vector3.kEpsilon * 5, "Index: {0} failed. Failed to compute cross product.", i);
 			}
 				
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Tests" + nameof(Vector3<float>) + " dot product methods using Unity3D..", TestOf = typeof(Vector3<>))]
+		[TestCase(-5.3f, 6.5f, 7.6f, 0.0000235f, 5.654543f, 10.1234234f)]
+		[TestCase(5.3f, 6.5f, 7.6f, 6.4f, 67.55f, 8.09f)] //fails
+		[TestCase(1, 3, -4, 5.0f, 2, -5.43333f)]
+		[TestCase(1, 3, -4, 5.000005340001f, 2, -5.43333333f)]
+		[TestCase(-1, 3, 4, 0, 0, 0)]
+		[TestCase(1, 2, 3, 6.4f, 67.55f, 8.095454f)]
+		[TestCase(-0, 0, 0, -5, -100.04332312f, -10.3333f)]
+		[TestCase(-5.3f, 6.5f, 7.6f, 6.4f, 67.55f, 8.09f)]
+		[TestCase(5.3f, 6.5f, -7.6f, 55, 56, 105.0522f)]
+		[TestCase(1f, 3f, -4f, 7, 6, 0)]
+		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
+		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
+		[TestCase(0, 0, 0, 0, 0, 0)]
+		public static void Test_Vector3_Generic_Dot_Product_Against_Unity3D(float a, float b, float c, float d, float e, float f)
+		{
+			//arrange
+			Vector3<float> genericVec3One = new Vector3<float>(a, b, c);
+			Vector3<float> genericVec3Two = new Vector3<float>(d, e, f);
+
+			UnityEngine.Vector3 unityVec3One = new UnityEngine.Vector3(a, b, c);
+			UnityEngine.Vector3 unityVec3Two = new UnityEngine.Vector3(d, e, f);
+
+			//act
+			float genericVec3Dot = genericVec3One * genericVec3Two;
+			float genericVec3DotTwo = genericVec3One.Dot(genericVec3Two);
+			float unityVec3Dot = UnityEngine.Vector3.Dot(unityVec3One, unityVec3Two);
+
+			//assert
+			Assert.AreEqual(genericVec3Dot, unityVec3Dot, UnityEngine.Vector3.kEpsilon * 10); //this is done with Operator so it doesn't get JIT I think so it's less accurate. We need kEpsilon for it.
+			Assert.AreEqual(genericVec3DotTwo, unityVec3Dot, UnityEngine.Vector3.kEpsilon);
 		}
 	}
 }
