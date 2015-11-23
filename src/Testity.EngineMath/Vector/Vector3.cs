@@ -17,24 +17,7 @@ namespace Testity.EngineMath
 	public struct Vector3<TMathType> : IEquatable<Vector3<TMathType>>
 		where TMathType : struct, IEquatable<TMathType>, IComparable<TMathType>
 	{
-		public static TMathType kEpsilon = GenerateKEpslion();
-
-		private static TMathType GenerateKEpslion()
-		{
-			try
-			{
-				return (TMathType)Convert.ChangeType(1E-05f, typeof(TMathType));
-			}
-			catch (InvalidCastException)
-			{
-#if DEBUG || DEBBUGBUILD
-				//These are known types that cause issues with kEpsilon
-				if (typeof(TMathType) != typeof(char))
-					throw;
-#endif
-				return Operator<TMathType>.Zero;
-			}
-		}
+		public static TMathType kEpsilon = MathT.GenerateKEpslion<TMathType>();
 
 		private static TMathType validCompareError = ValidCompareErrorGenerator();
 
@@ -74,7 +57,7 @@ namespace Testity.EngineMath
 		/// <summary>
 		/// A cache of the <see cref="TMathType"/> value that represents 1.
 		/// </summary>
-		private static TMathType OneValue = (TMathType)Convert.ChangeType(1, typeof(TMathType));
+		private static TMathType oneValue = MathT.GenerateOneValue<TMathType>();
 
 		/// <summary>
 		///   <para>Shorthand for writing Vector3<TMathType>(0, 0, -1).</para>
@@ -84,7 +67,7 @@ namespace Testity.EngineMath
 			get
 			{
 				return new Vector3<TMathType>(Operator<TMathType>.Zero, Operator<TMathType>.Zero,
-					Operator.Subtract(Operator<TMathType>.Zero, Vector3<TMathType>.OneValue));
+					Operator.Subtract(Operator<TMathType>.Zero, Vector3<TMathType>.oneValue));
 			}
 		}
 
@@ -95,7 +78,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Operator<TMathType>.Zero, Operator.Subtract(Operator<TMathType>.Zero, Vector3<TMathType>.OneValue),
+				return new Vector3<TMathType>(Operator<TMathType>.Zero, Operator.Subtract(Operator<TMathType>.Zero, Vector3<TMathType>.oneValue),
 					Operator<TMathType>.Zero);
 			}
 		}
@@ -107,7 +90,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Operator<TMathType>.Zero, Operator<TMathType>.Zero, Vector3<TMathType>.OneValue);
+				return new Vector3<TMathType>(Operator<TMathType>.Zero, Operator<TMathType>.Zero, Vector3<TMathType>.oneValue);
 			}
 		}
 
@@ -118,7 +101,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Operator.Subtract(Operator<TMathType>.Zero, Vector3<TMathType>.OneValue), Operator<TMathType>.Zero,
+				return new Vector3<TMathType>(Operator.Subtract(Operator<TMathType>.Zero, Vector3<TMathType>.oneValue), Operator<TMathType>.Zero,
 					Operator<TMathType>.Zero);
 			}
 		}
@@ -130,7 +113,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Vector3<TMathType>.OneValue, Vector3<TMathType>.OneValue, Vector3<TMathType>.OneValue);
+				return new Vector3<TMathType>(Vector3<TMathType>.oneValue, Vector3<TMathType>.oneValue, Vector3<TMathType>.oneValue);
 			}
 		}
 
@@ -141,7 +124,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Vector3<TMathType>.OneValue, Operator<TMathType>.Zero, Operator<TMathType>.Zero);
+				return new Vector3<TMathType>(Vector3<TMathType>.oneValue, Operator<TMathType>.Zero, Operator<TMathType>.Zero);
 
 			}
 		}
@@ -153,7 +136,7 @@ namespace Testity.EngineMath
 		{
 			get
 			{
-				return new Vector3<TMathType>(Operator<TMathType>.Zero, Vector3<TMathType>.OneValue, Operator<TMathType>.Zero);
+				return new Vector3<TMathType>(Operator<TMathType>.Zero, Vector3<TMathType>.oneValue, Operator<TMathType>.Zero);
 			}
 		}
 
@@ -380,28 +363,6 @@ namespace Testity.EngineMath
 		public static float Angle(Vector3<TMathType> from, Vector3<TMathType> to)
 		{
 			return Mathf.Acos(Mathf.Clamp(Vector3<TMathType>.Dot(from.normalized, to.normalized), -1f, 1f)) * 57.29578f;
-		}
-		
-		/// <summary>
-		///   <para>Linearly interpolates between two vectors.</para>
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		/// <param name="t"></param>
-		public static Vector3<TMathType> Lerp(Vector3<TMathType> a, Vector3<TMathType> b, float t)
-		{
-			t = Mathf.Clamp01(t);
-			return new Vector3<TMathType>(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
-		}
-		/// <summary>
-		///   <para>Linearly interpolates between two vectors.</para>
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		/// <param name="t"></param>
-		public static Vector3<TMathType> LerpUnclamped(Vector3<TMathType> a, Vector3<TMathType> b, float t)
-		{
-			return new Vector3<TMathType>(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
 		}*/
 	}
 }

@@ -150,7 +150,6 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(5.3f, 6.5f, -7.6f, 55, 56, 105.0522f)]
 		[TestCase(1f, 3f, -4f, 7, 6, 0)]
 		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
-		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(0, 0, 0, 0, 0, 0)]
 		public static void Test_Vector3_Generic_Dot_Product_Against_Unity3D(float a, float b, float c, float d, float e, float f)
 		{
@@ -180,7 +179,6 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(-5.3f, 6.5f, 7.6f, 6.4f, 67.55f, 8.09f)]
 		[TestCase(5.3f, 6.5f, -7.6f, 55, 56, 105.0522f)]
 		[TestCase(1f, 3f, -4f, 7, 6, 0)]
-		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(0, 0, 0, 0, 0, 0)]
 		public static void Test_Vector3_Generic_Reflect_Against_Unity3D(float a, float b, float c, float d, float e, float f)
@@ -232,10 +230,7 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(0.0000235f, 5.654543f, 10.1234234f)]
 		[TestCase(5.3f, 6.5f, 7.6f)]
 		[TestCase(1, 3, -4)]
-		[TestCase(1, 3, -4)]
 		[TestCase(-1, 3, 4)]
-		[TestCase(1, 2, 3)]
-		[TestCase(-0, 0, 0)]
 		[TestCase(-5.3f, 6.5f, 7.6f)]
 		[TestCase(5.3f, 6.5f, 55)]
 		[TestCase(1f, 3f, -4f)]
@@ -262,7 +257,6 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(-5.3f, 6.5f, 7.6f, 6.4f, 67.55f, 8.09f)]
 		[TestCase(5.3f, 6.5f, -7.6f, 55, 56, 105.0522f)]
 		[TestCase(1f, 3f, -4f, 7, 6, 0)]
-		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(0, 0, 0, 0, 0, 0)]
 		public static void Test_Vector3_Generic_Simple_Method_Against_Unity3D(float a, float b, float c, float d, float e, float f)
@@ -293,7 +287,6 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(5.3f, 6.5f, -7.6f, 55, 56, 105.0522f)]
 		[TestCase(1f, 3f, -4f, 7, 6, 0)]
 		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
-		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(0, 0, 0, 0, 0, 0)]
 		public static void Test_Vector3_Generic_Scale_Against_Unity3D(float a, float b, float c, float d, float e, float f)
 		{
@@ -316,14 +309,11 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(0.0000235f, 5.654543f, 10.1234234f)]
 		[TestCase(5.3f, 6.5f, 7.6f)]
 		[TestCase(1, 3, -4)]
-		[TestCase(1, 3, -4)]
 		[TestCase(-1, 3, 4)]
 		[TestCase(1, 2, 3)]
-		[TestCase(-0, 0, 0)]
 		[TestCase(-5.3f, 6.5f, 7.6f)]
 		[TestCase(5.3f, 6.5f, 55)]
 		[TestCase(1f, 3f, -4f)]
-		[TestCase(1, 2, 3)]
 		[TestCase(0, 0, 0)]
 		public static void Test_Vector3_Generic_Magnitude_Against_Unity3D(float a, float b, float c)
 		{
@@ -344,10 +334,7 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(4.0000235f, 5.654543f, 1.1234234f)]
 		[TestCase(5.3f, 6.5f, 7.6f)]
 		[TestCase(1, 3, -4)]
-		[TestCase(1, 3, -4)]
 		[TestCase(-1, 3, 4)]
-		[TestCase(1, 2, 3)]
-		[TestCase(-0, 0, 0)]
 		[TestCase(-5.3f, 6.5f, 7.6f)]
 		[TestCase(5.3f, 6.5f, 55)]
 		[TestCase(1f, 3f, -4f)]

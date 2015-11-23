@@ -39,7 +39,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\EngineComponentInterfaceAttribute.cs" />
+    <Compile Include="GameObject\IEngineGameObject.cs" />
+    <Compile Include="Interfaces\IEngineActivatable.cs" />
+    <Compile Include="Interfaces\IEngineComponent.cs" />
+    <Compile Include="Interfaces\IEngineObject.cs" />
+    <Compile Include="Interfaces\IEngineScriptComponent.cs" />
+    <Compile Include="Transform\IEngineDirectional.cs" />
+    <Compile Include="Transform\IEngineTransform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Physics\" />
+    <Folder Include="Rendering\" />
+    <Folder Include="UI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Testity.EngineMath\Testity.EngineMath.csproj">
+      <Project>{d1cb2af4-210c-48a6-ab75-491b824d25ef}</Project>
+      <Name>Testity.EngineMath</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,6 +15,13 @@ namespace Testity.EngineMath
 		{
 			return new Vector3<float>(lhs.y * rhs.z - lhs.z * rhs.y, lhs.z * rhs.x - lhs.x * rhs.z, lhs.x * rhs.y - lhs.y * rhs.x);
 		}
+
+		//This class mostly exists because users can't expect all types of Vector3<T> to offers certain
+		//functionality. The best way to seperate it into valid types is to use extension methods
+		public static Vector3<double> Cross(this Vector3<double> lhs, Vector3<double> rhs)
+		{
+			return new Vector3<double>(lhs.y * rhs.z - lhs.z * rhs.y, lhs.z * rhs.x - lhs.x * rhs.z, lhs.x * rhs.y - lhs.y * rhs.x);
+		}
 		#endregion
 
 		#region Normalization
