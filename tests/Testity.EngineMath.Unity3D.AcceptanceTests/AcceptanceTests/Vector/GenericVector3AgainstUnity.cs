@@ -95,7 +95,6 @@ namespace Testity.EngineMath.Unity3D.AcceptanceTests
 		[TestCase(5.3f, 6.5f, -7.6f, 55, 56, 105.0522f)]
 		[TestCase(1f, 3f, -4f, 7, 6, 0)]
 		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
-		[TestCase(1, 2, 3, 6.4f, 67.55000054f, 8.0900001f)]
 		[TestCase(0, 0, 0, 0, 0, 0)]
 		public static void Test_Vector3_Generic_Cross_Product_Against_Unity3D(float a, float b, float c, float d, float e, float f)
 		{

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Testity.EngineMath
@@ -14,13 +15,37 @@ namespace Testity.EngineMath
 		const float radToDegDouble = (float)(180.0 / Math.PI);
 		const float degToRadDouble = (float)(Math.PI / 180.0);
 
+		#region Ref Quat Operations
+
+		#region Ref Dot
+		/// <summary>
+		///   <para>The dot product between two rotations.</para>
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		internal static float DotRef(ref Quaternion<float> a, ref Quaternion<float> b)
+		{
+			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+		}
+
+		/// <summary>
+		///   <para>The dot product between two rotations.</para>
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
+		internal static double DotRef(ref Quaternion<double> a, ref Quaternion<double> b)
+		{
+			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+		}
+		#endregion
+
+		#endregion
+
 		#region ToEulerAngles
 
 		#region Float Implementation
 		public static Vector3<float> EulerAngles(this Quaternion<float> quat)
 		{
-			float rad2Deg = 57.29578f;
-
 			//http://stackoverflow.com/a/12122899/4184238
 			float sqw = quat.w * quat.w;
 			float sqx = quat.x * quat.x;
@@ -28,27 +53,39 @@ namespace Testity.EngineMath
 			float sqz = quat.z * quat.z;
 			float unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
 			float test = quat.x * quat.w - quat.y * quat.z;
-			Vector3<float> v;
+			Vector3<float> v = new Vector3<float>(0, 0, 0);
 
 			if (test > 0.4995f * unit)
 			{ // singularity at north pole
 				v.y = (float)(2f * Math.Atan2(quat.y, quat.x));
 				v.x = (float)(Math.PI / 2);
 				v.z = 0;
-				return NormalizeAngles(v * rad2Deg);
+				return NormalizeAngles(v * radToDegFloat);
 			}
 			if (test < -0.4995f * unit)
 			{ // singularity at south pole
 				v.y = (float)(-2f * Math.Atan2(quat.y, quat.x));
 				v.x = (float)(-Math.PI / 2);
 				v.z = 0;
-				return NormalizeAngles(v * rad2Deg);
+				return NormalizeAngles(v * radToDegFloat);
 			}
+
 			Quaternion<float> tempQuat = new Quaternion<float>(quat.w, quat.z, quat.x, quat.y);
+
+			//This version of the math can be found here: http://www.gamedev.net/topic/597324-quaternion-to-euler-angles-and-back-why-is-the-rotation-changing/
+			/*eX = atan2(-2*(qy*qz-qw*qx), qw*qw-qx*qx-qy*qy+qz*qz);
+			eY = asin(2*(qx*qz + qw*qy));
+			eZ = atan2(-2*(qx*qy-qw*qz), qw*qw+qx*qx-qy*qy-qz*qz);*/
+			//v.x = (float)Math.Atan2(-2f * (tempQuat.y * tempQuat.z - tempQuat.w * tempQuat.x), tempQuat.w * tempQuat.w - tempQuat.x * tempQuat.x - tempQuat.y * tempQuat.y + tempQuat.z * tempQuat.z);
+			//v.y = (float)Math.Asin(2f * (tempQuat.x * tempQuat.z + tempQuat.w * tempQuat.y));
+			//v.z = (float)Math.Atan2(-2 * (tempQuat.x * tempQuat.y - tempQuat.w * tempQuat.z), tempQuat.w * tempQuat.w + tempQuat.x * tempQuat.x - tempQuat.y * tempQuat.y - tempQuat.z * tempQuat.z);
+
+			//These provide the best representation of euler angles compared to Unity. In fact, they're higher precision.
 			v.y = (float)Math.Atan2(2f * tempQuat.x * tempQuat.w + 2f * tempQuat.y * tempQuat.z, 1 - 2f * (tempQuat.z * tempQuat.z + tempQuat.w * tempQuat.w));     // Yaw
 			v.x = (float)Math.Asin(2f * (tempQuat.x * tempQuat.z - tempQuat.w * tempQuat.y));                             // Pitch
 			v.z = (float)Math.Atan2(2f * tempQuat.x * tempQuat.y + 2f * tempQuat.z * tempQuat.w, 1 - 2f * (tempQuat.y * tempQuat.y + tempQuat.z * tempQuat.z));      // Roll
-			return NormalizeAngles(v * rad2Deg);
+
+			return NormalizeAngles(v * radToDegFloat);
 		}
 
 		private static Vector3<float> NormalizeAngles(Vector3<float> angles)
@@ -62,12 +99,15 @@ namespace Testity.EngineMath
 
 		static float NormalizeAngle(float angle)
 		{
-			//http://stackoverflow.com/a/12122899/4184238
-			while (angle > 360)
-				angle -= 360;
-			while (angle < 0)
-				angle += 360;
-			return angle;
+			//This is a correction after testing in Unity. Unity always has postive euler angles.
+			//This will make it postive.
+			float modAngle = angle % 360.0f;
+			if (modAngle < 0.0f)
+				return modAngle + 360.0f;
+			else
+				return modAngle;
+
+			//return angle % 360.0f;
 		}
 		#endregion
 
@@ -100,6 +140,8 @@ namespace Testity.EngineMath
 				return NormalizeAngles(v * rad2Deg);
 			}
 			Quaternion<double> tempQuat = new Quaternion<double>(quat.w, quat.z, quat.x, quat.y);
+
+			//These provide the best representation of euler angles compared to Unity. In fact, they're higher precision.
 			v.y = Math.Atan2(2f * tempQuat.x * tempQuat.w + 2f * tempQuat.y * tempQuat.z, 1 - 2f * (tempQuat.z * tempQuat.z + tempQuat.w * tempQuat.w));     // Yaw
 			v.x = Math.Asin(2f * (tempQuat.x * tempQuat.z - tempQuat.w * tempQuat.y));                             // Pitch
 			v.z = Math.Atan2(2f * tempQuat.x * tempQuat.y + 2f * tempQuat.z * tempQuat.w, 1 - 2f * (tempQuat.y * tempQuat.y + tempQuat.z * tempQuat.z));      // Roll
@@ -117,12 +159,15 @@ namespace Testity.EngineMath
 
 		static double NormalizeAngle(double angle)
 		{
-			//http://stackoverflow.com/a/12122899/4184238
-			while (angle > 360)
-				angle -= 360;
-			while (angle < 0)
-				angle += 360;
-			return angle;
+			//This is a correction after testing in Unity. Unity always has postive euler angles.
+			//This will make it postive.
+			double modAngle = angle % 360.0d;
+			if (modAngle < 0.0d)
+				return modAngle + 360.0d;
+			else
+				return modAngle;
+
+			//return angle % 360.0f;
 		}
 		#endregion
 
@@ -254,29 +299,6 @@ namespace Testity.EngineMath
 		{
 			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 		}
-
-		#region Ref Quick Dot Implementations
-		/// <summary>
-		///   <para>The dot product between two rotations.</para>
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		internal static float DotRef(ref Quaternion<float> a, ref Quaternion<float> b)
-		{
-			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-		}
-
-		/// <summary>
-		///   <para>The dot product between two rotations.</para>
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		internal static double DotRef(ref Quaternion<double> a, ref Quaternion<double> b)
-		{
-			return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-		}
-		#endregion
-
 		#endregion
 
 		#region RotateTowards
@@ -545,7 +567,13 @@ namespace Testity.EngineMath
 		/// </summary>
 		public static Quaternion<float> Normalize(this Quaternion<float> quat)
 		{
-			float scale = 1.0f / quat.Length();
+			float length = quat.Length();
+
+			//If the length is 0 then it's already normalized technically.
+			if (length == 0.0f)
+				return new Quaternion<float>(0, 0, 0, 0);
+
+            float scale = 1.0f / length;
 			quat.xyz *= scale;
 			quat.w *= scale;
 
@@ -557,7 +585,14 @@ namespace Testity.EngineMath
 		/// </summary>
 		public static Quaternion<double> Normalize(this Quaternion<double> quat)
 		{
-			double scale = 1d / quat.Length();
+			double length = quat.Length();
+
+			//If the length is 0 then it's already normalized technically.
+			if (length == 0.0d)
+				return new Quaternion<double>(0d, 0d, 0d, 0d);
+
+			double scale = 1.0f / length;
+
 			quat.xyz *= scale;
 			quat.w *= scale;
 
@@ -989,6 +1024,81 @@ namespace Testity.EngineMath
 		}
 		#endregion
 
+		#endregion
+
+		//Originally: * operator with lhs quat and rhs vec3. Edit: Even after the move JIT produces different code. Probably handles operators differently.
+		#region RotateVector
+		
+		//See the UnityEngine.dll decompliled code. It's what this ugly stuff is based on.
+
+		/// <summary>
+		/// Rotates a <see cref="Vector3{TMathType}"/> by the given <see cref="Quaternion{TMathType}"/> rotation.
+		/// </summary>
+		/// <param name="rotation">Rotation to rotate the <see cref="Vector3{TMathType}"/> by.</param>
+		/// <param name="point"><see cref="Vector3{TMathType}"/> to rotate.</param>
+		/// <returns>A <see cref="Vector3{TMathType}"/> rotated by the <see cref="Quaternion{TMathType}"</see>.</returns>
+		public static Vector3<float> RotateVector(this Quaternion<float> rotation, Vector3<float> point)
+		{
+			//From UnityEngine.dll; decompiled with JustDecompile.
+			Vector3<float> vector3 = new Vector3<float>();
+			float single = rotation.x * 2f;
+			float single1 = rotation.y * 2f;
+			float single2 = rotation.z * 2f;
+			float single3 = rotation.x * single;
+			float single4 = rotation.y * single1;
+			float single5 = rotation.z * single2;
+			float single6 = rotation.x * single1;
+			float single7 = rotation.x * single2;
+			float single8 = rotation.y * single2;
+			float single9 = rotation.w * single;
+			float single10 = rotation.w * single1;
+			float single11 = rotation.w * single2;
+			vector3.x = (1f - (single4 + single5)) * point.x + (single6 - single11) * point.y + (single7 + single10) * point.z;
+			vector3.y = (single6 + single11) * point.x + (1f - (single3 + single5)) * point.y + (single8 - single9) * point.z;
+			vector3.z = (single7 - single10) * point.x + (single8 + single9) * point.y + (1f - (single3 + single4)) * point.z;
+			return vector3;
+		}
+
+		/// <summary>
+		/// Rotates a <see cref="Vector3{TMathType}"/> by the given <see cref="Quaternion{TMathType}"/> rotation.
+		/// </summary>
+		/// <param name="rotation">Rotation to rotate the <see cref="Vector3{TMathType}"/> by.</param>
+		/// <param name="point"><see cref="Vector3{TMathType}"/> to rotate.</param>
+		/// <returns>A <see cref="Vector3{TMathType}"/> rotated by the <see cref="Quaternion{TMathType}"</see>.</returns>
+		public static Vector3<double> RotateVector(this Quaternion<double> rotation, Vector3<double> point)
+		{
+			//From UnityEngine.dll; decompiled with JustDecompile.
+			Vector3<double> vector3 = new Vector3<double>();
+			double doubleTerm = rotation.x * 2d;
+			double doubleTerm1 = rotation.y * 2d;
+			double doubleTerm2 = rotation.z * 2d;
+			double doubleTerm3 = rotation.x * doubleTerm;
+			double doubleTerm4 = rotation.y * doubleTerm1;
+			double doubleTerm5 = rotation.z * doubleTerm2;
+			double doubleTerm6 = rotation.x * doubleTerm1;
+			double doubleTerm7 = rotation.x * doubleTerm2;
+			double doubleTerm8 = rotation.y * doubleTerm2;
+			double doubleTerm9 = rotation.w * doubleTerm;
+			double doubleTerm10 = rotation.w * doubleTerm1;
+			double doubleTerm11 = rotation.w * doubleTerm2;
+			vector3.x = (1f - (doubleTerm4 + doubleTerm5)) * point.x + (doubleTerm6 - doubleTerm11) * point.y + (doubleTerm7 + doubleTerm10) * point.z;
+			vector3.y = (doubleTerm6 + doubleTerm11) * point.x + (1f - (doubleTerm3 + doubleTerm5)) * point.y + (doubleTerm8 - doubleTerm9) * point.z;
+			vector3.z = (doubleTerm7 - doubleTerm10) * point.x + (doubleTerm8 + doubleTerm9) * point.y + (1f - (doubleTerm3 + doubleTerm4)) * point.z;
+			return vector3;
+		}
+		#endregion
+
+		//Originally: * operator with lhs quat and rhs quat.
+		#region MultiplyBy
+		public static Quaternion<float> MultiplyBy(this Quaternion<float> lhs, Quaternion<float> rhs)
+		{
+			return new Quaternion<float>(lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z - lhs.z * rhs.y, lhs.w * rhs.y + lhs.y * rhs.w + lhs.z * rhs.x - lhs.x * rhs.z, lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y - lhs.y * rhs.x, lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z);
+		}
+
+		public static Quaternion<double> MultiplyBy(this Quaternion<double> lhs, Quaternion<double> rhs)
+		{
+			return new Quaternion<double>(lhs.w * rhs.x + lhs.x * rhs.w + lhs.y * rhs.z - lhs.z * rhs.y, lhs.w * rhs.y + lhs.y * rhs.w + lhs.z * rhs.x - lhs.x * rhs.z, lhs.w * rhs.z + lhs.z * rhs.w + lhs.x * rhs.y - lhs.y * rhs.x, lhs.w * rhs.w - lhs.x * rhs.x - lhs.y * rhs.y - lhs.z * rhs.z);
+		}
 		#endregion
 	}
 }

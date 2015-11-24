@@ -11,6 +11,7 @@ namespace Testity.EngineServices
 	/// Also makes the promise of managing dependencies for construction.
 	/// </summary>
 	/// <typeparam name="TComponentType">Type to be created.</typeparam>
+	[EngineServiceInterface]
 	public interface IDependencyInjectionManagedFactory<TCreationType>
 		where TCreationType : class
 	{

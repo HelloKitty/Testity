@@ -43,10 +43,9 @@ namespace Testity.EngineMath
 			}
 		}
 
-
 		//This let's us compute dot products with strong typing in another method external from the class.
+		//WARNING: JIT/CLR or whatever will not produce the same result compared to directly calling the extension method.
 		private delegate TMathType LowGCDotProductFunc(ref Quaternion<TMathType> a, ref Quaternion<TMathType> b);
-
 		private static LowGCDotProductFunc dotFunc;
 
 		/// <summary>
@@ -135,8 +134,11 @@ namespace Testity.EngineMath
 
 		static Quaternion()
 		{
+			//We need to create a delegate that points to the dot product ext
+			//TODO: Remove method search
 			MethodInfo dotMethodInfo = typeof(QuaternionExtensions)
-				.GetMethod("DotRef", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static, null, new Type[] { typeof(Quaternion<TMathType>), typeof(Quaternion<TMathType>) }, null);
+				.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+				.First(x => x.Name == "DotRef" && x.ReturnType == typeof(TMathType));
 
 			dotFunc = (LowGCDotProductFunc)Delegate.CreateDelegate(typeof(LowGCDotProductFunc), dotMethodInfo, true);
 		}
@@ -212,49 +214,6 @@ namespace Testity.EngineMath
 		public static bool operator !=(Quaternion<TMathType> lhs, Quaternion<TMathType> rhs)
 		{
 			return Operator.LessThanOrEqual(dotFunc(ref lhs, ref rhs), dotCompareVal);
-		}
-
-		public static Quaternion<TMathType> operator *(Quaternion<TMathType> lhs, Quaternion<TMathType> rhs)
-		{
-			TMathType newX = Operator.Subtract(Operator.Add(Operator.Add(Operator.Multiply(lhs.w, rhs.x), Operator.Multiply(lhs.x, rhs.w)), Operator.Multiply(lhs.y, rhs.z)), Operator.Multiply(lhs.z, rhs.y));
-			TMathType newY = Operator.Subtract(Operator.Add(Operator.Add(Operator.Multiply(lhs.w, rhs.y), Operator.Multiply(lhs.y, rhs.w)), Operator.Multiply(lhs.z, rhs.x)), Operator.Multiply(lhs.x, rhs.z));
-			TMathType newZ = Operator.Subtract(Operator.Add(Operator.Add(Operator.Multiply(lhs.w, rhs.z), Operator.Multiply(lhs.z, rhs.w)), Operator.Multiply(lhs.x, rhs.y)), Operator.Multiply(lhs.y, rhs.x));
-			TMathType newW = Operator.Subtract(Operator.Subtract(Operator.Subtract(Operator.Multiply(lhs.w, rhs.w), Operator.Multiply(lhs.x, rhs.x)), Operator.Multiply(lhs.y, rhs.y)), Operator.Multiply(lhs.z, rhs.z));
-
-			return new Quaternion<TMathType>(newX, newY, newZ, newW);
-        }
-
-		public static Vector3<TMathType> operator *(Quaternion<TMathType> rotation, Vector3<TMathType> point)
-		{
-			Vector3<TMathType> Vector3 = new Vector3<TMathType>();
-
-			//Decompiled matrix math for quat * vector from Unity3D dll.
-			TMathType tMathValueTerm = Operator<TMathType>.Multiply(rotation.x, Operator.Add(oneValue, oneValue));
-			TMathType tMathValueTerm1 = Operator<TMathType>.Multiply(rotation.y, Operator.Add(oneValue, oneValue));
-			TMathType tMathValueTerm2 = Operator<TMathType>.Multiply(rotation.z, Operator.Add(oneValue, oneValue));
-
-			TMathType tMathValueTerm3 = Operator<TMathType>.Multiply(rotation.x, tMathValueTerm);
-			TMathType tMathValueTerm4 = Operator<TMathType>.Multiply(rotation.y, tMathValueTerm1);
-			TMathType tMathValueTerm5 = Operator<TMathType>.Multiply(rotation.z, tMathValueTerm2);
-
-			TMathType tMathValueTerm6 = Operator<TMathType>.Multiply(rotation.x, tMathValueTerm1);
-			TMathType tMathValueTerm7 = Operator<TMathType>.Multiply(rotation.x, tMathValueTerm2);
-			TMathType tMathValueTerm8 = Operator<TMathType>.Multiply(rotation.y, tMathValueTerm2);
-
-			//w
-			TMathType tMathValueTerm9 = Operator<TMathType>.Multiply(rotation.w, tMathValueTerm);
-			TMathType tMathValueTerm10 = Operator<TMathType>.Multiply(rotation.w, tMathValueTerm1);
-			TMathType tMathValueTerm11 = Operator<TMathType>.Multiply(rotation.w, tMathValueTerm2);
-
-
-            Vector3.x = Operator.Add(Operator.Add(Operator.Multiply(Operator.Subtract(oneValue, Operator.Add(tMathValueTerm4, tMathValueTerm5)), point.x), Operator.Multiply(point.y, Operator.Subtract(tMathValueTerm6, tMathValueTerm11))),
-				Operator.Multiply(Operator.Add(tMathValueTerm7, tMathValueTerm10), point.z));//(1f - (single4 + single5)) * point.x + (single6 - single11) * point.y + (single7 + single10) * point.z;
-			Vector3.y = Operator.Add(Operator.Add(Operator.Multiply(Operator.Subtract(oneValue, Operator.Add(tMathValueTerm3, tMathValueTerm5)), point.y), Operator.Multiply(point.z, Operator.Subtract(tMathValueTerm8, tMathValueTerm9))),
-				Operator.Multiply(Operator.Add(tMathValueTerm6, tMathValueTerm11), point.y));//(single6 + single11) * point.x + (1f - (single3 + single5)) * point.y + (single8 - single9) * point.z;
-			Vector3.z = Operator.Add(Operator.Add(Operator.Multiply(Operator.Subtract(oneValue, Operator.Add(tMathValueTerm3, tMathValueTerm4)), point.z), Operator.Multiply(point.x, Operator.Subtract(tMathValueTerm7, tMathValueTerm10))),
-				Operator.Multiply(Operator.Add(tMathValueTerm8, tMathValueTerm9), point.y));//(single7 - single10) * point.x + (single8 + single9) * point.y + (1f - (single3 + single4)) * point.z;
-
-			return Vector3;
 		}
 	}
 }

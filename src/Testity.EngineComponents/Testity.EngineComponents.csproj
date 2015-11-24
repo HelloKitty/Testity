@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Attributes\EngineComponentInterfaceAttribute.cs" />
     <Compile Include="GameObject\IEngineGameObject.cs" />
+    <Compile Include="GameObject\IEnginePrefabedGameObject.cs" />
     <Compile Include="Interfaces\IEngineActivatable.cs" />
     <Compile Include="Interfaces\IEngineComponent.cs" />
     <Compile Include="Interfaces\IEngineObject.cs" />
