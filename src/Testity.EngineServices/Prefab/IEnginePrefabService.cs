@@ -11,7 +11,7 @@ namespace Testity.EngineServices
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Instantiate.html
 	/// </summary>
 	[EngineServiceInterface]
-	public interface IEnginePrefabService : IEngineGameObjectFactory<IEnginePrefabedGameObject>
+	public interface IEnginePrefabService : IEngineGameObjectFactoryService<IEnginePrefabedGameObject>
 	{
 		/// <summary>
 		/// The name of the Prefab.

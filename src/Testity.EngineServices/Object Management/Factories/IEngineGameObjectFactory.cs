@@ -11,7 +11,8 @@ namespace Testity.EngineServices
 	/// Implementer provides <see cref="TGameObjectType"/> creation functionality.
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Instantiate.html
 	/// </summary>
-	public interface IEngineGameObjectFactory<TGameObjectType>
+	[EngineServiceInterface]
+	public interface IEngineGameObjectFactoryService<TGameObjectType>
 		where TGameObjectType : class, IEngineGameObject
     {
 		/// <summary>

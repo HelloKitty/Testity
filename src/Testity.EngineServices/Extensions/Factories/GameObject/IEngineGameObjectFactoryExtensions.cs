@@ -19,7 +19,7 @@ namespace Testity.EngineServices
 		/// <param name="rotation"><see cref="Vector3{TMathType}"/> representing the euler vector rotation of the <see cref="IEnginePrefabedGameObject"/> to be created.</param>
 		/// <param name="factoryService">Factory instace that is being extended via this extension method.</param>
 		/// <returns>A valid non-null <see cref="IEngineGameObject"/> at specified position and rotation.</returns>
-		public static IEngineGameObject Create<TGameObjectType>(this IEngineGameObjectFactory<TGameObjectType> factoryService, Vector3<float> position, Vector3<float> rotation)
+		public static IEngineGameObject Create<TGameObjectType>(this IEngineGameObjectFactoryService<TGameObjectType> factoryService, Vector3<float> position, Vector3<float> rotation)
 			where TGameObjectType : class, IEngineGameObject
 		{
 			return factoryService.Create(position, rotation.Euler());
@@ -31,7 +31,7 @@ namespace Testity.EngineServices
 		/// <param name="position"><see cref="Vector3{TMathType}"/> position of the <see cref="IEnginePrefabedGameObject"/> to be created.</param>
 		/// <param name="factoryService">Factory instace that is being extended via this extension method.</param>
 		/// <returns>A valid non-null <see cref="IEngineGameObject"/> at specified position and no rotation.</returns>
-		public static IEngineGameObject Create<TGameObjectType>(this IEngineGameObjectFactory<TGameObjectType> factoryService, Vector3<float> position)
+		public static IEngineGameObject Create<TGameObjectType>(this IEngineGameObjectFactoryService<TGameObjectType> factoryService, Vector3<float> position)
 			where TGameObjectType : class, IEngineGameObject
 		{
 			return factoryService.Create(position, Quaternion<float>.identity);
@@ -42,7 +42,7 @@ namespace Testity.EngineServices
 		/// </summary>
 		/// <param name="factoryService">Factory instace that is being extended via this extension method.</param>
 		/// <returns>A valid non-null <see cref="IEngineGameObject"/> at specified position and default rotation.</returns>
-		public static IEngineGameObject Create<TGameObjectType>(this IEngineGameObjectFactory<TGameObjectType> factoryService)
+		public static IEngineGameObject Create<TGameObjectType>(this IEngineGameObjectFactoryService<TGameObjectType> factoryService)
 			where TGameObjectType : class, IEngineGameObject
 		{
 			return factoryService.Create(Vector3<float>.zero, Quaternion<float>.identity);

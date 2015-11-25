@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Math", "Math", "{0418814B-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.EngineMath.Unity3D.AcceptanceTests", "tests\Testity.EngineMath.Unity3D.AcceptanceTests\Testity.EngineMath.Unity3D.AcceptanceTests.csproj", "{563184CE-973C-4E79-85B2-E9FF6F7188B6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Concrete EngineServices", "Concrete EngineServices", "{6BB3781C-2998-4B7D-9B69-0C5F124EFE98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.EngineServices.Unity3D", "src\Testity.EngineServices.Unity3D\Testity.EngineServices.Unity3D.csproj", "{88E45448-5F11-4D6E-B60B-2BADF1E2901C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,10 @@ Global
 		{563184CE-973C-4E79-85B2-E9FF6F7188B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{563184CE-973C-4E79-85B2-E9FF6F7188B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{563184CE-973C-4E79-85B2-E9FF6F7188B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E45448-5F11-4D6E-B60B-2BADF1E2901C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E45448-5F11-4D6E-B60B-2BADF1E2901C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E45448-5F11-4D6E-B60B-2BADF1E2901C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E45448-5F11-4D6E-B60B-2BADF1E2901C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,5 +78,7 @@ Global
 		{6597F436-C412-4D3B-BC92-45668476D488} = {0418814B-0AE6-4B44-8BFF-AD12F6E93B6C}
 		{0418814B-0AE6-4B44-8BFF-AD12F6E93B6C} = {76FA185F-7DB5-4675-8CB9-03838B9B628D}
 		{563184CE-973C-4E79-85B2-E9FF6F7188B6} = {0418814B-0AE6-4B44-8BFF-AD12F6E93B6C}
+		{6BB3781C-2998-4B7D-9B69-0C5F124EFE98} = {2417FD8E-AA3C-4B92-B267-9C6D1B3BEE97}
+		{88E45448-5F11-4D6E-B60B-2BADF1E2901C} = {6BB3781C-2998-4B7D-9B69-0C5F124EFE98}
 	EndGlobalSection
 EndGlobal

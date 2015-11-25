@@ -12,7 +12,7 @@ namespace Testity.EngineServices
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Instantiate.html
 	/// </summary>
 	[EngineServiceInterface]
-	public interface IEngineGameObjectFactoryService : IEngineGameObjectFactory<IEngineGameObject>
+	public interface IEngineGameObjectFactoryService : IEngineGameObjectFactoryService<IEngineGameObject>
 	{
 		//MS says don't do this but consumers of this API will find the injection of this type more preferable.
 	}

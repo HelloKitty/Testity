@@ -8,27 +8,28 @@ namespace Testity.EngineServices
 {
 
 	/// <summary>
-	/// Implementer provides functionality for destroying and cleaning up of <see cref="IEngineObject"/>s.
+	/// Implementer provides functionality for destroying and cleaning up of <typeparamref name="TEngineObjectType"/>s.
 	/// Based loosely on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Destroy.html
 	/// </summary>
 	[EngineServiceInterface]
-	public interface IEngineObjectDestructionService
-	{
+	public interface IEngineObjectDestructionService<TEngineObjectType>
+		where TEngineObjectType : class, IEngineObject
+    {
 		/// <summary>
-		/// Destroys the <see cref="IEngineObject"/> requested.
+		/// Destroys the <typeparamref name="TEngineObjectType"/> requested.
 		/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Destroy.html
 		/// </summary>
-		/// <param name="toDestroy"><see cref="IEngineObject"/> to destroy.</param>
+		/// <param name="toDestroy"><typeparamref name="TEngineObjectType"/> to destroy.</param>
 		/// <returns>Indicates if destruction was sucessful.</returns>
-		bool Destroy(IEngineObject toDestroy);
+		bool Destroy(TEngineObjectType toDestroy);
 
 		/// <summary>
-		/// Destroys the <see cref="IEngineObject"/> requested approximately time seconds after this call.
+		/// Destroys the <typeparamref name="TEngineObjectType"/> requested approximately time seconds after this call.
 		/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Destroy.html overload
 		/// <param name="time">Time in seconds to approximately delay the destruction of the object.</param>
-		/// <param name="toDestroy"><see cref="IEngineObject"/> to destroy.</param>
+		/// <param name="toDestroy"><typeparamref name="TEngineObjectType"/> to destroy.</param>
 		/// </summary>
 		/// <returns>Indicates if destruction was sucessful.</returns>
-		bool DestroyDelayed(IEngineObject toDestroy, float time);
+		bool DestroyDelayed(TEngineObjectType toDestroy, float time);
 	}
 }
