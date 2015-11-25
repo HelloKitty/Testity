@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.EngineComponents;
 
 namespace Testity.EngineServices
 {
 	/// <summary>
-	/// Provides engine specifc Prefab services.
+	/// Implementer provides information about a Prefab instance and <see cref="IEnginePrefabedGameObject"/> creation functionality.
+	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Instantiate.html
 	/// </summary>
 	[EngineServiceInterface]
-	public interface IEnginePrefabService
+	public interface IEnginePrefabService : IEngineGameObjectFactory<IEnginePrefabedGameObject>
 	{
 		/// <summary>
 		/// The name of the Prefab.

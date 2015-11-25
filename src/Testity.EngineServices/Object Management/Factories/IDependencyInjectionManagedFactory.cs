@@ -7,10 +7,10 @@ using Testity.EngineComponents;
 namespace Testity.EngineServices
 {
 	/// <summary>
-	/// Implementer provides factory/creation services for TComponentType objects.
+	/// Implementer provides factory/creation services for <see cref="TCreationType"/> objects.
 	/// Also makes the promise of managing dependencies for construction.
 	/// </summary>
-	/// <typeparam name="TComponentType">Type to be created.</typeparam>
+	/// <typeparam name="TCreationType">Type to be created.</typeparam>
 	[EngineServiceInterface]
 	public interface IDependencyInjectionManagedFactory<TCreationType>
 		where TCreationType : class

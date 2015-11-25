@@ -1,17 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{91DC280A-82BB-4C6C-8154-44B997123879}</ProjectGuid>
+    <ProjectGuid>88e45448-5f11-4d6e-b60b-2badf1e2901c</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testity.EngineComponents</RootNamespace>
-    <AssemblyName>Testity.EngineComponents</AssemblyName>
+    <RootNamespace>Testity.EngineServices.Unity3D</RootNamespace>
+    <AssemblyName>Testity.EngineServices.Unity3D</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,38 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System"/>
+    
+    <Reference Include="System.Core"/>
+    <Reference Include="System.Xml.Linq"/>
+    <Reference Include="System.Data.DataSetExtensions"/>
+    
+    
+    <Reference Include="System.Data"/>
+    
+    <Reference Include="System.Xml"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\EngineComponentInterfaceAttribute.cs" />
-    <Compile Include="Attributes\EngineEventInterfaceAttribute.cs" />
-    <Compile Include="GameObject\IEngineGameObject.cs" />
-    <Compile Include="GameObject\IEnginePrefabedGameObject.cs" />
-    <Compile Include="Interfaces\Engine Events\IEngineFixedUpdateable.cs" />
-    <Compile Include="Interfaces\Engine Events\IEngineStartable.cs" />
-    <Compile Include="Interfaces\Engine Events\IEngineUpdateable.cs" />
-    <Compile Include="Interfaces\IEngineActivatable.cs" />
-    <Compile Include="Interfaces\IEngineComponent.cs" />
-    <Compile Include="Interfaces\IEngineObject.cs" />
-    <Compile Include="Transform\IEngineDirectional.cs" />
-    <Compile Include="Transform\IEngineTransform.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Physics\" />
-    <Folder Include="Rendering\" />
-    <Folder Include="UI\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Testity.EngineMath\Testity.EngineMath.csproj">
-      <Project>{d1cb2af4-210c-48a6-ab75-491b824d25ef}</Project>
-      <Name>Testity.EngineMath</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -72,4 +53,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-</Project>
+
+ </Project>

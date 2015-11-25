@@ -8,7 +8,8 @@ namespace Testity.EngineComponents
 	/// <summary>
 	/// Implements offers the most basic of functionality required for engine objects.
 	/// </summary>
-	public interface IEngineObject : IEquatable<IEngineObject>
+	[EngineComponentInterface]
+	public interface IEngineObject : IEquatable<IEngineObject>, IDisposable
 	{
 		/// <summary>
 		/// Get or set the the <see cref="IEngineObject"/>.

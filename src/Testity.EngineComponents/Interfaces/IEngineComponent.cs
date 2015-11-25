@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Testity.EngineComponents
 {
+	[EngineComponentInterface]
 	public interface IEngineComponent : IEngineObject
 	{
 
