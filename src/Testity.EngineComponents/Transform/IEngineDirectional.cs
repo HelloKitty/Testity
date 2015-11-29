@@ -10,6 +10,7 @@ namespace Testity.EngineComponents
 	/// Represents and provides simple directions.
 	/// Not based on anything in Unity3D; maybe the Transform.back and etc.
 	/// </summary>
+	[EngineComponentInterface]
 	public interface IEngineDirectional
 	{
 		/// <summary>

@@ -16,7 +16,7 @@ namespace Testity.EngineServices
 		/// <summary>
 		/// Registeration service for <typeparamref name="TActualGameObjectType"/>s.
 		/// </summary>
-		protected readonly ILifetimeManagedEngineObjectRegister<IEngineGameObject, TActualGameObjectType> lifetimeManagerRegister;
+		private readonly ILifetimeManagedEngineObjectRegister<IEngineGameObject, TActualGameObjectType> lifetimeManagerRegister;
 
 		/// <summary>
 		/// Creates a managed destruction service based around the specified registry.

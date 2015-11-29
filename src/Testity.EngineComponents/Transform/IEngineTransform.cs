@@ -11,7 +11,7 @@ namespace Testity.EngineComponents
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Transform.html
 	/// </summary>
 	[EngineComponentInterface]
-	public interface IEngineTransform
+	public interface IEngineTransform : IEngineComponent
 	{
 		/// <summary>
 		/// Position of the transform in world space.

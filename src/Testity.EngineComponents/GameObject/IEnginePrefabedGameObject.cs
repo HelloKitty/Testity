@@ -10,6 +10,7 @@ namespace Testity.EngineComponents
 	/// about the prefab through this interface.
 	/// Not based on anything in Unity3D.
 	/// </summary>
+	[EngineComponentInterface]
 	public interface IEnginePrefabedGameObject : IEngineGameObject
 	{
 		string PrefabName { get; }

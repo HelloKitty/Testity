@@ -11,6 +11,7 @@ namespace Testity.EngineServices
 	/// </summary>
 	/// <typeparam name="TEngineObjectType">Engine object adapter type.</typeparam>
 	/// <typeparam name="TActualEngineObjectType">Actual game engine's object type.</typeparam>
+	[Serializable]
 	public class EngineObjectReferenceDictionary<TEngineObjectType, TActualEngineObjectType> : Dictionary<TEngineObjectType, TActualEngineObjectType>, IReadOnlyMapLookup<TEngineObjectType, TActualEngineObjectType>
 		where TEngineObjectType : class, IEngineObject where TActualEngineObjectType : class
     {

@@ -7,11 +7,11 @@ using Testity.EngineComponents;
 namespace Testity.EngineServices
 {
 	/// <summary>
-	/// Implementer provides information about a Prefab instance and <see cref="IEnginePrefabedGameObject"/> creation functionality.
+	/// Implementer provides information about a Prefab instance.
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Instantiate.html
 	/// </summary>
 	[EngineServiceInterface]
-	public interface IEnginePrefabService : IEngineGameObjectFactoryService<IEnginePrefabedGameObject>
+	public interface IEnginePrefabService
 	{
 		/// <summary>
 		/// The name of the Prefab.
