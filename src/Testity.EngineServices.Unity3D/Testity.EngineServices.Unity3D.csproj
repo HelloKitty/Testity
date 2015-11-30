@@ -41,8 +41,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\UnityEngineObjectEqualityComparer.cs" />
-    <Compile Include="Collections\UnityEngineObjectReferenceDictionary.cs" />
     <Compile Include="Lifetime Managers\UnityEngineLifetimeManagedGameObjectDestructionServiceAdapter.cs" />
     <Compile Include="Lifetime Managers\UnityEngineLifetimeManagedGameObjectFactoryServiceAdapter.cs" />
     <Compile Include="Prefab\UnityEnginePrefabServiceAdapter.cs" />
@@ -78,6 +76,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Collections\" />
     <Folder Include="Testing\Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
