@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Testity.EngineMath.Unity3D.AcceptanceTests
+namespace Testity.EngineMath.Unity3D.Tests
 {
 	[TestFixture]
 	public static class GenericVector3AgainstUnity

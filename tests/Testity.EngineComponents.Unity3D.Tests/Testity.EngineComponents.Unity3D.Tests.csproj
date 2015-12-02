@@ -7,8 +7,8 @@
     <ProjectGuid>{BA5D13CF-5A97-4869-BBE1-FCC5F74B315C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testity.EngineComponents.Unity3D.AcceptanceTests</RootNamespace>
-    <AssemblyName>Testity.EngineComponents.Unity3D.AcceptanceTests</AssemblyName>
+    <RootNamespace>Testity.EngineComponents.Unity3D.Tests</RootNamespace>
+    <AssemblyName>Testity.EngineComponents.Unity3D.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcceptanceTests\GeneralUnity3DComponentTests.cs" />
+    <Compile Include="UnitTests\GeneralUnity3DComponentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

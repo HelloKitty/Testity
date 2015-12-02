@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Testity.EngineComponents.Unity3D.AcceptanceTests
+namespace Testity.EngineComponents.Unity3D.Tests
 {
 	[TestFixture]
 	public static class GeneralUnity3DComponentTests

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testity.EngineMath;
+using System.Collections;
 
 namespace Testity.EngineMath
 {
@@ -14,7 +15,7 @@ namespace Testity.EngineMath
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Vector3.html
 	/// </summary>
 	/// <typeparam name="TMathType">Value type of the vector that must overload math operators (Ex. int, float, double).</typeparam>
-	public struct Vector3<TMathType> : IEquatable<Vector3<TMathType>>
+	public struct Vector3<TMathType> : IEquatable<Vector3<TMathType>>, IEnumerable<TMathType>
 		where TMathType : struct, IEquatable<TMathType>, IComparable<TMathType>
 	{
 		public static TMathType kEpsilon = MathT.GenerateKEpslion<TMathType>();
@@ -336,6 +337,18 @@ namespace Testity.EngineMath
 		{
 			StringBuilder sb = new StringBuilder();
 			return sb.AppendFormat("{0}: {1}:{2}:{3}", nameof(Vector3<TMathType>), x, y, z).ToString();
+		}
+
+		public IEnumerator<TMathType> GetEnumerator()
+		{
+			//Not efficient way to do this
+			return (new List<TMathType>(3) { x, y, z }).GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			//Not efficient way to do this
+			return (new TMathType[3] { x, y, z }).GetEnumerator();
 		}
 
 		//TODO: Implement these methods.

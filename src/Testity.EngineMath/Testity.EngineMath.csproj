@@ -50,6 +50,7 @@
     <Compile Include="Math\MathT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quaternion\Quaternion.cs" />
+    <Compile Include="Vector\Vector2.cs" />
     <Compile Include="Vector\Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
