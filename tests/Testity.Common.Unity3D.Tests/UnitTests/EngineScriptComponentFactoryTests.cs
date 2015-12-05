@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Testity.EngineComponents;
 using Testity.Serialization;
 
@@ -46,27 +45,5 @@ namespace Testity.Common.Unity3D.Tests
 			Assert.IsInstanceOf<TestEngineScriptBase>(scriptBase);
 			Assert.IsNotInstanceOf<TestEngineScriptChild>(scriptBase);
 		}
-
-		[Test]
-		[MaxTime(int.MaxValue)]
-		public static void Test_EngineScriptComponentFactoryCreate_No_Deadlock()
-		{
-			//This may look add but it's just to try to catch potential deadlocks in the class
-			//WARNING: Use a long running task or the test gets funky and won't complete
-			IEnumerable<Task> taskCollection = Enumerable.Range(0, 5000).Select((int i) =>
-				Task.Factory.StartNew(() =>
-				{
-					EngineScriptComponentFactory.Create<TestEngineScriptBase>();
-					EngineScriptComponentFactory.Create<TestEngineScriptBase>();
-				}, TaskCreationOptions.LongRunning));
-
-			//tpl doesn't have great waiting extensions.
-			//WaitAll didn't work
-			foreach (Task t in taskCollection)
-				t.Wait(int.MaxValue);
-
-			//check that all the tasks finished.
-			Assert.IsTrue(taskCollection.Select(x => x.IsCompleted).Aggregate(true, (x, y) => x && y));
-        }
     }
 }
