@@ -12,17 +12,17 @@ namespace Testity.EngineServices
 	public class UnregistrationResult<TObjectType>
 		where TObjectType : class
     {
-		private readonly bool _Failed;
+		private readonly bool _Success;
 		/// <summary>
 		/// Indicates if unregisteration was sucessful.
 		/// </summary>
-		public bool Failed
+		public bool Success
 		{
-			get { return Failed && Value != null; }
+			get { return _Success && Value != null; }
 		}
 
 		/// <summary>
-		/// The <see cref="TObjectType"/> object that was unregistered. Potentially null. Check <see cref="Failed"/> first.
+		/// The <typeparamref name="TObjectType"/> object that was unregistered. Potentially null. Check <see cref="Failed"/> first.
 		/// </summary>
 		public TObjectType Value { get; private set; }
 
@@ -33,7 +33,7 @@ namespace Testity.EngineServices
 		/// <param name="val">The object if found. Null is acceptable.</param>
 		public UnregistrationResult(bool found, TObjectType val)
 		{
-			_Failed = found;
+			_Success = found;
 			Value = val;
 		}
 	}

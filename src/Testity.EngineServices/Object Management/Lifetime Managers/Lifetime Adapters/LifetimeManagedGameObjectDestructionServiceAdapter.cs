@@ -37,7 +37,7 @@ namespace Testity.EngineServices
 		{
 			UnregistrationResult<TActualGameObjectType> result = lifetimeManagerRegister.TryUnregister(toDestroy);
 
-			if (!result.Failed)
+			if (!result.Success)
 				return false;
 
 			DestroyObject(result.Value);

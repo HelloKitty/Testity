@@ -50,8 +50,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\EngineObjectReferenceDictionaryTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
+      <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
+      <Name>Testity.EngineComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Testity.EngineMath\Testity.EngineMath.csproj">
+      <Project>{d1cb2af4-210c-48a6-ab75-491b824d25ef}</Project>
+      <Name>Testity.EngineMath</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Testity.EngineServices\Testity.EngineServices.csproj">
       <Project>{2f8fecf5-58d4-4019-9030-a7ddfa8d28ad}</Project>
       <Name>Testity.EngineServices</Name>
@@ -62,9 +71,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UnitTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

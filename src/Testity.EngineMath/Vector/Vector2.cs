@@ -291,6 +291,7 @@ namespace Testity.EngineMath
 			this.x = new_x;
 			this.y = new_y;
 		}
+
 		public override string ToString()
 		{
 			StringBuilder sb = new StringBuilder();

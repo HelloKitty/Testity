@@ -16,6 +16,25 @@ namespace Testity.EngineServices
 		where TEngineObjectType : class, IEngineObject where TActualEngineObjectType : class
     {
 		/// <summary>
+		/// Initializes a dictionary with the default <see cref="IEqualityComparer{TEngineObjectType}"/>.
+		/// </summary>
+		public EngineObjectReferenceDictionary()
+			: base()
+		{
+
+		}
+
+		/// <summary>
+		/// Initializes a dictionary with the default <see cref="IEqualityComparer{TEngineObjectType}"/>.
+		/// <param name="initialSize">Intial size of the dictionary.</param>
+		/// </summary>
+		public EngineObjectReferenceDictionary(int initialSize)
+			: base(initialSize)
+		{
+
+		}
+
+		/// <summary>
 		/// Initializes a dictionary with the custom <see cref="IEqualityComparer{TEngineObjectType}"/>.
 		/// </summary>
 		/// <param name="customEngineObjectEqualityComparer">Custom reference equality comparer.</param>
@@ -29,9 +48,9 @@ namespace Testity.EngineServices
 		/// Initializes a dictionary with the custom <see cref="IEqualityComparer{TEngineObjectType}"/> with an intialize size.
 		/// </summary>
 		/// <param name="customEngineObjectEqualityComparer">Custom reference equality comparer.</param>
-		/// <param name="intialSize">Intial size of the dictionary.</param>
-		public EngineObjectReferenceDictionary(int intialSize, IEqualityComparer<TEngineObjectType> customEngineObjectEqualityComparer)
-			: base(intialSize, customEngineObjectEqualityComparer)
+		/// <param name="initialSize">Intial size of the dictionary.</param>
+		public EngineObjectReferenceDictionary(int initialSize, IEqualityComparer<TEngineObjectType> customEngineObjectEqualityComparer)
+			: base(initialSize, customEngineObjectEqualityComparer)
 		{
 
 		}
@@ -39,13 +58,20 @@ namespace Testity.EngineServices
 		/// <summary>
 		/// Attempts to register a reference to <typeparamref name="TActualEngineObjectType"/> with the key being <typeparamref name="TEngineObjectType"/>.
 		/// </summary>
-		/// <param name="objectToRegister">Key to store the reference under.</param>
+		/// <param name="keyToRegister">Key to store the reference under.</param>
 		/// <param name="referenceToRegister">Reference to store.</param>
 		/// <returns>Indicates if the object is stored.</returns>
-		public bool Register(TEngineObjectType objectToRegister, TActualEngineObjectType referenceToRegister)
+		/// <exception cref="ArgumentNullException">Throws if either arg is null.</exception>
+		public bool Register(TEngineObjectType keyToRegister, TActualEngineObjectType referenceToRegister)
 		{
-			if (!ContainsKey(objectToRegister))
-				Add(objectToRegister, referenceToRegister);
+			if (keyToRegister == null)
+				throw new ArgumentNullException(nameof(keyToRegister), "Key cannot be null.");
+
+			if(referenceToRegister == null)
+				throw new ArgumentNullException(nameof(referenceToRegister), "Value cannot be null.");
+
+			if (!ContainsKey(keyToRegister))
+				Add(keyToRegister, referenceToRegister);
 
 			return true;
 		}
@@ -55,6 +81,7 @@ namespace Testity.EngineServices
 		/// </summary>
 		/// <param name="key">Key value.</param>
 		/// <returns>If found it returning the stored <see cref="TValue"/> instance. Otherwise null.</returns>
+		/// <exception cref="ArgumentNullException">Will throw if key is null.</exception>
 		public TActualEngineObjectType TryLookup(TEngineObjectType key)
 		{
 			if (ContainsKey(key))
@@ -74,10 +101,11 @@ namespace Testity.EngineServices
 			{
 				TActualEngineObjectType value = this[objectToUnregister];
 
+				//shouldn't ever fail
 				if (!Remove(objectToUnregister))
 					throw new InvalidOperationException("Failed to remove " + nameof(objectToUnregister) + " from map in " + GetType());
 
-                return new UnregistrationResult<TActualEngineObjectType>(true, this[objectToUnregister]);
+                return new UnregistrationResult<TActualEngineObjectType>(true, value);
 			}		
 			else
 				return new UnregistrationResult<TActualEngineObjectType>(false, null);

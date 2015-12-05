@@ -52,6 +52,9 @@ namespace Testity.EngineComponents.Tests.UnitTests
 			Assert.IsTrue(engineScriptComponent != engineScriptComponentSecondNonEqual);
 			Assert.IsTrue(engineObjectInterface != engineObjectInterfaceNotEqual);
 
+			Assert.IsTrue(engineScriptComponentSecondNonEqual != (IEngineObject)engineScriptComponent);
+			Assert.IsTrue((IEngineObject)engineScriptComponentSecondNonEqual != engineScriptComponent);
+
 			Assert.IsFalse(engineObjectInterface.Equals(engineScriptComponentSecondNonEqual));
 			Assert.IsFalse(engineScriptComponent.Equals(engineScriptComponentSecondNonEqual));
 		}
