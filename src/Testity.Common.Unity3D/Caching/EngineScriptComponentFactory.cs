@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Testity.Common.Unity3D
 {
-	public static class EngineComponentFactory
+	public static class EngineScriptComponentFactory
 	{
 		//Unity3D doesn't support recursive
 		private static readonly ReaderWriterLockSlim syncObj = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
@@ -60,9 +60,13 @@ namespace Testity.Common.Unity3D
 			//We create a new expression and compile it into a delegate so we can call it next time
 			NewExpression creationExpression = Expression.New(typeof(TEngineScriptComponentType).Constructor());
 
-			LambdaExpression creationLambda = Expression.Lambda<TEngineScriptComponentType>(creationExpression);
+			LambdaExpression creationLambda = Expression.Lambda<Func<TEngineScriptComponentType>>(creationExpression);
 
-			return (Func<EngineScriptComponent>)creationLambda.Compile();
+			//.Net 3.5 doesn't have contravariant Func<T> so we have to make a lambda around this func
+			//We wrap the compiled lambda func inside of a new func that fits the type
+			//It should be preformant enough and it gives us the required type sig for the func
+			Func<TEngineScriptComponentType> compiledLambda = creationLambda.Compile() as Func<TEngineScriptComponentType>;
+            return () => compiledLambda();
 		}
     }
 }

@@ -48,7 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Caching\EngineComponentFactory.cs" />
+    <Compile Include="Caching\EngineScriptComponentFactory.cs" />
     <Compile Include="Extensions\UnityQuaternionExtensions.cs" />
     <Compile Include="Extensions\UnityVectorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

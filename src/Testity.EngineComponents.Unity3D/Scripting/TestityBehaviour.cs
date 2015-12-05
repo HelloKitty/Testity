@@ -42,7 +42,7 @@ namespace Testity.EngineComponents.Unity3D
 			//Creates an empty instance of the TScriptComponentType
 			//We do this behind a factory because this may not be a simple task and would emit Activator.CreateInstance
 			//if done with new()
-			_InternalSerializableComponent = EngineComponentFactory.Create<TScriptComponentType>();
+			_InternalSerializableComponent = EngineScriptComponentFactory.Create<TScriptComponentType>();
 
 			//this call should set all serialized values
 			InitializeScriptComponentMemberValues(_InternalSerializableComponent);
