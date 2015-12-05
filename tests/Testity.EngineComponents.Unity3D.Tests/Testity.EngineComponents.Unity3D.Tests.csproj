@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="UnitTests\GeneralUnity3DComponentTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\TestityBehaviourTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
