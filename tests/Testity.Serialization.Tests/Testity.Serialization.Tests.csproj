@@ -53,7 +53,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Testity.Serialization\Testity.Serialization.csproj">
+    <ProjectReference Include="..\..\src\Testity.Serialization\Testity.Serialization.csproj">
       <Project>{9f4b3d14-ef23-4315-96c1-b95162d4f244}</Project>
       <Name>Testity.Serialization</Name>
     </ProjectReference>
