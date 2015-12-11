@@ -4,4 +4,5 @@ nunit-console ./Testity.EngineMath.Tests/bin/Debug/Testity.EngineMath.Tests.dll
 
 nunit-console -framework=Mono-4.0 ./Testity.EngineMath.Unity3D.Tests/bin/Debug/Testity.EngineMath.Unity3D.Tests.dll
 nunit-console -framework=Mono-4.0 ./Testity.EngineComponents.Unity3D.Tests/bin/Debug/Testity.EngineComponents.Unity3D.Tests.dll
-nunit-console -framework=Mono-4.0 ./Testity.Common.Unity3D.Tests/bin/Debug/Testity.Common.Unity3D.Tests.dll 
+nunit-console -framework=Mono-4.0 ./Testity.Common.Unity3D.Tests/bin/Debug/Testity.Common.Unity3D.Tests.dll
+nunit-console -framework=Mono-4.0 ./Testity.Serialization.Tests/bin/Debug/Testity.Serialization.Tests.dll
