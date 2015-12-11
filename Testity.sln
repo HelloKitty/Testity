@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.EngineMath", "src\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.EngineMath.Tests", "tests\Testity.EngineMath.Tests\Testity.EngineMath.Tests.csproj", "{6597F436-C412-4D3B-BC92-45668476D488}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Concrete EngineServices", "Concrete EngineServices", "{6BB3781C-2998-4B7D-9B69-0C5F124EFE98}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Concrete Engine", "Concrete Engine", "{6BB3781C-2998-4B7D-9B69-0C5F124EFE98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.EngineServices.Unity3D", "src\Testity.EngineServices.Unity3D\Testity.EngineServices.Unity3D.csproj", "{88E45448-5F11-4D6E-B60B-2BADF1E2901C}"
 EndProject
@@ -42,6 +42,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity3D", "Unity3D", "{B9042345-AA22-4F8C-A3B7-8623972D4E32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.Serialization.Tests", "tests\Testity.EngineMath.Tests\Testity.Serialization.Tests\Testity.Serialization.Tests.csproj", "{62C9C8BF-DA75-48C7-9BBB-458D496433E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.BuildProcess", "Testity.BuildProcess\Testity.BuildProcess.csproj", "{B936525C-8AA6-4593-8544-3BF32FC0A026}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Concrete BuildProcesses", "Concrete BuildProcesses", "{3ECD100E-5B76-4068-BB9F-F44CE3706685}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testity.BuildProcess.Tests", "tests\Testity.BuildProcess.Tests\Testity.BuildProcess.Tests.csproj", "{19CFDB19-862C-4ABB-99F6-B5707ABFB309}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +115,14 @@ Global
 		{62C9C8BF-DA75-48C7-9BBB-458D496433E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62C9C8BF-DA75-48C7-9BBB-458D496433E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62C9C8BF-DA75-48C7-9BBB-458D496433E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B936525C-8AA6-4593-8544-3BF32FC0A026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B936525C-8AA6-4593-8544-3BF32FC0A026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B936525C-8AA6-4593-8544-3BF32FC0A026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B936525C-8AA6-4593-8544-3BF32FC0A026}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19CFDB19-862C-4ABB-99F6-B5707ABFB309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19CFDB19-862C-4ABB-99F6-B5707ABFB309}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19CFDB19-862C-4ABB-99F6-B5707ABFB309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19CFDB19-862C-4ABB-99F6-B5707ABFB309}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,5 +146,8 @@ Global
 		{E4E397B7-2C20-4F40-9C3E-265215EA9C4E} = {B9042345-AA22-4F8C-A3B7-8623972D4E32}
 		{B9042345-AA22-4F8C-A3B7-8623972D4E32} = {76FA185F-7DB5-4675-8CB9-03838B9B628D}
 		{62C9C8BF-DA75-48C7-9BBB-458D496433E5} = {76FA185F-7DB5-4675-8CB9-03838B9B628D}
+		{B936525C-8AA6-4593-8544-3BF32FC0A026} = {2417FD8E-AA3C-4B92-B267-9C6D1B3BEE97}
+		{3ECD100E-5B76-4068-BB9F-F44CE3706685} = {2417FD8E-AA3C-4B92-B267-9C6D1B3BEE97}
+		{19CFDB19-862C-4ABB-99F6-B5707ABFB309} = {76FA185F-7DB5-4675-8CB9-03838B9B628D}
 	EndGlobalSection
 EndGlobal
