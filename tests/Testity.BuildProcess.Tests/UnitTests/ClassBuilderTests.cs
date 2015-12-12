@@ -19,11 +19,12 @@ namespace Testity.BuildProcess.Tests
 			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
 
 			//act
-			scriptBuilder.AddClassField("testField", typeof(EngineScriptComponent), false, new ExposeDataMemeberAttribute());
-			scriptBuilder.AddClassField("testField5", typeof(EngineScriptComponent), false, new ExposeDataMemeberAttribute(), new ThreadStaticAttribute());
+			scriptBuilder.AddClassField("testField", typeof(EngineScriptComponent), MemberImplementationModifier.Private, new ExposeDataMemeberAttribute());
+			scriptBuilder.AddClassField("testField5", typeof(EngineScriptComponent), MemberImplementationModifier.Private, new ExposeDataMemeberAttribute(), new ThreadStaticAttribute());
 
 			//assert
-			Assert.IsTrue(scriptBuilder.Compile().Contains("testField"));
+			Assert.IsTrue(scriptBuilder.Compile().Contains("private " + typeof(EngineScriptComponent).FullName + " testField"));
+			Assert.IsTrue(scriptBuilder.Compile().Contains("[" + typeof(ExposeDataMemeberAttribute).FullName+ "]"));
         }
 
 		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a base class with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
@@ -40,6 +41,19 @@ namespace Testity.BuildProcess.Tests
 			Assert.Throws<InvalidOperationException>(() => scriptBuilder.AddBaseClass<EngineScriptComponent>());
 			Assert.DoesNotThrow(() => scriptBuilder.AddBaseClass<ICloneable>());
 			Assert.IsTrue(scriptBuilder.Compile().Contains(", " + typeof(ICloneable).FullName));
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a method with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
+		public static void Test_TestityClassBuilder_Test_Adding_Method()
+		{
+			//arrange
+			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
+
+			//act
+			scriptBuilder.AddMemberMethod("TestMethod", typeof(string), MemberImplementationModifier.Public, null, new ParameterData(typeof(string), "paramOne"), new ParameterData(typeof(int), "paramTwo"));
+
+			//assert
+			Assert.IsTrue(scriptBuilder.Compile().Contains("TestMethod(System.String paramOne"));
 		}
 	}
 }

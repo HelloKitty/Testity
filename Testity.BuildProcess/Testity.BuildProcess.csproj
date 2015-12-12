@@ -94,6 +94,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ParameterData.cs" />
+    <Compile Include="Extensions\MemberImplementationModifierExtensions.cs" />
+    <Compile Include="MemberImplementationModifier.cs" />
     <Compile Include="Builders\TestityClassBuilder.cs" />
     <Compile Include="Parsing\DLLLoader.cs" />
     <Compile Include="Parsing\EngineScriptComponentLocator.cs" />
