@@ -55,6 +55,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Testity.BuildProcess\Testity.BuildProcess.csproj">
+      <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
+      <Name>Testity.BuildProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
       <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
       <Name>Testity.EngineComponents</Name>
@@ -62,10 +66,6 @@
     <ProjectReference Include="..\..\src\Testity.Serialization\Testity.Serialization.csproj">
       <Project>{9f4b3d14-ef23-4315-96c1-b95162d4f244}</Project>
       <Name>Testity.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Testity.BuildProcess\Testity.BuildProcess.csproj">
-      <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
-      <Name>Testity.BuildProcess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
