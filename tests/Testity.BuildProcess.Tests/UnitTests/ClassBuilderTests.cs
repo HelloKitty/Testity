@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,17 @@ namespace Testity.BuildProcess.Tests
 		{
 			//arrange
 			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
+			Mock<IMemberImplementationProvider> implementationProvider = new Mock<IMemberImplementationProvider>();
+
+			//Setup the implementationProvider
+			implementationProvider.SetupGet(x => x.MemberName).Returns("testField");
+			implementationProvider.SetupGet(x => x.MemberType).Returns(typeof(EngineScriptComponent));
+			implementationProvider.SetupGet(x => x.Modifiers).Returns(MemberImplementationModifier.Private);
+			implementationProvider.SetupGet(x => x.Attributes).Returns(new Attribute[] { new ExposeDataMemeberAttribute() });
+
 
 			//act
-			scriptBuilder.AddClassField("testField", typeof(EngineScriptComponent), MemberImplementationModifier.Private, new ExposeDataMemeberAttribute());
-			scriptBuilder.AddClassField("testField5", typeof(EngineScriptComponent), MemberImplementationModifier.Private, new ExposeDataMemeberAttribute(), new ThreadStaticAttribute());
+			scriptBuilder.AddClassField(implementationProvider.Object);
 
 			//assert
 			Assert.IsTrue(scriptBuilder.Compile().Contains("private " + typeof(EngineScriptComponent).FullName + " testField"));
@@ -49,8 +57,16 @@ namespace Testity.BuildProcess.Tests
 			//arrange
 			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
 
+			Mock<IMemberImplementationProvider> implementationProvider = new Mock<IMemberImplementationProvider>();
+
+			//Setup the implementationProvider
+			implementationProvider.SetupGet(x => x.MemberName).Returns("TestMethod");
+			implementationProvider.SetupGet(x => x.MemberType).Returns(typeof(string));
+			implementationProvider.SetupGet(x => x.Modifiers).Returns(MemberImplementationModifier.Public);
+			implementationProvider.SetupGet(x => x.Attributes).Returns(Enumerable.Empty<Attribute>());
+
 			//act
-			scriptBuilder.AddMemberMethod("TestMethod", typeof(string), MemberImplementationModifier.Public, null, new ParameterData(typeof(string), "paramOne"), new ParameterData(typeof(int), "paramTwo"));
+			scriptBuilder.AddMemberMethod(implementationProvider.Object, new ParameterData(typeof(string), "paramOne"), new ParameterData(typeof(int), "paramTwo"));
 
 			//assert
 			Assert.IsTrue(scriptBuilder.Compile().Contains("TestMethod(System.String paramOne"));

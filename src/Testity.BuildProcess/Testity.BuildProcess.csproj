@@ -53,10 +53,6 @@
       <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.1.1\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -96,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Builders\ParameterData.cs" />
     <Compile Include="Extensions\MemberImplementationModifierExtensions.cs" />
+    <Compile Include="IMemberImplementationProvider.cs" />
     <Compile Include="MemberImplementationModifier.cs" />
     <Compile Include="Builders\TestityClassBuilder.cs" />
     <Compile Include="Parsing\DLLLoader.cs" />
@@ -106,18 +103,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
+    <ProjectReference Include="..\Testity.EngineComponents\Testity.EngineComponents.csproj">
       <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
       <Name>Testity.EngineComponents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\Testity.Serialization\Testity.Serialization.csproj">
+    <ProjectReference Include="..\Testity.Serialization\Testity.Serialization.csproj">
       <Project>{9f4b3d14-ef23-4315-96c1-b95162d4f244}</Project>
       <Name>Testity.Serialization</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

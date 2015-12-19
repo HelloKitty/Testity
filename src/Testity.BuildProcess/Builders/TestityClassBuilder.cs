@@ -64,19 +64,19 @@ namespace Testity.BuildProcess
 		}
 
 		//TODO: Support property fields and merge duplicate code
-		public void AddClassField(string fieldName, Type fieldType, MemberImplementationModifier modifier, params Attribute[] attris)
-		{
+		public void AddClassField(IMemberImplementationProvider implementationProvider)
+        {
 			//variable details such as: name and type
 			VariableDeclarationSyntax variableSyntax = SyntaxFactory
 				.VariableDeclaration(
-					SyntaxFactory.ParseTypeName(fieldType.ToString()),
-					SyntaxFactory.SeparatedList(new[] { SyntaxFactory.VariableDeclarator(SyntaxFactory.Identifier(fieldName)) })
+					SyntaxFactory.ParseTypeName(implementationProvider.MemberType.ToString()),
+					SyntaxFactory.SeparatedList(new[] { SyntaxFactory.VariableDeclarator(SyntaxFactory.Identifier(implementationProvider.MemberName)) })
 					);
 
 			//Generates a new immutable list of attribute syntax data
 			SyntaxList<AttributeListSyntax> attributeList;
 
-			foreach(Attribute a in attris)
+			foreach(Attribute a in implementationProvider.Attributes)
 			{
 				//Why is it a list? I think because Rosyln supports adding multiple attributes on a single line
 				attributeList = attributeList.Add(SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(a.GetType().ToString())))));
@@ -85,26 +85,23 @@ namespace Testity.BuildProcess
 			//New field using the information above that may be private or public.
 			FieldDeclarationSyntax newField = SyntaxFactory.FieldDeclaration(variableSyntax)
 				.WithAttributeLists(attributeList)
-				.WithModifiers(SyntaxFactory.TokenList(modifier.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
+				.WithModifiers(SyntaxFactory.TokenList(implementationProvider.Modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
 
 			lock(syncObj)
 				memberSyntax.Add(newField);
 		}
 
-		public void AddMemberMethod(string methodName, Type returnType, MemberImplementationModifier modifiers, IEnumerable<Type> attributeTypes, params ParameterData[] typeArgs)
+		public void AddMemberMethod(IMemberImplementationProvider implementationProvider, params ParameterData[] typeArgs)
 		{
-			if (attributeTypes == null)
-				attributeTypes = Enumerable.Empty<Type>();
-
 			ParameterListSyntax parameters = SyntaxFactory.ParameterList().AddParameters(
 				typeArgs.Select(x =>
 					SyntaxFactory.Parameter(SyntaxFactory.ParseToken(x.ParameterName))
 						.WithType(SyntaxFactory.ParseTypeName(x.ParameterType.FullName))
 				).ToArray());
 
-			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(SyntaxFactory.ParseTypeName(returnType.FullName), methodName)
-				.WithModifiers(SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))))
-				.WithAttributeLists(SyntaxFactory.List(attributeTypes.Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))))
+			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(SyntaxFactory.ParseTypeName(implementationProvider.MemberType.FullName), implementationProvider.MemberName)
+				.WithModifiers(SyntaxFactory.TokenList(implementationProvider.Modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))))
+				.WithAttributeLists(SyntaxFactory.List(implementationProvider.Attributes.Select(x => x.GetType()).Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))))
 				.WithParameterList(parameters)
 				.WithBody(SyntaxFactory.Block());
 
