@@ -52,9 +52,6 @@
     <Compile Include="UnitTests\ClassBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\src\Testity.BuildProcess\Testity.BuildProcess.csproj">
       <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
       <Name>Testity.BuildProcess</Name>
@@ -67,6 +64,9 @@
       <Project>{9f4b3d14-ef23-4315-96c1-b95162d4f244}</Project>
       <Name>Testity.Serialization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
