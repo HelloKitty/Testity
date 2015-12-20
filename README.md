@@ -17,3 +17,9 @@ Testity is more than just a library. Testity is a custom workflow for .Net class
 Windows: Tested Locally
 
 Linux/Mono: [![Build Status](https://travis-ci.org/HelloKitty/Testity.svg?branch=master)](https://travis-ci.org/HelloKitty/Testity)
+
+####Coverity
+<a href="https://scan.coverity.com/projects/hellokitty-testity">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/7337/badge.svg"/>
+</a>
