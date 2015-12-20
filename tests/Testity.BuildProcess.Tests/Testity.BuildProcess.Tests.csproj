@@ -72,6 +72,10 @@
       <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
       <Name>Testity.BuildProcess</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Testity.Common\Testity.Common.csproj">
+      <Project>{54d9c6dd-c72c-42f1-9bcf-579447b1f0a6}</Project>
+      <Name>Testity.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
       <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
       <Name>Testity.EngineComponents</Name>

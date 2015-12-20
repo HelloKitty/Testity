@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testity.Common;
 using Testity.EngineComponents;
 using Testity.Serialization;
 
@@ -56,10 +57,10 @@ namespace Testity.BuildProcess.Tests
 
 			//act
 			scriptBuilder.AddMemberMethod(implementationProvider.Object, BuildBodyProviderMockEmpty().Object,
-				BuildParameterProviderMock(new ParameterData(typeof(string), "paramOne"), new ParameterData(typeof(int), "paramTwo")).Object);
+				BuildParameterProviderMock(typeof(string), typeof(int)).Object);
 
 			//assert
-			Assert.IsTrue(scriptBuilder.Compile().Contains("TestMethod(System.String paramOne"));
+			Assert.IsTrue(scriptBuilder.Compile().Contains("TestMethod(System.String String1"));
 		}
 
 		private static Mock<IMemberImplementationProvider> BuildMemberImplementationMock(string memberName, Type memberType, MemberImplementationModifier modifiers, IEnumerable<Type> attributeTypes)
@@ -87,15 +88,17 @@ namespace Testity.BuildProcess.Tests
 			return bodyProvider;
 		}
 
-		private static Mock<IParameterImplementationProvider> BuildParameterProviderMock(params ParameterData[] parameters)
+		private static Mock<IParameterImplementationProvider> BuildParameterProviderMock(params Type[] parameters)
 		{
 			Mock<IParameterImplementationProvider> parameterProvider = new Mock<IParameterImplementationProvider>();
+
+			int paramNum = 0;
 
 			//This is ugly but it builds a collection of parameters for the method or whatever
 			ParameterListSyntax roslynParams = SyntaxFactory.ParameterList().AddParameters(
   				parameters.Select(x =>
-  					SyntaxFactory.Parameter(SyntaxFactory.ParseToken(x.ParameterName))
-  						.WithType(SyntaxFactory.ParseTypeName(x.ParameterType.FullName))
+  					SyntaxFactory.Parameter(SyntaxFactory.ParseToken(x.Name + ++paramNum))
+  						.WithType(SyntaxFactory.ParseTypeName(x.FullName))
   				).ToArray());
 
 			parameterProvider.SetupGet(x => x.Parameters).Returns(roslynParams);
