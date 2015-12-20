@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.Common;
 
 namespace Testity.EngineComponents
 {
@@ -15,6 +16,7 @@ namespace Testity.EngineComponents
 		/// <summary>
 		/// Called everytime the engine updates in an unfixed timestep.
 		/// </summary>
+		[ImplementationRequiresName(EngineType.Unity3D, "Update")]
 		void Update();
 	}
 }

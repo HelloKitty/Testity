@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.Common;
 
 namespace Testity.EngineComponents
 {
@@ -15,6 +16,7 @@ namespace Testity.EngineComponents
 		/// <summary>
 		/// Called once before the first update of the engine after the implementer was created.
 		/// </summary>
+		[ImplementationRequiresName(EngineType.Unity3D, "Start")]
 		void Start();
 	}
 }

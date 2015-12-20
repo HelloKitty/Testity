@@ -39,9 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\BuildProcessMetadata\ImplementationMetadataAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationRequiresNameAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationRequiresTypeAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationRequiresParametersAttribute.cs" />
+    <Compile Include="EngineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

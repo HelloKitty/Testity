@@ -62,6 +62,10 @@
     <Folder Include="UI\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Testity.Common\Testity.Common.csproj">
+      <Project>{54d9c6dd-c72c-42f1-9bcf-579447b1f0a6}</Project>
+      <Name>Testity.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Testity.EngineMath\Testity.EngineMath.csproj">
       <Project>{d1cb2af4-210c-48a6-ab75-491b824d25ef}</Project>
       <Name>Testity.EngineMath</Name>
