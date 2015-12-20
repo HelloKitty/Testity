@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Testity.Common
 {
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 	public class ImplementationRequiresTypeAttribute : Attribute
 	{
 		public readonly Type ImplementationType;

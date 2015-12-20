@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Testity.Common.Attributes
 {
-	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 	public class ImplementationRequiresParametersAttribute : Attribute
 	{
 		public readonly IEnumerable<Type> ImplementationParameterTypes;
