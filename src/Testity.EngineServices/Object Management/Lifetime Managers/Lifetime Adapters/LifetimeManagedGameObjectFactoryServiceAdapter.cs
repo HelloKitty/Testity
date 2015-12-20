@@ -64,7 +64,7 @@ namespace Testity.EngineServices
 		/// <param name="rotation"><see cref="Quaternion{TMathType}"/> representing the rotation of the <see cref="IEngineGameObject"/> to be created.</param>
 		/// <param name="prefab">Prefab information service.</param>
 		/// <returns>A valid non-null <see cref="IEnginePrefabedGameObject"/> at specified position and rotation.</returns>
-		public IEnginePrefabedGameObject Create(IEnginePrefabService prefab, Vector3<float> position, Quaternion<float> rotation)
+		public IEnginePrefabedGameObject Create(IEnginePrefab prefab, Vector3<float> position, Quaternion<float> rotation)
 		{
 			//Creates an instance of the actual engine gameobject and then registers it.
 			//Once registeration is done it returns it for use. No consumer of the factory will know anything but of the creation.
@@ -99,7 +99,7 @@ namespace Testity.EngineServices
 		/// <param name="rotation">The <see cref="Quaternion{TMathType}"/> rotation to create the <typeparamref name="TActualGameObjectType"/> object with.</param>
 		/// <param name="prefab">Prefab information service.</param>
 		/// <returns>A valid instance of <typeparamref name="TActualGameObjectType"/> with the specified transformation.</returns>
-		protected abstract TActualGameObjectType CreateActualEngineObject(IEnginePrefabService prefab, Vector3<float> position, Quaternion<float> rotation);
+		protected abstract TActualGameObjectType CreateActualEngineObject(IEnginePrefab prefab, Vector3<float> position, Quaternion<float> rotation);
 
 		/// <summary>
 		/// Creates an adapter around the <typeparamref name="TActualGameObjectType"/> object instance for use externally.
@@ -109,11 +109,11 @@ namespace Testity.EngineServices
 		protected abstract IEngineGameObject CreateGameObjectAdapter(TActualGameObjectType actualGameObject);
 
 		/// <summary>
-		/// Creates an adapter around the <typeparamref name="TActualGameObjectType"/> object instance and <see cref="IEnginePrefabService"/> for use externally.
+		/// Creates an adapter around the <typeparamref name="TActualGameObjectType"/> object instance and <see cref="IEnginePrefab"/> for use externally.
 		/// </summary>
 		/// <param name="actualGameObject">Object to plug in to the adapter.</param>
 		/// <param name="prefab">Prefab information service.</param>
 		/// <returns>A valid adapter around the <typeparamref name="TActualGameObjectType"/> instance.</returns>
-		protected abstract IEnginePrefabedGameObject CreatePrefabbedGameObjectAdapter(IEnginePrefabService prefab, TActualGameObjectType actualGameObject);
+		protected abstract IEnginePrefabedGameObject CreatePrefabbedGameObjectAdapter(IEnginePrefab prefab, TActualGameObjectType actualGameObject);
 	}
 }

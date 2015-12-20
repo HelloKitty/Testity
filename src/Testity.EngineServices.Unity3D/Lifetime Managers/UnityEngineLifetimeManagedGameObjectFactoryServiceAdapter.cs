@@ -28,7 +28,7 @@ namespace Testity.EngineServices.Unity3D
 			return newObject;
         }
 
-		protected override GameObject CreateActualEngineObject(IEnginePrefabService prefab, Vector3<float> position, Quaternion<float> rotation)
+		protected override GameObject CreateActualEngineObject(IEnginePrefab prefab, Vector3<float> position, Quaternion<float> rotation)
 		{
 			if (prefab == null)
 				throw new ArgumentNullException(nameof(prefab), "Prefab service parameter must not be null.");
@@ -50,7 +50,7 @@ namespace Testity.EngineServices.Unity3D
 			return new UnityEngineGameObjectAdapter(actualGameObject);
 		}
 
-		protected override IEnginePrefabedGameObject CreatePrefabbedGameObjectAdapter(IEnginePrefabService prefab, GameObject actualGameObject)
+		protected override IEnginePrefabedGameObject CreatePrefabbedGameObjectAdapter(IEnginePrefab prefab, GameObject actualGameObject)
 		{
 			if (actualGameObject == null)
 				throw new ArgumentNullException(nameof(actualGameObject), nameof(GameObject) + " parameters must not be null.");

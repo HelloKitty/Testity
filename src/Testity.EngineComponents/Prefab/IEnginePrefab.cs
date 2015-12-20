@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using Testity.EngineComponents;
 
-namespace Testity.EngineServices
+namespace Testity.EngineComponents
 {
 	/// <summary>
 	/// Implementer provides information about a Prefab instance.
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Instantiate.html
 	/// </summary>
-	[EngineServiceInterface]
-	public interface IEnginePrefabService
+	[EngineComponentInterface]
+	public interface IEnginePrefab
 	{
 		/// <summary>
 		/// The name of the Prefab.

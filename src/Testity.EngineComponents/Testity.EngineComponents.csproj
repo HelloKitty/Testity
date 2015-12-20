@@ -50,6 +50,7 @@
     <Compile Include="Interfaces\IEngineActivatable.cs" />
     <Compile Include="Interfaces\IEngineComponent.cs" />
     <Compile Include="Interfaces\IEngineObject.cs" />
+    <Compile Include="Prefab\IEnginePrefab.cs" />
     <Compile Include="Scripting\EngineScriptComponent.cs" />
     <Compile Include="Transform\IEngineDirectional.cs" />
     <Compile Include="Transform\IEngineTransform.cs" />

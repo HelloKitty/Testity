@@ -22,6 +22,6 @@ namespace Testity.EngineServices
 		/// <param name="rotation"><see cref="Quaternion{TMathType}"/> representing the rotation of the <see cref="IEnginePrefabedGameObject"/> to be created.</param>
 		/// <param name="prefab">Prefab information service.</param>
 		/// <returns>A valid non-null <see cref="IEnginePrefabedGameObject"/> at specified position and rotation.</returns>
-		IEnginePrefabedGameObject Create(IEnginePrefabService prefab, Vector3<float> position, Quaternion<float> rotation);
+		IEnginePrefabedGameObject Create(IEnginePrefab prefab, Vector3<float> position, Quaternion<float> rotation);
 	}
 }

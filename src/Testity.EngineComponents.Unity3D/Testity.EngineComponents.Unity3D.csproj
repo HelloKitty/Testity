@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="GameObject\UnityEngineGameObjectAdapter.cs" />
     <Compile Include="GameObject\UnityEnginePrefabGameObjectAdapter.cs" />
+    <Compile Include="Prefab\UnityEnginePrefabAdapter.cs" />
     <Compile Include="Scripting\ITestityBehaviour.cs" />
     <Compile Include="Scripting\TestityBehaviour.cs" />
     <Compile Include="Transform\UnityEngineTransformAdapter.cs" />

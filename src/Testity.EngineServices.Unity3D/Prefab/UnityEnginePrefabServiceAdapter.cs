@@ -10,7 +10,7 @@ namespace Testity.EngineServices.Unity3D
 {
 	[Serializable]
 	[EngineServiceConcrete]
-	public class UnityEnginePrefabServiceAdapter : IEnginePrefabService
+	public class UnityEnginePrefabServiceAdapter : IEnginePrefab
 	{
 		/// <summary>
 		/// Indicates if the Prefab service is available. It may not be if uninitialized by the user.
