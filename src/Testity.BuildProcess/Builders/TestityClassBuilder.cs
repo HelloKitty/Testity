@@ -66,46 +66,34 @@ namespace Testity.BuildProcess
 		//TODO: Support property fields and merge duplicate code
 		public void AddClassField(IMemberImplementationProvider implementationProvider)
         {
-			//variable details such as: name and type
-			VariableDeclarationSyntax variableSyntax = SyntaxFactory
-				.VariableDeclaration(
-					SyntaxFactory.ParseTypeName(implementationProvider.MemberType.ToString()),
-					SyntaxFactory.SeparatedList(new[] { SyntaxFactory.VariableDeclarator(SyntaxFactory.Identifier(implementationProvider.MemberName)) })
-					);
-
-			//Generates a new immutable list of attribute syntax data
-			SyntaxList<AttributeListSyntax> attributeList;
-
-			foreach(Attribute a in implementationProvider.Attributes)
-			{
-				//Why is it a list? I think because Rosyln supports adding multiple attributes on a single line
-				attributeList = attributeList.Add(SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(a.GetType().ToString())))));
-			}
+			VariableDeclarationSyntax variableSyntax = SyntaxFactory.VariableDeclaration(implementationProvider.MemberType)
+				.AddVariables(SyntaxFactory.VariableDeclarator(implementationProvider.MemberName));
 
 			//New field using the information above that may be private or public.
 			FieldDeclarationSyntax newField = SyntaxFactory.FieldDeclaration(variableSyntax)
-				.WithAttributeLists(attributeList)
-				.WithModifiers(SyntaxFactory.TokenList(implementationProvider.Modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
+				.WithAttributeLists(implementationProvider.ParameterlessAttributes)
+				.WithModifiers(implementationProvider.Modifiers);
 
-			lock(syncObj)
+			lock (syncObj)
 				memberSyntax.Add(newField);
 		}
 
-		public void AddMemberMethod(IMemberImplementationProvider implementationProvider, params ParameterData[] typeArgs)
+		public void AddMemberMethod(IMemberImplementationProvider implementationProvider, IBlockBodyProvider blockProvider, IParameterImplementationProvider parametersProvider = null)// params ParameterData[] typeArgs)
 		{
-			ParameterListSyntax parameters = SyntaxFactory.ParameterList().AddParameters(
-				typeArgs.Select(x =>
-					SyntaxFactory.Parameter(SyntaxFactory.ParseToken(x.ParameterName))
-						.WithType(SyntaxFactory.ParseTypeName(x.ParameterType.FullName))
-				).ToArray());
+			if (implementationProvider == null)
+				throw new ArgumentNullException(nameof(implementationProvider), "The member implementation provider must not be null.");
 
-			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(SyntaxFactory.ParseTypeName(implementationProvider.MemberType.FullName), implementationProvider.MemberName)
-				.WithModifiers(SyntaxFactory.TokenList(implementationProvider.Modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))))
-				.WithAttributeLists(SyntaxFactory.List(implementationProvider.Attributes.Select(x => x.GetType()).Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))))
-				.WithParameterList(parameters)
-				.WithBody(SyntaxFactory.Block());
+			if(blockProvider == null)
+				throw new ArgumentNullException(nameof(blockProvider), "The member method body block provider must not be null.");
 
-			lock(syncObj)
+
+			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(implementationProvider.MemberType, implementationProvider.MemberName)
+				.WithModifiers(implementationProvider.Modifiers)
+				.WithAttributeLists(implementationProvider.ParameterlessAttributes)
+				.WithParameterList(parametersProvider.Parameters)
+				.WithBody(blockProvider.Block);
+
+			lock (syncObj)
 				memberSyntax.Add(methodSyntax);
         }
 

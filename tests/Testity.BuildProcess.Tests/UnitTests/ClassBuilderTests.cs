@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -18,14 +20,7 @@ namespace Testity.BuildProcess.Tests
 		{
 			//arrange
 			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
-			Mock<IMemberImplementationProvider> implementationProvider = new Mock<IMemberImplementationProvider>();
-
-			//Setup the implementationProvider
-			implementationProvider.SetupGet(x => x.MemberName).Returns("testField");
-			implementationProvider.SetupGet(x => x.MemberType).Returns(typeof(EngineScriptComponent));
-			implementationProvider.SetupGet(x => x.Modifiers).Returns(MemberImplementationModifier.Private);
-			implementationProvider.SetupGet(x => x.Attributes).Returns(new Attribute[] { new ExposeDataMemeberAttribute() });
-
+			Mock<IMemberImplementationProvider> implementationProvider = BuildMemberImplementationMock("testField", typeof(EngineScriptComponent), MemberImplementationModifier.Private, new Type[] { typeof(ExposeDataMemeberAttribute) });
 
 			//act
 			scriptBuilder.AddClassField(implementationProvider.Object);
@@ -57,19 +52,55 @@ namespace Testity.BuildProcess.Tests
 			//arrange
 			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
 
-			Mock<IMemberImplementationProvider> implementationProvider = new Mock<IMemberImplementationProvider>();
-
-			//Setup the implementationProvider
-			implementationProvider.SetupGet(x => x.MemberName).Returns("TestMethod");
-			implementationProvider.SetupGet(x => x.MemberType).Returns(typeof(string));
-			implementationProvider.SetupGet(x => x.Modifiers).Returns(MemberImplementationModifier.Public);
-			implementationProvider.SetupGet(x => x.Attributes).Returns(Enumerable.Empty<Attribute>());
+			Mock<IMemberImplementationProvider> implementationProvider = BuildMemberImplementationMock("TestMethod", typeof(string), MemberImplementationModifier.Public, Enumerable.Empty<Type>());
 
 			//act
-			scriptBuilder.AddMemberMethod(implementationProvider.Object, new ParameterData(typeof(string), "paramOne"), new ParameterData(typeof(int), "paramTwo"));
+			scriptBuilder.AddMemberMethod(implementationProvider.Object, BuildBodyProviderMockEmpty().Object,
+				BuildParameterProviderMock(new ParameterData(typeof(string), "paramOne"), new ParameterData(typeof(int), "paramTwo")).Object);
 
 			//assert
 			Assert.IsTrue(scriptBuilder.Compile().Contains("TestMethod(System.String paramOne"));
+		}
+
+		private static Mock<IMemberImplementationProvider> BuildMemberImplementationMock(string memberName, Type memberType, MemberImplementationModifier modifiers, IEnumerable<Type> attributeTypes)
+		{
+			Mock<IMemberImplementationProvider> implementationProvider = new Mock<IMemberImplementationProvider>();
+
+			//Setup the implementationProvider
+			implementationProvider.SetupGet(x => x.MemberName).Returns(SyntaxFactory.Identifier(memberName));
+			implementationProvider.SetupGet(x => x.MemberType).Returns(SyntaxFactory.ParseTypeName(memberType.FullName));
+			implementationProvider.SetupGet(x => x.Modifiers).Returns(SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
+
+			implementationProvider.SetupGet(x => x.ParameterlessAttributes)
+				.Returns(SyntaxFactory.List(attributeTypes.Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))));
+
+			return implementationProvider;
+        }
+
+		private static Mock<IBlockBodyProvider> BuildBodyProviderMockEmpty()
+		{
+			Mock<IBlockBodyProvider> bodyProvider = new Mock<IBlockBodyProvider>();
+
+			//Empty block
+			bodyProvider.SetupGet(x => x.Block).Returns(SyntaxFactory.Block());
+
+			return bodyProvider;
+		}
+
+		private static Mock<IParameterImplementationProvider> BuildParameterProviderMock(params ParameterData[] parameters)
+		{
+			Mock<IParameterImplementationProvider> parameterProvider = new Mock<IParameterImplementationProvider>();
+
+			//This is ugly but it builds a collection of parameters for the method or whatever
+			ParameterListSyntax roslynParams = SyntaxFactory.ParameterList().AddParameters(
+  				parameters.Select(x =>
+  					SyntaxFactory.Parameter(SyntaxFactory.ParseToken(x.ParameterName))
+  						.WithType(SyntaxFactory.ParseTypeName(x.ParameterType.FullName))
+  				).ToArray());
+
+			parameterProvider.SetupGet(x => x.Parameters).Returns(roslynParams);
+
+			return parameterProvider;
 		}
 	}
 }
