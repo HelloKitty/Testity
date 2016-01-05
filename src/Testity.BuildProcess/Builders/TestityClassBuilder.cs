@@ -85,12 +85,14 @@ namespace Testity.BuildProcess
 			if(blockProvider == null)
 				throw new ArgumentNullException(nameof(blockProvider), "The member method body block provider must not be null.");
 
-
 			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(implementationProvider.MemberType, implementationProvider.MemberName)
 				.WithModifiers(implementationProvider.Modifiers)
 				.WithAttributeLists(implementationProvider.ParameterlessAttributes)
-				.WithParameterList(parametersProvider.Parameters)
 				.WithBody(blockProvider.Block);
+			
+			//Not all methods have parameters so we don't want to require a provider
+			if (parametersProvider != null)
+				methodSyntax = methodSyntax.WithParameterList(parametersProvider.Parameters);
 
 			lock (syncObj)
 				memberSyntax.Add(methodSyntax);
