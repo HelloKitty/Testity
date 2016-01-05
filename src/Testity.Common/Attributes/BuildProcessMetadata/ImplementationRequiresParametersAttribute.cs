@@ -15,5 +15,11 @@ namespace Testity.Common.Attributes
 		{
 			ImplementationParameterTypes = parameters;
 		}
+
+		public ImplementationRequiresParametersAttribute(EngineType type, params string[] parameters)
+			: base(type)
+		{
+			ImplementationParameterTypes = parameters.Select(x => Type.GetType(x, true, false));
+		}
 	}
 }

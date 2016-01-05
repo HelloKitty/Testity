@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\BuildProcessMetadata\ImplementationField.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationMetadataAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationRequiresNameAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationRequiresTypeAttribute.cs" />

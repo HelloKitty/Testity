@@ -15,7 +15,7 @@ using Testity.EngineComponents;
 
 namespace Testity.BuildProcess
 {
-	public class TestityClassBuilder<TType>
+	public class TestityClassBuilder<TType> : IClassBuilder
 		where TType : EngineScriptComponent
 	{
 		private readonly object syncObj = new object();
@@ -60,7 +60,6 @@ namespace Testity.BuildProcess
 					hasBaseclass = hasBaseclass || typeof(TClassType).IsClass;
                 }			
 			}
-				
 		}
 
 		//TODO: Support property fields and merge duplicate code

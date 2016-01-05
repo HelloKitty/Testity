@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Testity.Common;
 using Testity.Common.Unity3D;
 using Testity.EngineComponents;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Testity.EngineComponents.Unity3D
 		where TScriptComponentType : EngineScriptComponent, new()
 	{
 		//This should be initialized in some way before the game starts.
+		[ImplementationField(EngineType.Unity3D, nameof(_InternalSerializableComponent))]
 		protected TScriptComponentType _InternalSerializableComponent;
 
 		/// <summary>
@@ -45,15 +47,14 @@ namespace Testity.EngineComponents.Unity3D
 			_InternalSerializableComponent = EngineScriptComponentFactory.Create<TScriptComponentType>();
 
 			//this call should set all serialized values
-			InitializeScriptComponentMemberValues(_InternalSerializableComponent);
+			InitializeScriptComponentMemberValues();
 
 			isInitialized = true;
         }
 
 		/// <summary>
-		/// Initializes the <typeparamref name="TScriptComponentType"/> instance with serialized data.
 		/// </summary>
 		/// <param name="component"></param>
-		protected abstract void InitializeScriptComponentMemberValues(TScriptComponentType component);
+		protected abstract void InitializeScriptComponentMemberValues();
 	}
 }

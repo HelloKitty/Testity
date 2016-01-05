@@ -94,6 +94,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ImplementationMethodProviderAttribute.cs" />
+    <Compile Include="Builders\IClassBuilder.cs" />
     <Compile Include="Extensions\MemberImplementationModifierExtensions.cs" />
     <Compile Include="Member Providers\IMemberImplementationProvider.cs" />
     <Compile Include="Member Providers\IMethodBodyProvider.cs" />
