@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{54D9C6DD-C72C-42F1-9BCF-579447B1F0A6}</ProjectGuid>
+    <ProjectGuid>{1F03B172-A49D-4A0D-98FD-14759EA2FFD6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Testity.Common</RootNamespace>
-    <AssemblyName>Testity.Common</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Testity.BuildProcess.Unity3D.Tests</RootNamespace>
+    <AssemblyName>Testity.BuildProcess.Unity3D.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,24 +30,42 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\lib\Static Dependencies\UnityEngine\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\BuildProcessMetadata\Engine Components\EngineComponentMapsToTypeAttribute.cs" />
-    <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationField.cs" />
-    <Compile Include="Attributes\BuildProcessMetadata\ImplementationMetadataAttribute.cs" />
-    <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresNameAttribute.cs" />
-    <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresTypeAttribute.cs" />
-    <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresParametersAttribute.cs" />
-    <Compile Include="EngineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Testity.BuildProcess\Testity.BuildProcess.csproj">
+      <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
+      <Name>Testity.BuildProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
+      <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
+      <Name>Testity.EngineComponents</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
