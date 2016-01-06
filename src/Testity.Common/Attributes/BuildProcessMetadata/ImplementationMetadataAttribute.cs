@@ -7,7 +7,7 @@ namespace Testity.Common
 {
 	public abstract class ImplementationMetadataAttribute : Attribute
 	{
-		private readonly EngineType EngineType;
+		public readonly EngineType EngineType;
 
 		public ImplementationMetadataAttribute(EngineType type)
 		{

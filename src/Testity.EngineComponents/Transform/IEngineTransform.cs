@@ -12,7 +12,7 @@ namespace Testity.EngineComponents
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Transform.html
 	/// </summary>
 	[EngineComponentInterface]
-	[EngineComponentMapsToType(EngineType.Unity3D, "UnityEngine.Transform")]
+	[EngineSerializableMapsToType(EngineType.Unity3D, "UnityEngine.Transform, UnityEngine")]
 	public interface IEngineTransform : IEngineComponent
 	{
 		/// <summary>

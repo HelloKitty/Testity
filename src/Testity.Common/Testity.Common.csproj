@@ -39,8 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\BuildProcessMetadata\Engine Components\EngineComponentMapsToTypeAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationField.cs" />
+    <Compile Include="Attributes\BuildProcessMetadata\Serialization\EngineSerializableMapsToTypeAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationMetadataAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresNameAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresTypeAttribute.cs" />

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.Common;
 
 namespace Testity.EngineComponents
 {
 	[Serializable]
+	[EngineSerializableMapsToType(EngineType.Unity3D, "UnityEngine.MonoBehaviour, UnityEngine")]
 	public abstract class EngineScriptComponent : IEngineComponent, IEquatable<EngineScriptComponent>
 	{
 		/// <summary>

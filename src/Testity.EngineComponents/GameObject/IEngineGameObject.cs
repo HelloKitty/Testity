@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.Common;
 
 namespace Testity.EngineComponents
 {
@@ -15,6 +16,7 @@ namespace Testity.EngineComponents
 	/// Based on methods in UnrealEngine 4's: https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/GameFramework/AActor/index.html
 	/// </summary>
 	[EngineComponentInterface]
+	[EngineSerializableMapsToType(EngineType.Unity3D, "UnityEngine.GameObject, UnityEngine")]
 	public interface IEngineGameObject : IEngineObject, IEngineActivatable, IEquatable<IEngineGameObject>
 	{
 		/// <summary>
