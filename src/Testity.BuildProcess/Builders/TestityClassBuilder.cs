@@ -35,13 +35,13 @@ namespace Testity.BuildProcess
 			memberSyntax = new List<MemberDeclarationSyntax>();
         }
 
-		public void AddDLLReference(string usingString)
+		/*public void AddDLLReference(string usingString)
 		{
 			UsingDirectiveSyntax usingUnit = SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(usingString));
 
 			lock(syncObj)
 				rosylnCompilationUnit = rosylnCompilationUnit.AddUsings(usingUnit);
-        }
+        }*/
 
 		public void AddBaseClass<TClassType>()
 			where TClassType : class

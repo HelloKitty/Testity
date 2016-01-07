@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\ClassBuilderTests.cs" />
+    <Compile Include="UnitTests\SerializedMemberParserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Testity.BuildProcess\Testity.BuildProcess.csproj">
@@ -79,10 +80,6 @@
     <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
       <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
       <Name>Testity.EngineComponents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Testity.Serialization\Testity.Serialization.csproj">
-      <Project>{9f4b3d14-ef23-4315-96c1-b95162d4f244}</Project>
-      <Name>Testity.Serialization</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Testity.EngineComponents;
-using Testity.Serialization;
 
 namespace Testity.Common.Unity3D.Tests
 {

@@ -4,8 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Fasterflect;
+using Testity.Common;
 
-namespace Testity.Serialization
+namespace Testity.BuildProcess
 {
 	public static class SerializedMemberParser<TMemberInfoType, TTypeToParse>
 		where TMemberInfoType : MemberInfo where TTypeToParse : class

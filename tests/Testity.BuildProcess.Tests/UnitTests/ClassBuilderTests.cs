@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Testity.Common;
 using Testity.EngineComponents;
-using Testity.Serialization;
 
 namespace Testity.BuildProcess.Tests
 {

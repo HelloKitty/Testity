@@ -60,13 +60,13 @@
       <Project>{4dfd0e70-dd23-46f0-9bfc-609a062b4a70}</Project>
       <Name>Testity.Common.Unity3D</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Testity.Common\Testity.Common.csproj">
+      <Project>{54d9c6dd-c72c-42f1-9bcf-579447b1f0a6}</Project>
+      <Name>Testity.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
       <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
       <Name>Testity.EngineComponents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Testity.Serialization\Testity.Serialization.csproj">
-      <Project>{9f4b3d14-ef23-4315-96c1-b95162d4f244}</Project>
-      <Name>Testity.Serialization</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

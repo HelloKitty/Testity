@@ -45,6 +45,7 @@
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresNameAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresTypeAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationRequiresParametersAttribute.cs" />
+    <Compile Include="Attributes\Serialization\ExposeDataMemeberAttribute.cs" />
     <Compile Include="EngineType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

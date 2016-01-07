@@ -32,7 +32,7 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			//assert
 			foreach(EngineSerializableMapsToTypeAttribute t in typesToCheck)
 			{
-				Assert.NotNull(t, "One or more {0} attributes failed to resolve types.", nameof(EngineSerializableMapsToTypeAttribute));
+				Assert.NotNull(t, "One or more {0} attributes failed to resolve types in Assembly: {1}.", nameof(EngineSerializableMapsToTypeAttribute), fromAssemblyToTest.Assembly.FullName);
 			}
         }
     }

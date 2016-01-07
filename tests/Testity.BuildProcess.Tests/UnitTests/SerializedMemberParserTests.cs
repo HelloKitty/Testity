@@ -7,8 +7,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Testity.Common;
 
-namespace Testity.Serialization.Tests
+namespace Testity.BuildProcess.Tests
 {
 	[TestFixture]
 	public class SerializedMemberParserTests
