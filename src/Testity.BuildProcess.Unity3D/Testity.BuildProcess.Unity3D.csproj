@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E9D0588E-FCB2-452E-8587-3FDC6DFB8669}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Testity.BuildProcess.Unity3D</RootNamespace>
     <AssemblyName>Testity.BuildProcess.Unity3D</AssemblyName>
@@ -29,6 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -39,6 +42,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Testity.BuildProcess\Testity.BuildProcess.csproj">
+      <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
+      <Name>Testity.BuildProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Testity.Common\Testity.Common.csproj">
+      <Project>{54d9c6dd-c72c-42f1-9bcf-579447b1f0a6}</Project>
+      <Name>Testity.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Testity.EngineComponents\Testity.EngineComponents.csproj">
+      <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
+      <Name>Testity.EngineComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Testity.EngineMath\Testity.EngineMath.csproj">
+      <Project>{d1cb2af4-210c-48a6-ab75-491b824d25ef}</Project>
+      <Name>Testity.EngineMath</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
