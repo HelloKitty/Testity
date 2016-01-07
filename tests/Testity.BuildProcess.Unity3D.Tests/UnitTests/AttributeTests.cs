@@ -15,22 +15,16 @@ namespace Testity.BuildProcess.Unity3D.Tests
 	public static class AttributeTests
 	{
 		[Test(Author = "Andrew Blakely", Description = "Tests to verify the Type can be generated from the string.", TestOf = typeof(EngineSerializableMapsToTypeAttribute))]
-		public static void Check_Can_Resolve_Type_For_Attributes()
+		[TestCase(typeof(IEngineObject))]
+		[TestCase(typeof(MathT))]
+		public static void Check_Can_Resolve_Type_For_Attributes(Type fromAssemblyToTest)
 		{
 			//This finds all components marked with the type mapper attribute and makes sure
 			//the types can be resolved and that the type is non-null
 
 			//arrange
-			//Assemblies to check
-			IEnumerable<Assembly> asses = new List<Assembly> { typeof(IEngineObject).Assembly, typeof(MathT).Assembly };
-
-			//flattens it or whatever
-			IEnumerable<Type> allTypes = asses
-				.Select(x => x.GetTypes())
-				.Aggregate(Enumerable.Empty<Type>(), (s, n) => s.Concat(n));
-
 			//add the ones from the Components dll
-			IEnumerable<EngineSerializableMapsToTypeAttribute> typesToCheck = allTypes
+			IEnumerable<EngineSerializableMapsToTypeAttribute> typesToCheck = fromAssemblyToTest.Assembly.GetTypes()
 				.Where(x => x.GetCustomAttribute<EngineComponentInterfaceAttribute>(false) != null)
 				.Where(x => x.GetCustomAttribute<EngineSerializableMapsToTypeAttribute>(false) != null && x.GetCustomAttribute<EngineSerializableMapsToTypeAttribute>(false).EngineType == EngineType.Unity3D)
 				.Select(x => x.GetCustomAttribute<EngineSerializableMapsToTypeAttribute>(false));
@@ -38,7 +32,7 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			//assert
 			foreach(EngineSerializableMapsToTypeAttribute t in typesToCheck)
 			{
-				Assert.NotNull(t);
+				Assert.NotNull(t, "One or more {0} attributes failed to resolve types.", nameof(EngineSerializableMapsToTypeAttribute));
 			}
         }
     }
