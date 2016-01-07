@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.Common;
 
 namespace Testity.EngineMath
 {
@@ -13,6 +14,7 @@ namespace Testity.EngineMath
 	/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Vector2.html
 	/// </summary>
 	/// <typeparam name="TMathType">Value type of the vector that must overload math operators (Ex. int, float, double).</typeparam>
+	[EngineSerializableMapsToType(EngineType.Unity3D, "UnityEngine.Vector2, UnityEngine")]
 	public struct Vector2<TMathType> : IEquatable<Vector2<TMathType>>
 		where TMathType : struct, IEquatable<TMathType>, IComparable<TMathType>
 	{

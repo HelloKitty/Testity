@@ -34,9 +34,6 @@
       <HintPath>..\..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Net35Essentials">
-      <HintPath>..\..\lib\Dependency Builds\Net35Essentials\DLLs\Net35Essentials.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -69,6 +66,10 @@
     <ProjectReference Include="..\..\src\Testity.EngineComponents\Testity.EngineComponents.csproj">
       <Project>{91dc280a-82bb-4c6c-8154-44b997123879}</Project>
       <Name>Testity.EngineComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Testity.EngineMath\Testity.EngineMath.csproj">
+      <Project>{d1cb2af4-210c-48a6-ab75-491b824d25ef}</Project>
+      <Name>Testity.EngineMath</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
