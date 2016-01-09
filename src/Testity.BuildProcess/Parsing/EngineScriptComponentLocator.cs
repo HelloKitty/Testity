@@ -21,7 +21,8 @@ namespace Testity.BuildProcess
 		public IEnumerable<Type> LoadTypes()
 		{
 			//this should be cached behind the scenes by fasterflect.
-			return assemblyToParse.TypesImplementing<EngineScriptComponent>();
+			//We do not want abstract classes though
+			return assemblyToParse.TypesImplementing<EngineScriptComponent>().Where(x => !x.IsAbstract);
 		}
 	}
 }
