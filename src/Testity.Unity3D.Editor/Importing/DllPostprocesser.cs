@@ -46,7 +46,7 @@ namespace Testity.Unity3D.Editor
 			//see https://msdn.microsoft.com/en-us/library/e8zac0ca(v=vs.110).aspx for error reasons
 			try
 			{
-				testityProcess = System.Diagnostics.Process.Start(testityAppPath);
+				testityProcess = System.Diagnostics.Process.Start(testityAppPath, dllPath);
 			} 
 			catch(Win32Exception e)
 			{
