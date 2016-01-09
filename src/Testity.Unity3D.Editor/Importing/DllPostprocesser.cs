@@ -32,7 +32,9 @@ namespace Testity.Unity3D.Editor
 
 						//Feed information into the testity build process app and
 						if (loadedAss.GetCustomAttributes(false).FirstOrDefault(x => x.GetType() == typeof(TestityAssemblyAttribute)) != null)
-							StartTestityProcess(s, "Testity//App//Testity.BuildProcess.Unity3D.exe"); //pass the dll path and start the testity build process
+							//remove Assets from the path and add in the full path.
+							//Working directory won't be the same so we can't use relative
+							StartTestityProcess(Application.dataPath + s.Trim("Assets".ToCharArray()), "Testity//App//Testity.BuildProcess.Unity3D.exe"); //pass the dll path and start the testity build process
 					}
 					else
 						Debug.Log("Failed to load assembly.");
