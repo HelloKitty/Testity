@@ -8,8 +8,8 @@ using Testity.Common;
 
 namespace Testity.BuildProcess
 {
-	public static class SerializedMemberParser<TMemberInfoType, TTypeToParse>
-		where TMemberInfoType : MemberInfo where TTypeToParse : class
+	public static class SerializedMemberParser<TMemberInfoType>
+		where TMemberInfoType : MemberInfo
     {
 		/// <summary>
 		/// Caches the functional 1 to 1 relationship between a Type and its <see cref="MemberTypes"/>.
@@ -25,10 +25,23 @@ namespace Testity.BuildProcess
 		/// Creates a collection of <see cref="IEnumerable{TMemberInfoType}"/> that reference the <see cref="TTypeToParse"/> members.
 		/// These members will also be decorated by the <see cref="ExposeDataMemeberAttribute"/>.
 		/// </summary>
+		/// <typeparam name="TTypeToParse">Type to be parsed</typeparam>
 		/// <returns>A collection of <typeparamref name="MemberInfoType"/></returns>
-		public static IEnumerable<TMemberInfoType> Parse()
+		public static IEnumerable<TMemberInfoType> Parse<TTypeToParse>()
+			where TTypeToParse : class
 		{
 			return typeof(TTypeToParse).MembersWith<ExposeDataMemeberAttribute>(cacheTypeMemberMap[typeof(TMemberInfoType)], Flags.InstanceAnyVisibility) //get all members from current and base classes
+				.Cast<TMemberInfoType>();
+		}
+
+		/// <summary>
+		/// Creates a collection of <see cref="IEnumerable{TMemberInfoType}"/> that reference the <see cref="TTypeToParse"/> members.
+		/// These members will also be decorated by the <see cref="ExposeDataMemeberAttribute"/>.
+		/// </summary>
+		/// <returns>A collection of <typeparamref name="MemberInfoType"/></returns>
+		public static IEnumerable<TMemberInfoType> Parse(Type typeToParse)
+		{
+			return typeToParse.MembersWith<ExposeDataMemeberAttribute>(cacheTypeMemberMap[typeof(TMemberInfoType)], Flags.InstanceAnyVisibility) //get all members from current and base classes
 				.Cast<TMemberInfoType>();
 		}
 	}

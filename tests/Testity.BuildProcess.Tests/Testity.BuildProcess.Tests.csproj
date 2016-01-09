@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\ClassBuilderTests.cs" />
+    <Compile Include="UnitTests\EngineScriptComponentLocatorTests.cs" />
     <Compile Include="UnitTests\SerializedMemberParserTests.cs" />
   </ItemGroup>
   <ItemGroup>

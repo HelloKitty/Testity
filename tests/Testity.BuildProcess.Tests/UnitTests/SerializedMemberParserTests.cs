@@ -14,7 +14,7 @@ namespace Testity.BuildProcess.Tests
 	[TestFixture]
 	public class SerializedMemberParserTests
 	{
-		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser type empty parsing.", TestOf = typeof(SerializedMemberParser<,>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser type empty parsing.", TestOf = typeof(SerializedMemberParser<>))]
 		[TestCase(typeof(FieldInfo), typeof(object))]
 		[TestCase(typeof(PropertyInfo), typeof(object))]
 		[TestCase(typeof(PropertyInfo), typeof(string))]
@@ -22,10 +22,10 @@ namespace Testity.BuildProcess.Tests
 		public static void Test_SerializedMemberParser_Should_Find_No_Members(Type memberInfoType, Type typeToParse)
 		{
 			//arranges
-			IEnumerable objects = typeof(SerializedMemberParser<,>)
-				.MakeGenericType(memberInfoType, typeToParse)
-				.GetMethod(nameof(SerializedMemberParser<MemberInfo,object>.Parse), BindingFlags.Static | BindingFlags.Public)
-				.Invoke(null, new object[0]) as IEnumerable;
+			IEnumerable objects = typeof(SerializedMemberParser<>)
+				.MakeGenericType(memberInfoType)
+				.GetMethod(nameof(SerializedMemberParser<MemberInfo>.Parse), BindingFlags.Static | BindingFlags.Public, null, new Type[1] { typeof(Type) }, new ParameterModifier[1] { new ParameterModifier(1) })
+				.Invoke(null, new object[1] { typeToParse }) as IEnumerable;
 
 			//assert
 			//It should be empty but non-null
@@ -39,12 +39,12 @@ namespace Testity.BuildProcess.Tests
 			private string fieldValueOne;
 		}
 
-		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser parsing of mock class.", TestOf = typeof(SerializedMemberParser<,>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser parsing of mock class.", TestOf = typeof(SerializedMemberParser<>))]
 		public static void Test_SerializedMemberParser_Should_Find_Members()
 		{
 			//arrange
-			IEnumerable<FieldInfo> fieldInfos = SerializedMemberParser<FieldInfo, OneFieldIsMarked>.Parse();
-			IEnumerable<PropertyInfo> propertyInfos = SerializedMemberParser<PropertyInfo, OneFieldIsMarked>.Parse();
+			IEnumerable<FieldInfo> fieldInfos = SerializedMemberParser<FieldInfo>.Parse<OneFieldIsMarked>();
+			IEnumerable<PropertyInfo> propertyInfos = SerializedMemberParser<PropertyInfo>.Parse<OneFieldIsMarked>();
 
 			//assert
 			//Should be 1 field
@@ -57,12 +57,12 @@ namespace Testity.BuildProcess.Tests
 			Assert.IsEmpty(propertyInfos);
 		}
 
-		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser cacheing.", TestOf = typeof(SerializedMemberParser<,>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser cacheing.", TestOf = typeof(SerializedMemberParser<>))]
 		public static void Test_SerializedMemberParser_Valid_Caching()
 		{
 			//arrange
-			IEnumerable<FieldInfo> fieldInfos1 = SerializedMemberParser<FieldInfo, OneFieldIsMarked>.Parse();
-			IEnumerable<FieldInfo> fieldInfos2 = SerializedMemberParser<FieldInfo, OneFieldIsMarked>.Parse();
+			IEnumerable<FieldInfo> fieldInfos1 = SerializedMemberParser<FieldInfo>.Parse<OneFieldIsMarked>();
+			IEnumerable<FieldInfo> fieldInfos2 = SerializedMemberParser<FieldInfo>.Parse<OneFieldIsMarked>();
 
 			//assert
 			//Should be 1 field
