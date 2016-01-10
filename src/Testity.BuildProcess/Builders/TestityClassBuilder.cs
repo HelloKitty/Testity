@@ -70,7 +70,7 @@ namespace Testity.BuildProcess
 
 			//New field using the information above that may be private or public.
 			FieldDeclarationSyntax newField = SyntaxFactory.FieldDeclaration(variableSyntax)
-				.WithAttributeLists(implementationProvider.ParameterlessAttributes)
+				.WithAttributeLists(implementationProvider.Attributes)
 				.WithModifiers(implementationProvider.Modifiers);
 
 			lock (syncObj)
@@ -87,7 +87,7 @@ namespace Testity.BuildProcess
 
 			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(implementationProvider.MemberType, implementationProvider.MemberName)
 				.WithModifiers(implementationProvider.Modifiers)
-				.WithAttributeLists(implementationProvider.ParameterlessAttributes)
+				.WithAttributeLists(implementationProvider.Attributes)
 				.WithBody(blockProvider.Block);
 			
 			//Not all methods have parameters so we don't want to require a provider

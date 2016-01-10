@@ -20,6 +20,8 @@ namespace Testity.BuildProcess.Unity3D
 		{
 			//handle serialized properties first
 			IEnumerable<PropertyInfo> propertiesToHandle = SerializedMemberParser<PropertyInfo>.Parse(TypeToParse);
+
+			//builder.AddClassField()
 		}
 	}
 }

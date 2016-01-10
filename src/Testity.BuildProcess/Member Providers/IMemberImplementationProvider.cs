@@ -16,6 +16,6 @@ namespace Testity.BuildProcess
 
 		SyntaxTokenList Modifiers { get; }
 
-		SyntaxList<AttributeListSyntax> ParameterlessAttributes { get; }
+		SyntaxList<AttributeListSyntax> Attributes { get; }
 	}
 }

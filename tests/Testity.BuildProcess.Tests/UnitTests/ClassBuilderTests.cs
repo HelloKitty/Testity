@@ -71,7 +71,7 @@ namespace Testity.BuildProcess.Tests
 			implementationProvider.SetupGet(x => x.MemberType).Returns(SyntaxFactory.ParseTypeName(memberType.FullName));
 			implementationProvider.SetupGet(x => x.Modifiers).Returns(SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
 
-			implementationProvider.SetupGet(x => x.ParameterlessAttributes)
+			implementationProvider.SetupGet(x => x.Attributes)
 				.Returns(SyntaxFactory.List(attributeTypes.Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))));
 
 			return implementationProvider;

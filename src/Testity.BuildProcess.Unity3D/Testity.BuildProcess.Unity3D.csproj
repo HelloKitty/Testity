@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildProcessImplementations\UnitySerializedFieldImplementationProvider.cs" />
     <Compile Include="BuildSteps\AddSerializedMemberStep.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,6 +69,10 @@
     <ProjectReference Include="..\Testity.BuildProcess\Testity.BuildProcess.csproj">
       <Project>{b936525c-8aa6-4593-8544-3bf32fc0a026}</Project>
       <Name>Testity.BuildProcess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Testity.Common.Unity3D\Testity.Common.Unity3D.csproj">
+      <Project>{4dfd0e70-dd23-46f0-9bfc-609a062b4a70}</Project>
+      <Name>Testity.Common.Unity3D</Name>
     </ProjectReference>
     <ProjectReference Include="..\Testity.Common\Testity.Common.csproj">
       <Project>{54d9c6dd-c72c-42f1-9bcf-579447b1f0a6}</Project>
