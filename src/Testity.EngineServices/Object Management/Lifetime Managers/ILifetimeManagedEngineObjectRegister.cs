@@ -13,7 +13,7 @@ namespace Testity.EngineServices
 	/// <typeparam name="TUnderlyingObjectReferenceType">The actual object type the lifetime manager manages.</typeparam>
 	public interface ILifetimeManagedEngineObjectRegister<TEngineObjectType, TUnderlyingObjectReferenceType> : IReadOnlyMapLookup<TEngineObjectType, TUnderlyingObjectReferenceType>
 		where TEngineObjectType : class, IEngineObject where TUnderlyingObjectReferenceType : class
-    {
+	{
 		/// <summary>
 		/// Attempts to register a reference to <see cref="TUnderlyingObjectReferenceType"/> with the key being <typeparamref name="TEngineObjectType"/>.
 		/// </summary>

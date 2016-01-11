@@ -33,7 +33,7 @@ namespace Testity.BuildProcess
 			rosylnCompilationUnit = SyntaxFactory.CompilationUnit();
 			rosylnClassUnit = SyntaxFactory.ClassDeclaration(typeof(TType).Name + "Script");
 			memberSyntax = new List<MemberDeclarationSyntax>();
-        }
+	}
 
 		/*public void AddDLLReference(string usingString)
 		{
@@ -41,7 +41,7 @@ namespace Testity.BuildProcess
 
 			lock(syncObj)
 				rosylnCompilationUnit = rosylnCompilationUnit.AddUsings(usingUnit);
-        }*/
+	}*/
 
 		public void AddBaseClass<TClassType>()
 			where TClassType : class
@@ -58,13 +58,13 @@ namespace Testity.BuildProcess
 					rosylnClassUnit = rosylnClassUnit.AddBaseListTypes(SyntaxFactory.SimpleBaseType(typeSyn));
 
 					hasBaseclass = hasBaseclass || typeof(TClassType).IsClass;
-                }			
+	}			
 			}
 		}
 
 		//TODO: Support property fields and merge duplicate code
 		public void AddClassField(IMemberImplementationProvider implementationProvider)
-        {
+	{
 			VariableDeclarationSyntax variableSyntax = SyntaxFactory.VariableDeclaration(implementationProvider.MemberType)
 				.AddVariables(SyntaxFactory.VariableDeclarator(implementationProvider.MemberName));
 
@@ -96,7 +96,7 @@ namespace Testity.BuildProcess
 
 			lock (syncObj)
 				memberSyntax.Add(methodSyntax);
-        }
+	}
 
 		public string Compile()
 		{
@@ -120,7 +120,7 @@ namespace Testity.BuildProcess
 		{
 
 			CompilationUnitSyntax compileUnit = null;
-            lock (syncObj)
+	lock (syncObj)
 				//don't mutate the class fields
 				//We should do it without changing them
 				compileUnit = rosylnCompilationUnit.AddMembers(rosylnClassUnit.AddMembers(memberSyntax.ToArray()));

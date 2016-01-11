@@ -26,7 +26,7 @@ namespace Testity.EngineServices.Unity3D
 			newObject.transform.rotation = rotation.ToUnityQuat();
 
 			return newObject;
-        }
+	}
 
 		protected override GameObject CreateActualEngineObject(IEnginePrefab prefab, Vector3<float> position, Quaternion<float> rotation)
 		{
@@ -40,7 +40,7 @@ namespace Testity.EngineServices.Unity3D
 				throw new ArgumentException("Failed to convert prefab service into Unity3D service. Desired Type: " + nameof(UnityEnginePrefabServiceAdapter) + " Actual Type: " + prefab.GetType(), nameof(prefab));
 
 			return tryCastedPrefabService.Create(position, rotation);
-        }
+	}
 
 		protected override IEngineGameObject CreateGameObjectAdapter(GameObject actualGameObject)
 		{

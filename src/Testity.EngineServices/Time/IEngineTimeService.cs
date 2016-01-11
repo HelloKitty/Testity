@@ -62,5 +62,5 @@ namespace Testity.EngineServices
 		/// Based on UnrealEngine 4's: https://docs.unrealengine.com/latest/INT/API/Runtime/Core/Misc/FApp/UseFixedTimeStep/index.html
 		/// </summary>
 		bool FixedTimeStepEnabled { get; }
-    }
+	}
 }

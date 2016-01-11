@@ -14,7 +14,7 @@ namespace Testity.BuildProcess.Unity3D
 		public AddSerializedMemberStep(Type typeToParse)
 		{
 			TypeToParse = typeToParse;
-        }
+	}
 
 		public void Process(IClassBuilder builder)
 		{

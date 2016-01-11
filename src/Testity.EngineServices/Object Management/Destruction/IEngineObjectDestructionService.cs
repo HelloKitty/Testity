@@ -14,7 +14,7 @@ namespace Testity.EngineServices
 	[EngineServiceInterface]
 	public interface IEngineObjectDestructionService<TEngineObjectType>
 		where TEngineObjectType : class, IEngineObject
-    {
+	{
 		/// <summary>
 		/// Destroys the <typeparamref name="TEngineObjectType"/> requested.
 		/// Based on Unity3D's: http://docs.unity3d.com/ScriptReference/Object.Destroy.html

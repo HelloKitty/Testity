@@ -40,7 +40,7 @@ namespace Testity.EngineServices.Tests.UnitTests
 		{
 			//arrange
 			IEngineObject testEngineObject = SetupEquatableIsEqualToSelfInstance<IEngineObject>();
-            object testObject = new object();
+	object testObject = new object();
 			var map = new EngineObjectReferenceDictionary<IEngineObject, object>();
 
 			//act
@@ -102,7 +102,7 @@ namespace Testity.EngineServices.Tests.UnitTests
 
 		private static TEquatableInstance SetupEquatableIsEqualToSelfInstance<TEquatableInstance>()
 			where TEquatableInstance : class, IEquatable<TEquatableInstance>
-        {
+	{
 			//arrange
 			Mock<TEquatableInstance> testEngineObject = new Mock<TEquatableInstance>(MockBehavior.Strict);
 			//setup IEquatable

@@ -8,7 +8,7 @@ namespace Testity.EngineComponents.Unity3D
 {
 	public interface ITestityBehaviour<out TScriptComponentType>
 		where TScriptComponentType : EngineScriptComponent
-    {
+	{
 		TScriptComponentType ScriptComponent { get; }
 
 		void Initialize();

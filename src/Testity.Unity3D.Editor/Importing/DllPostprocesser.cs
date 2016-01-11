@@ -77,6 +77,6 @@ namespace Testity.Unity3D.Editor
 			//at this point the process has completed
 			//if it's code 0 then it was a success and we need to reload the asset database
 			AssetDatabase.ImportAsset(dllPath.TrimEnd(".dll".ToCharArray()) + ".MonoBehaviours.dll"); //we make the bold assumption that this won't change
-        }
-    }
+		}
+	}
 }

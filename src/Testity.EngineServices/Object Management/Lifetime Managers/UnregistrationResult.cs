@@ -11,7 +11,7 @@ namespace Testity.EngineServices
 	/// <typeparam name="TObjectType">Type of object being unregistered.</typeparam>
 	public class UnregistrationResult<TObjectType>
 		where TObjectType : class
-    {
+	{
 		private readonly bool _Success;
 		/// <summary>
 		/// Indicates if unregisteration was sucessful.

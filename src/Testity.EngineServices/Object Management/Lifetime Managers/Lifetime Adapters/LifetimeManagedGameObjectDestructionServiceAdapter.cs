@@ -11,7 +11,7 @@ namespace Testity.EngineServices
 	/// </summary>
 	/// <typeparam name="TActualGameObjectType">Type of the underlying engines GameObject.</typeparam>
 	public abstract class LifetimeManagedGameObjectDestructionServiceAdapter<TActualGameObjectType> : IEngineObjectDestructionService<IEngineGameObject>
-        where TActualGameObjectType : class
+	where TActualGameObjectType : class
 	{
 		/// <summary>
 		/// Registeration service for <typeparamref name="TActualGameObjectType"/>s.

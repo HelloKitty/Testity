@@ -14,5 +14,5 @@ namespace Testity.BuildProcess
 
 		void AddBaseClass<TClassType>()
 			where TClassType : class;
-    }
+	}
 }

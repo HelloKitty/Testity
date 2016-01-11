@@ -50,7 +50,7 @@ namespace Testity.EngineComponents.Unity3D
 			InitializeScriptComponentMemberValues();
 
 			isInitialized = true;
-        }
+	}
 
 		/// <summary>
 		/// </summary>

@@ -44,5 +44,5 @@ namespace Testity.Common.Unity3D.Tests
 			Assert.IsInstanceOf<TestEngineScriptBase>(scriptBase);
 			Assert.IsNotInstanceOf<TestEngineScriptChild>(scriptBase);
 		}
-    }
+	}
 }

@@ -31,7 +31,7 @@ namespace Testity.BuildProcess.Unity3D
 
 			//Should return types that are EngineScriptComponents
 			return locator.LoadTypes();
-        }
+	}
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{

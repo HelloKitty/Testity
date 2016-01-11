@@ -573,7 +573,7 @@ namespace Testity.EngineMath
 			if (length == 0.0f)
 				return new Quaternion<float>(0, 0, 0, 0);
 
-            float scale = 1.0f / length;
+	float scale = 1.0f / length;
 			quat.xyz *= scale;
 			quat.w *= scale;
 

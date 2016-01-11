@@ -13,18 +13,18 @@ namespace Testity.EngineMath.Unity3D.Tests
 		//WARNING: We are unable to test some methods. This is an issue. The methods listed below we cannot test against Unity3D.
 		//The reason for this is they make calls into C++ that we cannot make outside of Unity.
 		/*
-        private static extern Quaternion INTERNAL_CALL_AngleAxis(float angle, ref Vector3 axis);
-        private static extern Quaternion INTERNAL_CALL_AxisAngle(ref Vector3 axis, float angle);
-        private static extern Quaternion INTERNAL_CALL_FromToRotation(ref Vector3 fromDirection, ref Vector3 toDirection);
-        private static extern Quaternion INTERNAL_CALL_Internal_FromEulerRad(ref Vector3 euler);
-        private static extern void INTERNAL_CALL_Internal_ToAxisAngleRad(ref Quaternion q, out Vector3 axis, out float angle);
-        private static extern Vector3 INTERNAL_CALL_Internal_ToEulerRad(ref Quaternion rotation);
-        private static extern Quaternion INTERNAL_CALL_Inverse(ref Quaternion rotation);
-        private static extern Quaternion INTERNAL_CALL_Lerp(ref Quaternion a, ref Quaternion b, float t);
-        private static extern Quaternion INTERNAL_CALL_LerpUnclamped(ref Quaternion a, ref Quaternion b, float t);
-        private static extern Quaternion INTERNAL_CALL_LookRotation(ref Vector3 forward, ref Vector3 upwards);
-        private static extern Quaternion INTERNAL_CALL_Slerp(ref Quaternion a, ref Quaternion b, float t);
-        private static extern Quaternion INTERNAL_CALL_SlerpUnclamped(ref Quaternion a, ref Quaternion b, float t);*/
+	private static extern Quaternion INTERNAL_CALL_AngleAxis(float angle, ref Vector3 axis);
+	private static extern Quaternion INTERNAL_CALL_AxisAngle(ref Vector3 axis, float angle);
+	private static extern Quaternion INTERNAL_CALL_FromToRotation(ref Vector3 fromDirection, ref Vector3 toDirection);
+	private static extern Quaternion INTERNAL_CALL_Internal_FromEulerRad(ref Vector3 euler);
+	private static extern void INTERNAL_CALL_Internal_ToAxisAngleRad(ref Quaternion q, out Vector3 axis, out float angle);
+	private static extern Vector3 INTERNAL_CALL_Internal_ToEulerRad(ref Quaternion rotation);
+	private static extern Quaternion INTERNAL_CALL_Inverse(ref Quaternion rotation);
+	private static extern Quaternion INTERNAL_CALL_Lerp(ref Quaternion a, ref Quaternion b, float t);
+	private static extern Quaternion INTERNAL_CALL_LerpUnclamped(ref Quaternion a, ref Quaternion b, float t);
+	private static extern Quaternion INTERNAL_CALL_LookRotation(ref Vector3 forward, ref Vector3 upwards);
+	private static extern Quaternion INTERNAL_CALL_Slerp(ref Quaternion a, ref Quaternion b, float t);
+	private static extern Quaternion INTERNAL_CALL_SlerpUnclamped(ref Quaternion a, ref Quaternion b, float t);*/
 
 		[Test(Author = "Andrew Blakely", Description = "Tests" + nameof(Quaternion<float>) + " initialization againstUnity3D.", TestOf = typeof(Quaternion<>))]
 		[TestCase(0.0000235f, 5.654543f, 10.1234234f, 64)]

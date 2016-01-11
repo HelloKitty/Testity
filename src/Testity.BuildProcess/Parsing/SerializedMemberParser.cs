@@ -10,7 +10,7 @@ namespace Testity.BuildProcess
 {
 	public static class SerializedMemberParser<TMemberInfoType>
 		where TMemberInfoType : MemberInfo
-    {
+	{
 		/// <summary>
 		/// Caches the functional 1 to 1 relationship between a Type and its <see cref="MemberTypes"/>.
 		/// </summary>

@@ -14,6 +14,6 @@ namespace Testity.Common
 			: base(type)
 		{
 			ImplementationName  = name;
-        }
+	}
 	}
 }

@@ -48,5 +48,5 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			//Tests that it contains ,"NAME" or , "NAME"
 			Assert.IsTrue(compiledAttributes.Contains(@",""" + attri.WiredMemberName + @""")") || compiledAttributes.Contains(@", """ + attri.WiredMemberName + @""")"));
 		}
-    }
+	}
 }

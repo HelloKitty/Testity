@@ -14,7 +14,7 @@ namespace Testity.EngineServices
 	[Serializable]
 	public class EngineObjectReferenceDictionary<TEngineObjectType, TActualEngineObjectType> : Dictionary<TEngineObjectType, TActualEngineObjectType>, IReadOnlyMapLookup<TEngineObjectType, TActualEngineObjectType>
 		where TEngineObjectType : class, IEngineObject where TActualEngineObjectType : class
-    {
+	{
 		/// <summary>
 		/// Initializes a dictionary with the default <see cref="IEqualityComparer{TEngineObjectType}"/>.
 		/// </summary>
@@ -105,7 +105,7 @@ namespace Testity.EngineServices
 				if (!Remove(objectToUnregister))
 					throw new InvalidOperationException("Failed to remove " + nameof(objectToUnregister) + " from map in " + GetType());
 
-                return new UnregistrationResult<TActualEngineObjectType>(true, value);
+	return new UnregistrationResult<TActualEngineObjectType>(true, value);
 			}		
 			else
 				return new UnregistrationResult<TActualEngineObjectType>(false, null);

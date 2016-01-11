@@ -175,7 +175,7 @@ namespace Testity.EngineMath.UnitTests
 			//assert
 			for (int i = 0; i < 3; i++)
 				Assert.AreEqual(Operator.Subtract(operandPairs.ElementAt(i).Item1, operandPairs.ElementAt(i).Item2), resultOne[i]);
-        }
+	}
 
 
 
@@ -481,13 +481,13 @@ namespace Testity.EngineMath.UnitTests
 
 			//act
 			//Can't directly call extension method. Cast to dynamic for testing purposes only
-            Vector3<TMathType> nVec3 = (Vector3<TMathType>)GrabExtensionMethod<Vector3<TMathType>>(typeof(Vector3Extensions), "Normalized")
+	Vector3<TMathType> nVec3 = (Vector3<TMathType>)GrabExtensionMethod<Vector3<TMathType>>(typeof(Vector3Extensions), "Normalized")
 				.Invoke(null, new object[] { vec3 });
 
 			//assert
 			//Asserts that 1 is equal to the magnitude
 			if (Operator<TMathType>.GreaterThan(InvokeVector3ExtensionMethod("SqrMagnitude", vec3), Vector3<TMathType>.kEpsilon))
-            {
+	{
 				Assert.AreEqual(Operator.Convert<TMathType, double>(Operator.AddAlternative(Operator<TMathType>.Zero, 1d)), InvokeVector3ExtensionMethod("SqrMagnitude", nVec3),
 					(dynamic)Vector3<TMathType>.kEpsilon);
 			}
@@ -619,7 +619,7 @@ namespace Testity.EngineMath.UnitTests
 			//assert
 			for (int i = 0; i < 3; i++)
 				Assert.AreEqual(vals[i] * vals[i], vec3[i]);
-        }
+	}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests Vector<TMathType> distance methods.", TestOf = typeof(Vector3<>))]
 		[TestCase(-5.3f, 6.5f, 7.6f)]

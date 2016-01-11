@@ -12,6 +12,6 @@ namespace Testity.Common
 		public ImplementationMetadataAttribute(EngineType type)
 		{
 			EngineType = type;
-        }
+	}
 	}
 }

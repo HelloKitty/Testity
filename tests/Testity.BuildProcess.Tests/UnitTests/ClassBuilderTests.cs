@@ -28,7 +28,7 @@ namespace Testity.BuildProcess.Tests
 			//assert
 			Assert.IsTrue(scriptBuilder.Compile().Contains("private " + typeof(EngineScriptComponent).FullName + " testField"));
 			Assert.IsTrue(scriptBuilder.Compile().Contains("[" + typeof(ExposeDataMemeberAttribute).FullName+ "]"));
-        }
+	}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a base class with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
 		public static void Test_TestityClassBuilder_Test_Adding_Base_Class()
@@ -75,7 +75,7 @@ namespace Testity.BuildProcess.Tests
 				.Returns(SyntaxFactory.List(attributeTypes.Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))));
 
 			return implementationProvider;
-        }
+	}
 
 		private static Mock<IBlockBodyProvider> BuildBodyProviderMockEmpty()
 		{
