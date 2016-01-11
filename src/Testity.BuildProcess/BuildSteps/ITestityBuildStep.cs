@@ -8,6 +8,6 @@ namespace Testity.BuildProcess
 {
 	public interface ITestityBuildStep
 	{
-		void Process(IClassBuilder builder);
+		void Process(IClassBuilder builder, Type typeToParse);
 	}
 }

@@ -207,9 +207,8 @@ namespace Testity.EngineMath
 
 		public static bool operator ==(Quaternion<TMathType> lhs, Quaternion<TMathType> rhs)
 		{
-
 			return Operator.GreaterThan(dotFunc(ref lhs, ref rhs), dotCompareVal);
-	}
+		}
 
 		public static bool operator !=(Quaternion<TMathType> lhs, Quaternion<TMathType> rhs)
 		{

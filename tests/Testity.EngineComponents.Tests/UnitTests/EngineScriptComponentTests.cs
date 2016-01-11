@@ -29,7 +29,7 @@ namespace Testity.EngineComponents.Tests.UnitTests
 			engineScriptComponentSecondNonEqualMock.CallBase = true;
 
 			EngineScriptComponent engineScriptComponent = engineScriptComponentMock.Object;
-	EngineScriptComponent engineScriptComponentSecondNonEqual = engineScriptComponentSecondNonEqualMock.Object;
+			EngineScriptComponent engineScriptComponentSecondNonEqual = engineScriptComponentSecondNonEqualMock.Object;
 
 			//act (cast to interface for equal testing.
 			IEngineObject engineObjectInterface = engineScriptComponent;

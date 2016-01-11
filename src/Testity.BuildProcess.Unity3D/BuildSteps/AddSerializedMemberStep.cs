@@ -9,19 +9,27 @@ namespace Testity.BuildProcess.Unity3D
 {
 	public class AddSerializedMemberStep : ITestityBuildStep
 	{
-		private readonly Type TypeToParse;
-
-		public AddSerializedMemberStep(Type typeToParse)
+		public AddSerializedMemberStep()
 		{
-			TypeToParse = typeToParse;
+
 		}
 
-		public void Process(IClassBuilder builder)
+		public void Process(IClassBuilder builder, Type typeToParse)
 		{
-			//handle serialized properties first
-			IEnumerable<PropertyInfo> propertiesToHandle = SerializedMemberParser<PropertyInfo>.Parse(TypeToParse);
+			//This can be done in a way that preserves order but that is not important in the first Testity build.
+			//We can improve on that later
 
-			//builder.AddClassField()
+			//handle serialized properties first
+			foreach (PropertyInfo pi in SerializedMemberParser<PropertyInfo>.Parse(typeToParse))
+			{
+				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, pi.PropertyType, new Common.Unity3D.WiredToAttribute(MemberTypes.Property, pi.Name)));
+            }
+
+			//handle serialized fields second
+			foreach (FieldInfo pi in SerializedMemberParser<FieldInfo>.Parse(typeToParse))
+			{
+				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, pi.FieldType, new Common.Unity3D.WiredToAttribute(MemberTypes.Field, pi.Name)));
+			}
 		}
 	}
 }
