@@ -102,7 +102,7 @@ namespace Testity.EngineServices.Tests.UnitTests
 
 		private static TEquatableInstance SetupEquatableIsEqualToSelfInstance<TEquatableInstance>()
 			where TEquatableInstance : class, IEquatable<TEquatableInstance>
-	{
+		{
 			//arrange
 			Mock<TEquatableInstance> testEngineObject = new Mock<TEquatableInstance>(MockBehavior.Strict);
 			//setup IEquatable

@@ -15,6 +15,14 @@ using Testity.EngineComponents;
 
 namespace Testity.BuildProcess
 {
+	public static class TestityClassBuilder
+	{
+		public static IClassBuilder Create(Type t)
+		{
+			return Activator.CreateInstance(typeof(TestityClassBuilder<>).MakeGenericType(t)) as IClassBuilder;
+		}
+	}
+
 	public class TestityClassBuilder<TType> : IClassBuilder
 		where TType : EngineScriptComponent
 	{
@@ -26,22 +34,14 @@ namespace Testity.BuildProcess
 
 		private IList<MemberDeclarationSyntax> memberSyntax;
 
-		private bool hasBaseclass = false;
+		private bool hasBaseclass = false;	
 
 		public TestityClassBuilder()
 		{
 			rosylnCompilationUnit = SyntaxFactory.CompilationUnit();
 			rosylnClassUnit = SyntaxFactory.ClassDeclaration(typeof(TType).Name + "Script");
 			memberSyntax = new List<MemberDeclarationSyntax>();
-	}
-
-		/*public void AddDLLReference(string usingString)
-		{
-			UsingDirectiveSyntax usingUnit = SyntaxFactory.UsingDirective(SyntaxFactory.IdentifierName(usingString));
-
-			lock(syncObj)
-				rosylnCompilationUnit = rosylnCompilationUnit.AddUsings(usingUnit);
-	}*/
+		}
 
 		public void AddBaseClass<TClassType>()
 			where TClassType : class
@@ -58,13 +58,13 @@ namespace Testity.BuildProcess
 					rosylnClassUnit = rosylnClassUnit.AddBaseListTypes(SyntaxFactory.SimpleBaseType(typeSyn));
 
 					hasBaseclass = hasBaseclass || typeof(TClassType).IsClass;
-	}			
+				}			
 			}
 		}
 
 		//TODO: Support property fields and merge duplicate code
 		public void AddClassField(IMemberImplementationProvider implementationProvider)
-	{
+		{
 			VariableDeclarationSyntax variableSyntax = SyntaxFactory.VariableDeclaration(implementationProvider.MemberType)
 				.AddVariables(SyntaxFactory.VariableDeclarator(implementationProvider.MemberName));
 
@@ -96,7 +96,7 @@ namespace Testity.BuildProcess
 
 			lock (syncObj)
 				memberSyntax.Add(methodSyntax);
-	}
+		}
 
 		public string Compile()
 		{
@@ -120,7 +120,8 @@ namespace Testity.BuildProcess
 		{
 
 			CompilationUnitSyntax compileUnit = null;
-	lock (syncObj)
+
+			lock (syncObj)
 				//don't mutate the class fields
 				//We should do it without changing them
 				compileUnit = rosylnCompilationUnit.AddMembers(rosylnClassUnit.AddMembers(memberSyntax.ToArray()));

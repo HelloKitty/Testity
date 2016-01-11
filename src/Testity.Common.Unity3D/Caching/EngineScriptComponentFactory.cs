@@ -66,7 +66,8 @@ namespace Testity.Common.Unity3D
 			//We wrap the compiled lambda func inside of a new func that fits the type
 			//It should be preformant enough and it gives us the required type sig for the func
 			Func<TEngineScriptComponentType> compiledLambda = creationLambda.Compile() as Func<TEngineScriptComponentType>;
-	return () => compiledLambda();
+
+			return () => compiledLambda();
 		}
 	}
 }

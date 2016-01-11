@@ -25,6 +25,6 @@ namespace Testity.EngineComponents
 			PrefabName = prefabbedGameObjectInstance.name;
 
 			prefabbedGameObjectInstance = gameObjectPrefab;
-	}
+		}
 	}
 }

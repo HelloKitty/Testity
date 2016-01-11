@@ -60,7 +60,7 @@ namespace Testity.EngineComponents.Unity3D
 			unityGameObjectAdaptee = unityGO;
 
 			cachedTransform = new Lazy<UnityEngineTransformAdapter>(() => new UnityEngineTransformAdapter(unityGameObjectAdaptee.transform), true);
-	}
+		}
 
 		public void Dispose()
 		{

@@ -16,7 +16,6 @@ namespace Testity.EngineComponents
 		public EngineComponentConcreteAttribute(params Type[] interfaceTypes)
 		{
 			InterfaceComponentType = interfaceTypes;
-	}
-		//Don't need anything
+		}
 	}
 }

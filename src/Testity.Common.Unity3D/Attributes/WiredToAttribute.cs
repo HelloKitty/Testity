@@ -27,6 +27,6 @@ namespace Testity.Common.Unity3D
 		{
 			WiredMemberType = memberType;
 			WiredMemberName = name;
-	}
+		}
 	}
 }

@@ -34,6 +34,6 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			{
 				Assert.NotNull(t, "One or more {0} attributes failed to resolve types in Assembly: {1}.", nameof(EngineSerializableMapsToTypeAttribute), fromAssemblyToTest.Assembly.FullName);
 			}
-	}
+		}
 	}
 }

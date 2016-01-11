@@ -32,10 +32,10 @@ namespace Testity.BuildProcess.Unity3D
 			//Unity fields require two attributes.
 			//Attributes: SerializeField and WiredToAttribute
 			Attributes = GenerateUnityAttributes(wiredAttribute);
-	}
+		}
 
 		private SyntaxList<AttributeListSyntax> GenerateUnityAttributes(WiredToAttribute wiredAttribute)
-	{
+		{
 			//Code generated from: http://roslynquoter.azurewebsites.net/
 			//This is NOT human written. Don't try to read it
 			return SyntaxFactory.SingletonList<AttributeListSyntax>(

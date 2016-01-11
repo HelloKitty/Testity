@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Testity.BuildProcess.Unity3D
 {
@@ -22,7 +23,13 @@ namespace Testity.BuildProcess.Unity3D
 			//load the EngineScriptComponentTypes
 			IEnumerable<Type> potentialBehaviourTypes = LoadBehaviourTypes(loadedAss);
 
+			List<Task<string>> classFiles = new List<Task<string>>();
 
+			//foreach(Type t in potentialBehaviourTypes)
+			//{
+			//	Task.Factory.StartNew(() => new TestityClassBuilder());
+			//	classFiles.Add()
+			//}
 		}
 
 		private static IEnumerable<Type> LoadBehaviourTypes(Assembly loadedAss)
@@ -31,7 +38,7 @@ namespace Testity.BuildProcess.Unity3D
 
 			//Should return types that are EngineScriptComponents
 			return locator.LoadTypes();
-	}
+		}
 
 		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{

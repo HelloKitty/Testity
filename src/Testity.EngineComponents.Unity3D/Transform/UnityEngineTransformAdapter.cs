@@ -143,12 +143,12 @@ namespace Testity.EngineComponents.Unity3D
 		public UnityEngineTransformAdapter(UnityEngine.Transform transform)
 		{
 			transformAdaptee = transform;
-	}
+		}
 
 		public bool Equals(IEngineObject other)
 		{
 			return this == other;
-	}
+		}
 
 		public static bool operator ==(UnityEngineTransformAdapter lhs, UnityEngineTransformAdapter rhs)
 		{
