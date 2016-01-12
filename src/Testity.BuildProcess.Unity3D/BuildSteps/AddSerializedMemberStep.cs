@@ -9,10 +9,12 @@ namespace Testity.BuildProcess.Unity3D
 {
 	public class AddSerializedMemberStep : ITestityBuildStep
 	{
-		public AddSerializedMemberStep()
-		{
+		private readonly ITypeRelationalMapper typeResolver;
 
-		}
+		public AddSerializedMemberStep(ITypeRelationalMapper mapper)
+		{
+			typeResolver = mapper;
+        }
 
 		public void Process(IClassBuilder builder, Type typeToParse)
 		{
@@ -22,13 +24,13 @@ namespace Testity.BuildProcess.Unity3D
 			//handle serialized properties first
 			foreach (PropertyInfo pi in SerializedMemberParser<PropertyInfo>.Parse(typeToParse))
 			{
-				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, pi.PropertyType, new Common.Unity3D.WiredToAttribute(MemberTypes.Property, pi.Name)));
+				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, typeResolver.ResolveMappedType(pi.PropertyType), new Common.Unity3D.WiredToAttribute(MemberTypes.Property, pi.Name)));
             }
 
 			//handle serialized fields second
 			foreach (FieldInfo pi in SerializedMemberParser<FieldInfo>.Parse(typeToParse))
 			{
-				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, pi.FieldType, new Common.Unity3D.WiredToAttribute(MemberTypes.Field, pi.Name)));
+				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, typeResolver.ResolveMappedType(pi.FieldType), new Common.Unity3D.WiredToAttribute(MemberTypes.Field, pi.Name)));
 			}
 		}
 	}

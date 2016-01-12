@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using Testity.Common;
 using Testity.Common.Unity3D;
 using Testity.EngineComponents;
 using UnityEngine;
 using UnityEngine.Events;
+using Fasterflect;
 
 namespace Testity.EngineComponents.Unity3D
 {
@@ -53,8 +55,33 @@ namespace Testity.EngineComponents.Unity3D
 		}
 
 		/// <summary>
+		/// Initializes the internal Testity component with the serialized values.
 		/// </summary>
 		/// <param name="component"></param>
-		protected abstract void InitializeScriptComponentMemberValues();
+		protected  void InitializeScriptComponentMemberValues()
+		{
+			//TODO: Later versions of Testity should improve on this by making init part of the build process.
+			//This was a shortcut to save development time
+
+			//This will be slow for the first time for a Type however future calls for the same
+			//Type will be quick due to cached reflection
+			//foreach field marked with WiredToAttributes
+			foreach(var rdata in GetType().MembersAndAttributes(MemberTypes.Field, typeof(WiredToAttribute)))
+			{
+				WiredToAttribute wiredAttri = rdata.Value.First() as WiredToAttribute;
+
+				//Won't be null
+#if DEBUG || DEBUGBUILD
+				if (wiredAttri == null)
+					throw new InvalidOperationException("Fasterflect failed to parse type.");
+#endif
+				//Cases 1: Types are the same int -> int or string -> string
+				//In this case we just set the value
+				if (wiredAttri.WiredMemberType == MemberTypes.Field)
+					ScriptComponent.GetType().Field(wiredAttri.WiredMemberName).SetValue(ScriptComponent, ((FieldInfo)rdata.Key).GetValue(this));
+				else
+					ScriptComponent.GetType().Property(wiredAttri.WiredMemberName).SetValue(ScriptComponent, ((FieldInfo)rdata.Key).GetValue(this), null);
+			}
+		}
 	}
 }

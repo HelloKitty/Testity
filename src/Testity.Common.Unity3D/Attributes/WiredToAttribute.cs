@@ -10,7 +10,7 @@ namespace Testity.Common.Unity3D
 	/// Metadata marker for fields that indicate what field/property the target field
 	/// should initialize/wire its values to.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.Field)] //should only go on serialized Unity fields
+	[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)] //should only go on serialized Unity fields
 	public class WiredToAttribute : Attribute
 	{
 		/// <summary>

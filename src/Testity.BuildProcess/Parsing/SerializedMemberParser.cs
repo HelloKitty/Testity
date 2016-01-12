@@ -43,8 +43,6 @@ namespace Testity.BuildProcess
 		{
 			return typeToParse.MembersWith<ExposeDataMemeberAttribute>(cacheTypeMemberMap[typeof(TMemberInfoType)], Flags.InstanceAnyVisibility) //get all members from current and base classes
 				.Cast<TMemberInfoType>();
-
-			MemberTypes t = MemberTypes.Property | MemberTypes.Field;
 		}
 	}
 }
