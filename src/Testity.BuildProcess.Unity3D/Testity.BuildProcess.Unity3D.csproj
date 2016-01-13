@@ -73,7 +73,9 @@
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeMapping\DefaultTypeRelationalMapper.cs" />
+    <Compile Include="TypeMapping\Exclusions\UnityPrimitiveTypeExclusion.cs" />
     <Compile Include="TypeMapping\PrimitiveTypeRelationalMapper.cs" />
+    <Compile Include="TypeMapping\StringTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\UnityBuildProcessTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\EngineObjectTypeRelationalMapper.cs" />
   </ItemGroup>

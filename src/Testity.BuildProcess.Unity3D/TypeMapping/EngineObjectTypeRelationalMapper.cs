@@ -13,6 +13,9 @@ namespace Testity.BuildProcess.Unity3D
 	{
 		public Type ResolveMappedType(Type typeToFindRelation)
 		{
+			if (typeToFindRelation == null)
+				throw new ArgumentNullException(nameof(typeToFindRelation), "Type cannot be null.");
+
 			//If this isn't an IEngineObject then we're unable to map it
 			if (!typeof(IEngineObject).IsAssignableFrom(typeToFindRelation))
 				return null;

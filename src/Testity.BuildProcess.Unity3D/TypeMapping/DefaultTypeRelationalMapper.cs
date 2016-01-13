@@ -16,6 +16,9 @@ namespace Testity.BuildProcess.Unity3D
 	{
 		public Type ResolveMappedType(Type typeToFindRelation)
 		{
+			if (typeToFindRelation == null)
+				throw new ArgumentNullException(nameof(typeToFindRelation), "Type cannot be null.");
+
 			//This allows users to serialize interfaces that EngineScriptComponent types may implement
 			//Unity editor may not allow users to set TestityBehaviour's that don't contain EngineScriptComponents that implement the interface
 

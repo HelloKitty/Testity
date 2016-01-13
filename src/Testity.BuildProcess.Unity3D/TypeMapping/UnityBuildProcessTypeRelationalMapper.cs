@@ -12,12 +12,21 @@ namespace Testity.BuildProcess.Unity3D
 
 		public UnityBuildProcessTypeRelationalMapper(IEnumerable<ITypeRelationalMapper> mapperChain)
 		{
+			if(mapperChain == null)
+				throw new ArgumentNullException(nameof(mapperChain), "The mapper collection must not be null.");
+
+			if (mapperChain.Count() == 0)
+				throw new ArgumentException("Mapper chain must have at least one mapper.", nameof(mapperChain));
+
 			typeRelationalMapperChain = mapperChain;
         }
 
 		public Type ResolveMappedType(Type typeToFindRelation)
 		{
-			foreach(ITypeRelationalMapper m in typeRelationalMapperChain)
+			if (typeToFindRelation == null)
+				throw new ArgumentNullException(nameof(typeToFindRelation), "Type cannot be null.");
+
+			foreach (ITypeRelationalMapper m in typeRelationalMapperChain)
 			{
 				Type resultType = m.ResolveMappedType(typeToFindRelation);
 

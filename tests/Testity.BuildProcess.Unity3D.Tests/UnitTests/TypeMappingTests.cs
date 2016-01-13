@@ -27,13 +27,51 @@ namespace Testity.BuildProcess.Unity3D.Tests
 
 		[Test(Author = "Andrew Blakely", Description = "Ensures mapper returns valid type for valid inputs.", TestOf = typeof(DefaultTypeRelationalMapper))]
 		[TestCase(typeof(IServiceProvider))]
+		[TestCase(typeof(IEnumerable<int>))]
 		public static void Test_DefaultTypeRelationMapper_Returns_Expected_Type(Type t)
 		{
 			//arrange
 			ITypeRelationalMapper mapper = new DefaultTypeRelationalMapper();
 
+			//act
+			Type mappedType = mapper.ResolveMappedType(t);
+
 			//assert
-			Assert.NotNull(mapper.ResolveMappedType(t));
+			//if it's an interface it should be MonoBehaviour
+			Assert.AreEqual(typeof(UnityEngine.MonoBehaviour), mappedType);
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Ensures mapper returns valid type for valid inputs.", TestOf = typeof(PrimitiveTypeRelationalMapper))]
+		[TestCase(typeof(int))]
+		[TestCase(typeof(Int32))]
+		[TestCase(typeof(ushort))]
+		[TestCase(typeof(byte))]
+		public static void Test_PrimitiveTypeMapper_Returns_Expected_Type(Type t)
+		{
+			//arrange
+			ITypeRelationalMapper mapper = new PrimitiveTypeRelationalMapper(Enumerable.Empty<Type>());
+
+			//act
+			Type mappedType = mapper.ResolveMappedType(t);
+
+			//assert
+			Assert.AreEqual(t, mappedType);
+		}
+
+		[Test(Author = "Andrew Blakely", Description = "Ensures mapper returns null for invalid types.", TestOf = typeof(PrimitiveTypeRelationalMapper))]
+		[TestCase(typeof(IServiceProvider))]
+		[TestCase(typeof(IEnumerable<int>))]
+		[TestCase(typeof(string))] //string is not a primitve
+		public static void Test_PrimitiveTypeMapper_Returns_Null_On_Invalid_Type(Type t)
+		{
+			//arrange
+			ITypeRelationalMapper mapper = new PrimitiveTypeRelationalMapper(Enumerable.Empty<Type>());
+
+			//act
+			Type mappedType = mapper.ResolveMappedType(t);
+
+			//assert
+			Assert.IsNull(mappedType);
 		}
 	}
 }
