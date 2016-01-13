@@ -17,11 +17,11 @@ namespace Testity.BuildProcess.Unity3D
 		public Type ResolveMappedType(Type typeToFindRelation)
 		{
 			//This allows users to serialize interfaces that EngineScriptComponent types may implement
-			//Unity editor will not allow users to set TestityBehaviour's that don't contain EngineScriptComponents that implement the interface
+			//Unity editor may not allow users to set TestityBehaviour's that don't contain EngineScriptComponents that implement the interface
 
 			//Exclude types that aren't interfaces
 			if (typeToFindRelation.IsInterface)
-				return typeToFindRelation;
+				return typeof(UnityEngine.MonoBehaviour); //we return a monobehaviour because TestityBehaviours will be assigned to it that have EngineScriptComponents that implement the interface
 			else
 				return null;
 		}
