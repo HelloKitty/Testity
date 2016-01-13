@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Testity.Common;
 using Testity.EngineMath;
 
 namespace Testity.EngineComponents
@@ -11,6 +12,7 @@ namespace Testity.EngineComponents
 	/// Not based on anything in Unity3D; maybe the Transform.back and etc.
 	/// </summary>
 	[EngineComponentInterface]
+	[EngineSerializableMapsToType(EngineType.Unity3D, "UnityEngine.Transform, UnityEngine")]
 	public interface IEngineDirectional
 	{
 		/// <summary>
