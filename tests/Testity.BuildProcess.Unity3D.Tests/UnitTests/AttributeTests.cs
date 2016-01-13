@@ -25,9 +25,9 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			//arrange
 			//add the ones from the Components dll
 			IEnumerable<EngineSerializableMapsToTypeAttribute> typesToCheck = fromAssemblyToTest.Assembly.GetTypes()
-				.Where(x => x.GetCustomAttribute<EngineComponentInterfaceAttribute>(false) != null)
 				.Where(x => x.GetCustomAttribute<EngineSerializableMapsToTypeAttribute>(false) != null && x.GetCustomAttribute<EngineSerializableMapsToTypeAttribute>(false).EngineType == EngineType.Unity3D)
 				.Select(x => x.GetCustomAttribute<EngineSerializableMapsToTypeAttribute>(false));
+
 
 			//assert
 			foreach(EngineSerializableMapsToTypeAttribute t in typesToCheck)
