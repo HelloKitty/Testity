@@ -11,9 +11,12 @@ namespace Testity.BuildProcess.Unity3D
 	{
 		private readonly ITypeRelationalMapper typeResolver;
 
-		public AddSerializedMemberStep(ITypeRelationalMapper mapper)
+		private readonly ITypeMemberParser typeParser;
+
+		public AddSerializedMemberStep(ITypeRelationalMapper mapper, ITypeMemberParser parser)
 		{
 			typeResolver = mapper;
+			typeParser = parser;
         }
 
 		public void Process(IClassBuilder builder, Type typeToParse)
@@ -21,17 +24,11 @@ namespace Testity.BuildProcess.Unity3D
 			//This can be done in a way that preserves order but that is not important in the first Testity build.
 			//We can improve on that later
 
-			//handle serialized properties first
-			foreach (PropertyInfo pi in SerializedMemberParser<PropertyInfo>.Parse(typeToParse))
+			//handle serialized fields and properties
+			foreach (PropertyInfo pi in typeParser.Parse(MemberTypes.Field | MemberTypes.Property, typeToParse))
 			{
 				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, typeResolver.ResolveMappedType(pi.PropertyType), new Common.Unity3D.WiredToAttribute(MemberTypes.Property, pi.Name)));
             }
-
-			//handle serialized fields second
-			foreach (FieldInfo pi in SerializedMemberParser<FieldInfo>.Parse(typeToParse))
-			{
-				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, typeResolver.ResolveMappedType(pi.FieldType), new Common.Unity3D.WiredToAttribute(MemberTypes.Field, pi.Name)));
-			}
 		}
 	}
 }

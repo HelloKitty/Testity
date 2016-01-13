@@ -13,7 +13,7 @@ namespace Testity.EngineComponents
 	/// </summary>
 	[EngineComponentInterface]
 	[EngineSerializableMapsToType(EngineType.Unity3D, "UnityEngine.Transform, UnityEngine")]
-	public interface IEngineTransform : IEngineComponent
+	public interface IEngineTransform : IEngineComponent, IEngineDirectional
 	{
 		/// <summary>
 		/// Position of the transform in world space.

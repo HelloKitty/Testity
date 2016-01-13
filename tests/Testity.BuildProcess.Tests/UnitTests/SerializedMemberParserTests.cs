@@ -15,17 +15,14 @@ namespace Testity.BuildProcess.Tests
 	public class SerializedMemberParserTests
 	{
 		[Test(Author = "Andrew Blakely", Description = "Tests SerializedMemberParser type empty parsing.", TestOf = typeof(SerializedMemberParser<>))]
-		[TestCase(typeof(FieldInfo), typeof(object))]
-		[TestCase(typeof(PropertyInfo), typeof(object))]
-		[TestCase(typeof(PropertyInfo), typeof(string))]
-		[TestCase(typeof(PropertyInfo), typeof(PropertyInfo))]
-		public static void Test_SerializedMemberParser_Should_Find_No_Members(Type memberInfoType, Type typeToParse)
+		[TestCase(MemberTypes.Field, typeof(object))]
+		[TestCase(MemberTypes.Property, typeof(object))]
+		[TestCase(MemberTypes.Property, typeof(string))]
+		[TestCase(MemberTypes.Property, typeof(PropertyInfo))]
+		public static void Test_SerializedMemberParser_Should_Find_No_Members(MemberTypes memberInfoType, Type typeToParse)
 		{
 			//arranges
-			IEnumerable objects = typeof(SerializedMemberParser<>)
-				.MakeGenericType(memberInfoType)
-				.GetMethod(nameof(SerializedMemberParser<MemberInfo>.Parse), BindingFlags.Static | BindingFlags.Public, null, new Type[1] { typeof(Type) }, new ParameterModifier[1] { new ParameterModifier(1) })
-				.Invoke(null, new object[1] { typeToParse }) as IEnumerable;
+			IEnumerable objects = new SerializedMemberParser().Parse(memberInfoType, typeToParse);
 
 			//assert
 			//It should be empty but non-null
@@ -43,8 +40,8 @@ namespace Testity.BuildProcess.Tests
 		public static void Test_SerializedMemberParser_Should_Find_Members()
 		{
 			//arrange
-			IEnumerable<FieldInfo> fieldInfos = SerializedMemberParser<FieldInfo>.Parse<OneFieldIsMarked>();
-			IEnumerable<PropertyInfo> propertyInfos = SerializedMemberParser<PropertyInfo>.Parse<OneFieldIsMarked>();
+			IEnumerable<FieldInfo> fieldInfos = (new SerializedMemberParser()).Generic<FieldInfo>().Parse<OneFieldIsMarked>();
+			IEnumerable<PropertyInfo> propertyInfos = (new SerializedMemberParser()).Generic<PropertyInfo>().Parse<OneFieldIsMarked>();
 
 			//assert
 			//Should be 1 field
@@ -61,8 +58,8 @@ namespace Testity.BuildProcess.Tests
 		public static void Test_SerializedMemberParser_Valid_Caching()
 		{
 			//arrange
-			IEnumerable<FieldInfo> fieldInfos1 = SerializedMemberParser<FieldInfo>.Parse<OneFieldIsMarked>();
-			IEnumerable<FieldInfo> fieldInfos2 = SerializedMemberParser<FieldInfo>.Parse<OneFieldIsMarked>();
+			IEnumerable<FieldInfo> fieldInfos1 = (new SerializedMemberParser<FieldInfo>()).Parse<OneFieldIsMarked>();
+			IEnumerable<FieldInfo> fieldInfos2 = (new SerializedMemberParser<FieldInfo>()).Parse<OneFieldIsMarked>();
 
 			//assert
 			//Should be 1 field

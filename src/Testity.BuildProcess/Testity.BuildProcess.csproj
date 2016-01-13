@@ -98,6 +98,7 @@
     <Compile Include="Builders\IClassBuilder.cs" />
     <Compile Include="BuildSteps\ITestityBuildStep.cs" />
     <Compile Include="Extensions\MemberImplementationModifierExtensions.cs" />
+    <Compile Include="Extensions\SerializedMemberParserExtensions.cs" />
     <Compile Include="ITypeRelationalMapper.cs" />
     <Compile Include="Member Providers\IMemberImplementationProvider.cs" />
     <Compile Include="Member Providers\IMethodBodyProvider.cs" />
@@ -106,6 +107,8 @@
     <Compile Include="Builders\TestityClassBuilder.cs" />
     <Compile Include="Parsing\DLLLoader.cs" />
     <Compile Include="Parsing\EngineScriptComponentLocator.cs" />
+    <Compile Include="Parsing\ITypeMemberParser.cs" />
+    <Compile Include="Parsing\SerializedMemberParserGeneric.cs" />
     <Compile Include="Parsing\SerializedMemberParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

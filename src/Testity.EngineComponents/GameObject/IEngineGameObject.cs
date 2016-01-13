@@ -25,13 +25,5 @@ namespace Testity.EngineComponents
 		/// Based on UnrealEngine 4's: https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/GameFramework/AActor/GetTransform/index.html
 		/// </summary>
 		IEngineTransform Transform { get; }
-
-		/// <summary>
-		/// Directional component that provides directions based on the current GameObject transformation in World Space.
-		/// Based on something like Unity3D's: http://docs.unity3d.com/ScriptReference/Transform-forward.html
-		/// Based on something like UnrealEngine 4's: https://docs.unrealengine.com/latest/INT/API/Runtime/Engine/GameFramework/AActor/GetActorForwardVector/index.html
-		/// Except it provides access to all directions.
-		/// </summary>
-		IEngineDirectional Directions { get; }
 	}
 }
