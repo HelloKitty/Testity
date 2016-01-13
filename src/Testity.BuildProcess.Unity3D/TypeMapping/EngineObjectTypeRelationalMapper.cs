@@ -3,29 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fasterflect;
+using Testity.Common;
+using Testity.EngineComponents;
 
 namespace Testity.BuildProcess.Unity3D
 {
-	public class UnityBuildProcessTypeRelationalMapper : ITypeRelationalMapper
+	public class EngineObjectTypeRelationalMapper : ITypeRelationalMapper
 	{
-		private readonly IEnumerable<ITypeRelationalMapper> typeRelationalMapperChain;
-
-		public UnityBuildProcessTypeRelationalMapper(IEnumerable<ITypeRelationalMapper> mapperChain)
-		{
-			typeRelationalMapperChain = mapperChain;
-        }
-
 		public Type ResolveMappedType(Type typeToFindRelation)
 		{
-			foreach(ITypeRelationalMapper m in typeRelationalMapperChain)
-			{
-				Type resultType = m.ResolveMappedType(typeToFindRelation);
+			//If this isn't an IEngineObject then we're unable to map it
+			if (!typeof(IEngineObject).IsAssignableFrom(typeToFindRelation))
+				return null;
 
-				if (resultType != null)
-					return resultType;
-			}
+			//We need to find the [EngineSerializableMapsToType] attribute that is for UnityEngine
+			EngineSerializableMapsToTypeAttribute mapInfo = typeToFindRelation.Attributes<EngineSerializableMapsToTypeAttribute>()
+				.FirstOrDefault(x => x.EngineType == EngineType.Unity3D);
 
-			throw new ArgumentException("Unable to find mapped type for: " + typeToFindRelation.ToString(), nameof(typeToFindRelation));
-		}
+			//Possible that we don't have this Engine type setup it.
+			//Though this is unlikely. If an IEngineObject exists it's very likely its been mapped with metadata
+			if (mapInfo == null)
+				throw new InvalidOperationException("Unable to handle " + nameof(IEngineObject) + " type: " + typeToFindRelation.ToString());
+
+			return mapInfo.ConcreteEngineType;
+        }
 	}
 }

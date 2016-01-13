@@ -6,11 +6,14 @@ using Testity.EngineComponents;
 
 namespace Testity.EngineComponents.Unity3D
 {
-	public interface ITestityBehaviour<out TScriptComponentType>
+	public interface ITestityBehaviour<out TScriptComponentType> : ITestityBehaviour
 		where TScriptComponentType : EngineScriptComponent
 	{
 		TScriptComponentType ScriptComponent { get; }
+	}
 
+	public interface ITestityBehaviour
+	{
 		void Initialize();
 	}
 }
