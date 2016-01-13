@@ -10,7 +10,7 @@ namespace Testity.BuildProcess.Unity3D
 	public class UnityPrimitiveTypeExclusion : IEnumerable<Type>
 	{
 		private readonly Type[] excludedPrimitiveTypes
-			= new Type[] { typeof(DateTime), typeof(IntPtr), typeof(UIntPtr) };
+			= new Type[] { typeof(IntPtr), typeof(UIntPtr) };
 
 		public UnityPrimitiveTypeExclusion()
 		{
