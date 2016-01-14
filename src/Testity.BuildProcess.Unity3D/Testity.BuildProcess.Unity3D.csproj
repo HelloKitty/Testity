@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildProcessImplementations\UnitySerializedFieldImplementationProvider.cs" />
+    <Compile Include="BuildSteps\AddTestityBehaviourBaseClassMemberStep.cs" />
     <Compile Include="BuildSteps\AddSerializedMemberStep.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
