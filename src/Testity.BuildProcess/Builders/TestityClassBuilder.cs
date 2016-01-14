@@ -114,22 +114,27 @@ namespace Testity.BuildProcess
 				memberSyntax.Add(methodSyntax);
 		}
 
+		public override string ToString()
+		{
+			return Compile();
+		}
+
 		public string Compile()
 		{
-			lock(syncObj)
-			{
+
+			CompilationUnitSyntax compileUnit = null;
+            lock (syncObj)
 				//don't mutate the class fields
 				//We should do it without changing them
-				CompilationUnitSyntax compileUnit = rosylnCompilationUnit.AddMembers(rosylnClassUnit.AddMembers(memberSyntax.ToArray()));
+				compileUnit = rosylnCompilationUnit.AddMembers(rosylnClassUnit.AddMembers(memberSyntax.ToArray()));
 
-				StringBuilder sb = new StringBuilder();
-				using (StringWriter writer = new StringWriter(sb))
-				{
-					Formatter.Format(compileUnit, new AdhocWorkspace()).WriteTo(writer);
-				}
-
-				return sb.ToString();
+			StringBuilder sb = new StringBuilder();
+			using (StringWriter writer = new StringWriter(sb))
+			{
+				Formatter.Format(compileUnit, new AdhocWorkspace()).WriteTo(writer);
 			}
+
+			return sb.ToString();
 		}
 
 		public Task<string> CompileAsync()
