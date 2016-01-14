@@ -23,10 +23,22 @@ namespace Testity.Common.Unity3D
 		/// </summary>
 		public readonly string WiredMemberName;
 
-		public WiredToAttribute(MemberTypes memberType, string name)
+		public Type TypeWiredTo;
+
+		public WiredToAttribute(MemberTypes memberType, string name, string qualifiedTypeNameWiredTo)
 		{
 			WiredMemberType = memberType;
 			WiredMemberName = name;
-		}
+
+			TypeWiredTo = Type.GetType(qualifiedTypeNameWiredTo, true, false);
+        }
+
+		public WiredToAttribute(MemberTypes memberType, string name, Type typeWiredTo)
+		{
+			WiredMemberType = memberType;
+			WiredMemberName = name;
+
+			TypeWiredTo = typeWiredTo;
+        }
 	}
 }

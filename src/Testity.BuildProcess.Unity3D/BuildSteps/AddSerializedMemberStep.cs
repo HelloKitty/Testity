@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Fasterflect;
 
 namespace Testity.BuildProcess.Unity3D
 {
@@ -25,9 +26,9 @@ namespace Testity.BuildProcess.Unity3D
 			//We can improve on that later
 
 			//handle serialized fields and properties
-			foreach (PropertyInfo pi in typeParser.Parse(MemberTypes.Field | MemberTypes.Property, typeToParse))
+			foreach (MemberInfo mi in typeParser.Parse(MemberTypes.Field | MemberTypes.Property, typeToParse))
 			{
-				builder.AddClassField(new UnitySerializedFieldImplementationProvider(pi.Name, typeResolver.ResolveMappedType(pi.PropertyType), new Common.Unity3D.WiredToAttribute(MemberTypes.Property, pi.Name)));
+				builder.AddClassField(new UnitySerializedFieldImplementationProvider(mi.Name, typeResolver.ResolveMappedType(mi.Type()), new Common.Unity3D.WiredToAttribute(mi.MemberType, mi.Name, mi.Type())));
             }
 		}
 	}

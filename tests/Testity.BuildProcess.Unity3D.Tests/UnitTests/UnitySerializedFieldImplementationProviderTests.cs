@@ -21,7 +21,7 @@ namespace Testity.BuildProcess.Unity3D.Tests
 		public static void Test_UnitySerializedFieldImplementationProvider_Attribute_Method_Generator()
 		{
 			//arrange
-			WiredToAttribute attri = new WiredToAttribute(System.Reflection.MemberTypes.Property, "SomethingProp");
+			WiredToAttribute attri = new WiredToAttribute(System.Reflection.MemberTypes.Property, "SomethingProp", typeof(string).AssemblyQualifiedName);
 			UnitySerializedFieldImplementationProvider provider = new UnitySerializedFieldImplementationProvider("blah", typeof(string), attri);
 			string serializeFieldName = typeof(SerializeField).FullName;
 			string compiledAttributes = null;
@@ -46,7 +46,9 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			//Tests that it contains WiredToAttribute(
 			Assert.IsTrue(compiledAttributes.Contains(typeof(WiredToAttribute).FullName + @"("));
 			//Tests that it contains ,"NAME" or , "NAME"
-			Assert.IsTrue(compiledAttributes.Contains(@",""" + attri.WiredMemberName + @""")") || compiledAttributes.Contains(@", """ + attri.WiredMemberName + @""")"));
+			Assert.IsTrue(compiledAttributes.Contains(@",""" + attri.WiredMemberName + @"""") || compiledAttributes.Contains(@", """ + attri.WiredMemberName + @""""));
+
+			Assert.IsTrue(compiledAttributes.Contains(@",""" + attri.TypeWiredTo.FullName) || compiledAttributes.Contains(@", """ + attri.TypeWiredTo.FullName));
 		}
 	}
 }

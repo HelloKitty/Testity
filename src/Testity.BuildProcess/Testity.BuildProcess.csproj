@@ -95,7 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ImplementationMethodProviderAttribute.cs" />
+    <Compile Include="Builders\DefaultTypeSyntaxBuilder.cs" />
     <Compile Include="Builders\IClassBuilder.cs" />
+    <Compile Include="Builders\ITypeSyntaxBuilder.cs" />
     <Compile Include="BuildSteps\ITestityBuildStep.cs" />
     <Compile Include="Extensions\MemberImplementationModifierExtensions.cs" />
     <Compile Include="Extensions\SerializedMemberParserExtensions.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Member Providers\IMemberImplementationProvider.cs" />
     <Compile Include="Member Providers\IMethodBodyProvider.cs" />
     <Compile Include="Member Providers\IParameterImplementationProvider.cs" />
+    <Compile Include="Member Providers\ITypeImplementationProvider.cs" />
     <Compile Include="MemberImplementationModifier.cs" />
     <Compile Include="Builders\TestityClassBuilder.cs" />
     <Compile Include="Parsing\DLLLoader.cs" />

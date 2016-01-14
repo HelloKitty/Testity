@@ -36,36 +36,52 @@ namespace Testity.BuildProcess
 
 		private bool hasBaseclass = false;	
 
+		public TestityClassBuilder(MemberImplementationModifier modifiers)
+		{
+			rosylnCompilationUnit = SyntaxFactory.CompilationUnit();
+			rosylnClassUnit = SyntaxFactory.ClassDeclaration(typeof(TType).Name + "Script")
+				.WithModifiers(SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
+
+			memberSyntax = new List<MemberDeclarationSyntax>();
+		}
+
 		public TestityClassBuilder()
 		{
 			rosylnCompilationUnit = SyntaxFactory.CompilationUnit();
 			rosylnClassUnit = SyntaxFactory.ClassDeclaration(typeof(TType).Name + "Script");
+
 			memberSyntax = new List<MemberDeclarationSyntax>();
 		}
 
-		public void AddBaseClass<TClassType>()
+		public void AddBaseClass<TClassType>(ITypeSyntaxBuilder builder)
 			where TClassType : class
 		{
-			TypeSyntax typeSyn = SyntaxFactory.ParseTypeName((typeof(TClassType).FullName));
+			AddBaseClass(builder, typeof(TClassType));
+        }
 
-			lock(syncObj)
+		public void AddBaseClass(ITypeSyntaxBuilder builder, Type classType)
+		{
+			if (!classType.IsClass && !classType.IsInterface)
+				throw new InvalidOperationException(classType.ToString() + " is not a valid class type or interface.");		
+
+			lock (syncObj)
 			{
 				//Check if there is already a baseclass
-				if (hasBaseclass && typeof(TClassType).IsClass)
+				if (hasBaseclass && classType.IsClass)
 					throw new InvalidOperationException("A type may only derive from a single base class.");
 				else
 				{
-					rosylnClassUnit = rosylnClassUnit.AddBaseListTypes(SyntaxFactory.SimpleBaseType(typeSyn));
+					rosylnClassUnit = rosylnClassUnit.AddBaseListTypes(SyntaxFactory.SimpleBaseType(builder.GenerateFrom(classType)));		
 
-					hasBaseclass = hasBaseclass || typeof(TClassType).IsClass;
-				}			
+					hasBaseclass = hasBaseclass || classType.IsClass;
+				}
 			}
 		}
 
 		//TODO: Support property fields and merge duplicate code
 		public void AddClassField(IMemberImplementationProvider implementationProvider)
 		{
-			VariableDeclarationSyntax variableSyntax = SyntaxFactory.VariableDeclaration(implementationProvider.MemberType)
+			VariableDeclarationSyntax variableSyntax = SyntaxFactory.VariableDeclaration(implementationProvider.Type)
 				.AddVariables(SyntaxFactory.VariableDeclarator(implementationProvider.MemberName));
 
 			//New field using the information above that may be private or public.
@@ -85,7 +101,7 @@ namespace Testity.BuildProcess
 			if(blockProvider == null)
 				throw new ArgumentNullException(nameof(blockProvider), "The member method body block provider must not be null.");
 
-			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(implementationProvider.MemberType, implementationProvider.MemberName)
+			MethodDeclarationSyntax methodSyntax = SyntaxFactory.MethodDeclaration(implementationProvider.Type, implementationProvider.MemberName)
 				.WithModifiers(implementationProvider.Modifiers)
 				.WithAttributeLists(implementationProvider.Attributes)
 				.WithBody(blockProvider.Block);

@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace Testity.BuildProcess
 {
-	public interface IMemberImplementationProvider
+	public interface IMemberImplementationProvider : ITypeImplementationProvider
 	{
 		SyntaxToken MemberName { get; }
-
-		TypeSyntax MemberType { get; }
 
 		SyntaxTokenList Modifiers { get; }
 

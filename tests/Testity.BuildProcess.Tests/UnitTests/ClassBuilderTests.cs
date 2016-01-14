@@ -28,7 +28,7 @@ namespace Testity.BuildProcess.Tests
 			//assert
 			Assert.IsTrue(scriptBuilder.Compile().Contains("private " + typeof(EngineScriptComponent).FullName + " testField"));
 			Assert.IsTrue(scriptBuilder.Compile().Contains("[" + typeof(ExposeDataMemeberAttribute).FullName+ "]"));
-	}
+        }
 
 		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a base class with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
 		public static void Test_TestityClassBuilder_Test_Adding_Base_Class()
@@ -37,12 +37,12 @@ namespace Testity.BuildProcess.Tests
 			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
 
 			//act
-			scriptBuilder.AddBaseClass<EngineScriptComponent>();
+			scriptBuilder.AddBaseClass<EngineScriptComponent>(new DefaultTypeSyntaxBuilder());
 
 			//assert
 			Assert.IsTrue(scriptBuilder.Compile().Contains(" : " + typeof(EngineScriptComponent).FullName));
-			Assert.Throws<InvalidOperationException>(() => scriptBuilder.AddBaseClass<EngineScriptComponent>());
-			Assert.DoesNotThrow(() => scriptBuilder.AddBaseClass<ICloneable>());
+			Assert.Throws<InvalidOperationException>(() => scriptBuilder.AddBaseClass<EngineScriptComponent>(new DefaultTypeSyntaxBuilder()));
+			Assert.DoesNotThrow(() => scriptBuilder.AddBaseClass<ICloneable>(new DefaultTypeSyntaxBuilder()));
 			Assert.IsTrue(scriptBuilder.Compile().Contains(", " + typeof(ICloneable).FullName));
 		}
 
@@ -68,14 +68,14 @@ namespace Testity.BuildProcess.Tests
 
 			//Setup the implementationProvider
 			implementationProvider.SetupGet(x => x.MemberName).Returns(SyntaxFactory.Identifier(memberName));
-			implementationProvider.SetupGet(x => x.MemberType).Returns(SyntaxFactory.ParseTypeName(memberType.FullName));
+			implementationProvider.SetupGet(x => x.Type).Returns(SyntaxFactory.ParseTypeName(memberType.FullName));
 			implementationProvider.SetupGet(x => x.Modifiers).Returns(SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
 
 			implementationProvider.SetupGet(x => x.Attributes)
 				.Returns(SyntaxFactory.List(attributeTypes.Select(x => SyntaxFactory.AttributeList(SyntaxFactory.SingletonSeparatedList(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(x.FullName)))))));
 
 			return implementationProvider;
-	}
+        }
 
 		private static Mock<IBlockBodyProvider> BuildBodyProviderMockEmpty()
 		{

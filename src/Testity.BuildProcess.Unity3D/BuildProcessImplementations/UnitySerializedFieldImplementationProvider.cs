@@ -14,7 +14,7 @@ namespace Testity.BuildProcess.Unity3D
 	{
 		public SyntaxToken MemberName { get; private set; }
 
-		public TypeSyntax MemberType { get; private set; }
+		public TypeSyntax Type { get; private set; }
 
 		public SyntaxTokenList Modifiers { get; private set; }
 
@@ -23,7 +23,7 @@ namespace Testity.BuildProcess.Unity3D
 		public UnitySerializedFieldImplementationProvider(string memberName, Type typeOfMember, WiredToAttribute wiredAttribute)
 		{
 			MemberName = SyntaxFactory.Identifier(memberName);
-			MemberType = SyntaxFactory.ParseName(typeOfMember.FullName);
+			Type = SyntaxFactory.ParseName(typeOfMember.FullName);
 
 			//These modifiers are the same for all unity members. We make them private because we've no reason to do otherwise
 			//Modifiers: Private
@@ -36,6 +36,7 @@ namespace Testity.BuildProcess.Unity3D
 
 		private SyntaxList<AttributeListSyntax> GenerateUnityAttributes(WiredToAttribute wiredAttribute)
 		{
+
 			//Code generated from: http://roslynquoter.azurewebsites.net/
 			//This is NOT human written. Don't try to read it
 			return SyntaxFactory.SingletonList<AttributeListSyntax>(
@@ -115,12 +116,18 @@ namespace Testity.BuildProcess.Unity3D
 											SyntaxFactory.AttributeArgument(
 												SyntaxFactory.LiteralExpression(
 													SyntaxKind.StringLiteralExpression,
-													SyntaxFactory.Literal(wiredAttribute.WiredMemberName)
-													/*SyntaxFactory.Literal(
-														SyntaxFactory.TriviaList(),
-														@"""SomeName""",
-														@"""SomeName""",
-														SyntaxFactory.TriviaList())*/))}))
+													SyntaxFactory.Literal(wiredAttribute.WiredMemberName))),
+
+											//type it is wired to. Hand written
+											SyntaxFactory.Token(
+												SyntaxKind.CommaToken),
+
+											SyntaxFactory.AttributeArgument(
+												SyntaxFactory.LiteralExpression(
+													SyntaxKind.StringLiteralExpression,
+													SyntaxFactory.Literal(TypeToLoadableString(wiredAttribute.TypeWiredTo)))) //wiredAttribute.TypeWiredTo.ToString() + ", " + wiredAttribute.TypeWiredTo.Assembly.GetName().Name)))//wiredAttribute.TypeWiredTo.AssemblyQualifiedName.Remove(wiredAttribute.TypeWiredTo.AssemblyQualifiedName.TakeWhile(c => (two -= (c == ',' ? 1 : 0)) > 0).Count()))))//remove everything after the assembly. We can't have versioning info
+											//handwritten ended
+                                        }))
 								.WithOpenParenToken(
 									SyntaxFactory.Token(
 										SyntaxKind.OpenParenToken))
@@ -133,6 +140,42 @@ namespace Testity.BuildProcess.Unity3D
 				.WithCloseBracketToken(
 					SyntaxFactory.Token(
 						SyntaxKind.CloseBracketToken)));
-		}
+        }
+
+		//Converts a Type into a string that can load the type. Contains no version or public key information for the assembly.
+		private string TypeToLoadableString(Type t)
+		{
+			if (t.IsGenericType)
+			{
+				StringBuilder genericTypeArgBuilder = new StringBuilder();
+
+				int count = 0;
+				int useCommaAfter = 0;
+				foreach (Type gTypeArg in t.GetGenericArguments())
+				{
+					//add a type enclused in brackets
+					genericTypeArgBuilder.AppendFormat("{0}{1}{2}", "[", TypeToLoadableString(gTypeArg), "]");
+
+					//after the first element we need to add a comma but not to the last one
+					if (useCommaAfter <= count && (count + 1 < t.GetGenericArguments().Count()))
+						genericTypeArgBuilder.Append(",");
+
+					count++;
+				}
+					
+
+				StringBuilder builder = new StringBuilder();
+				builder.AppendFormat("{0}.{1}[{2}], {3}", t.Namespace, t.Name, genericTypeArgBuilder.ToString(), t.Assembly.GetName().Name);
+
+				return builder.ToString();
+			}
+			else
+			{
+				StringBuilder builder = new StringBuilder();
+				builder.AppendFormat("{0}.{1}, {2}", t.Namespace, t.Name, t.Assembly.GetName().Name);
+				return builder.ToString();
+			}
+				
+        }
 	}
 }

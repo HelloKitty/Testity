@@ -12,7 +12,9 @@ namespace Testity.BuildProcess
 
 		void AddMemberMethod(IMemberImplementationProvider implementationProvider, IBlockBodyProvider blockProvider, IParameterImplementationProvider parametersProvider = null);
 
-		void AddBaseClass<TClassType>()
+		void AddBaseClass<TClassType>(ITypeSyntaxBuilder typeSyntaxBuilder)
 			where TClassType : class;
+
+		void AddBaseClass(ITypeSyntaxBuilder builder, Type classType);
 	}
 }
