@@ -21,6 +21,11 @@ namespace Testity.BuildProcess
 		{
 			return Activator.CreateInstance(typeof(TestityClassBuilder<>).MakeGenericType(t)) as IClassBuilder;
 		}
+
+		public static IClassBuilder Create(Type t, MemberImplementationModifier modifiers)
+		{
+			return Activator.CreateInstance(typeof(TestityClassBuilder<>).MakeGenericType(t), modifiers) as IClassBuilder;
+		}
 	}
 
 	public class TestityClassBuilder<TType> : IClassBuilder
