@@ -11,6 +11,7 @@ namespace Testity.EngineComponents.Unity3D
 	/// Unity3D adapter for <see cref="UnityEngine.GameObject"/> that maps it to the Testity <see cref="IEngineGameObject"/> interface.
 	/// </summary>
 	[EngineComponentConcrete(typeof(IEngineGameObject))]
+	[EngineComponentAdapter(typeof(UnityEngine.GameObject))]
 	public class UnityEngineGameObjectAdapter : IEngineGameObject
 	{
 		private readonly UnityEngine.GameObject unityGameObjectAdaptee;

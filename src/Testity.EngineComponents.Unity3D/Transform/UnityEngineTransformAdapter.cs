@@ -9,6 +9,7 @@ namespace Testity.EngineComponents.Unity3D
 {
 	[Serializable]
 	[EngineComponentConcrete(typeof(IEngineTransform), typeof(IEngineDirectional))]
+	[EngineComponentAdapter(typeof(UnityEngine.Transform))]
 	public class UnityEngineTransformAdapter : IEngineTransform, IEngineDirectional
 	{
 		public Vector3<float> Back
@@ -137,7 +138,6 @@ namespace Testity.EngineComponents.Unity3D
 			}
 		}
 
-		[SerializeField]
 		private readonly UnityEngine.Transform transformAdaptee;
 
 		public UnityEngineTransformAdapter(UnityEngine.Transform transform)
