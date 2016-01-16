@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Testity.EngineComponents
+namespace Testity.Common
 {
 	/// <summary>
 	/// Meta-data that indicates the marked class is an adapter and indicates that the type

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Testity.EngineComponents
+namespace Testity.Common
 {
 	/// <summary>
 	/// Metadata marker for engine component concrete implementations.

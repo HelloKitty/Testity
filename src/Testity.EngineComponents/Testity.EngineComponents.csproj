@@ -39,11 +39,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\EngineComponentAdapterAttribute .cs" />
-    <Compile Include="Attributes\EngineComponentAdapterConstructorAttribute.cs" />
-    <Compile Include="Attributes\EngineComponentInterfaceAttribute.cs" />
-    <Compile Include="Attributes\EngineComponentConcreteAttribute.cs" />
-    <Compile Include="Attributes\EngineEventInterfaceAttribute.cs" />
     <Compile Include="GameObject\IEngineGameObject.cs" />
     <Compile Include="GameObject\IEnginePrefabedGameObject.cs" />
     <Compile Include="Interfaces\Engine Events\IEngineFixedUpdateable.cs" />
@@ -59,6 +54,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Attributes\" />
     <Folder Include="Physics\" />
     <Folder Include="Rendering\" />
     <Folder Include="UI\" />

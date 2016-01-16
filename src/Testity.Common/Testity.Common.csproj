@@ -39,6 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\BuildProcessMetadata\Components\EngineComponentAdapterAttribute .cs" />
+    <Compile Include="Attributes\BuildProcessMetadata\Components\EngineComponentAdapterConstructorAttribute.cs" />
+    <Compile Include="Attributes\BuildProcessMetadata\Components\EngineComponentConcreteAttribute.cs" />
+    <Compile Include="Attributes\BuildProcessMetadata\Components\EngineComponentInterfaceAttribute.cs" />
+    <Compile Include="Attributes\BuildProcessMetadata\Engine Events\EngineEventInterfaceAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Engine Events\ImplementationField.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\Serialization\EngineSerializableMapsToTypeAttribute.cs" />
     <Compile Include="Attributes\BuildProcessMetadata\ImplementationMetadataAttribute.cs" />

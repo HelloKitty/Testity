@@ -62,6 +62,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Testity.Common\Testity.Common.csproj">
+      <Project>{54d9c6dd-c72c-42f1-9bcf-579447b1f0a6}</Project>
+      <Name>Testity.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Testity.EngineComponents.Unity3D\Testity.EngineComponents.Unity3D.csproj">
       <Project>{b90f2cfb-16bb-47ea-b9b2-ecc7148b4705}</Project>
       <Name>Testity.EngineComponents.Unity3D</Name>
