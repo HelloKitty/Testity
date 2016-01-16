@@ -10,18 +10,14 @@ namespace Testity.EngineComponents.Unity3D
 	/// <summary>
 	/// Unity3D adapter for <see cref="UnityEngine.GameObject"/> that maps it to the Testity <see cref="IEngineGameObject"/> interface.
 	/// </summary>
-	[Serializable]
 	[EngineComponentConcrete(typeof(IEngineGameObject))]
 	public class UnityEngineGameObjectAdapter : IEngineGameObject
 	{
-		[SerializeField]
 		private readonly UnityEngine.GameObject unityGameObjectAdaptee;
 		
 		//we don't initialize this immediately because consumers of the GameObject may not need the transform.
-		[NonSerialized]
 		private readonly Lazy<UnityEngineTransformAdapter> cachedTransform;
 
-		[NonSerialized]
 		private readonly object syncObj = new object();
 
 		public bool ActiveAbsolute

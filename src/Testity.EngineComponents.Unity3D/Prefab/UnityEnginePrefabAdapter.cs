@@ -6,7 +6,6 @@ using System.Text;
 namespace Testity.EngineComponents
 {
 	[EngineComponentConcrete(typeof(IEnginePrefab))]
-	[Serializable]
 	public class UnityEnginePrefabAdapter : IEnginePrefab
 	{
 		//Should be available as long as it's not null

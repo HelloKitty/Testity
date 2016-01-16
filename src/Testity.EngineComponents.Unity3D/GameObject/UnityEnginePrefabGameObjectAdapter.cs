@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Testity.EngineComponents.Unity3D
 {
-	[Serializable]
 	[EngineComponentConcrete(typeof(IEnginePrefabedGameObject))]
 	public class UnityEnginePrefabGameObjectAdapter : UnityEngineGameObjectAdapter, IEnginePrefabedGameObject
 	{

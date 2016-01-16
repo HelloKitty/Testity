@@ -18,6 +18,7 @@ namespace Testity.EngineComponents.Unity3D
 		where TScriptComponentType : EngineScriptComponent, new()
 	{
 		//This should be initialized in some way before the game starts.
+		[NonSerialized]
 		[ImplementationField(EngineType.Unity3D, nameof(_InternalSerializableComponent))]
 		protected TScriptComponentType _InternalSerializableComponent;
 
@@ -29,6 +30,7 @@ namespace Testity.EngineComponents.Unity3D
 		/// <summary>
 		/// Indicates if the <see cref="TestityBehaviour{TScriptComponentType}"/> has been initialized.
 		/// </summary>
+		
 		private bool isInitialized = false;
 
 		protected virtual void Start()
