@@ -14,7 +14,7 @@ namespace Testity.BuildProcess.Unity3D
 		{
 			//There may be uncaught exceptions so we'll handle them all gracefully.
 			//There probably is no way to recover from an exception during this process so catching is fruitless really
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
 			if (args.Count() == 0)
 			{
