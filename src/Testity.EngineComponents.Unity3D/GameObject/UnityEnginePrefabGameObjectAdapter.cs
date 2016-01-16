@@ -11,6 +11,7 @@ namespace Testity.EngineComponents.Unity3D
 	{
 		public string PrefabName { get; private set; }
 
+		[EngineComponentAdapterConstructor(typeof(UnityEngine.GameObject))]
 		public UnityEnginePrefabGameObjectAdapter(UnityEngine.GameObject gameObject)
 			: base(gameObject)
 		{

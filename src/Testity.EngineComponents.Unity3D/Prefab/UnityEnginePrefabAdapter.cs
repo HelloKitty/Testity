@@ -16,6 +16,7 @@ namespace Testity.EngineComponents
 
 		private readonly UnityEngine.GameObject prefabbedGameObjectInstance;
 
+		[EngineComponentAdapterConstructor(typeof(UnityEngine.GameObject))]
 		public UnityEnginePrefabAdapter(UnityEngine.GameObject gameObjectPrefab)
 		{
 			if (gameObjectPrefab == null)

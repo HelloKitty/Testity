@@ -49,6 +49,7 @@ namespace Testity.EngineComponents.Unity3D
 			set { unityGameObjectAdaptee.name = value; }
 		}
 
+		[EngineComponentAdapterConstructor(typeof(UnityEngine.GameObject))]
 		public UnityEngineGameObjectAdapter(UnityEngine.GameObject unityGO)
 		{
 			if (unityGO == null)

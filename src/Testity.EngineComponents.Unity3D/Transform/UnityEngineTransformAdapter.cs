@@ -140,6 +140,7 @@ namespace Testity.EngineComponents.Unity3D
 
 		private readonly UnityEngine.Transform transformAdaptee;
 
+		[EngineComponentAdapterConstructor(typeof(UnityEngine.Transform))]
 		public UnityEngineTransformAdapter(UnityEngine.Transform transform)
 		{
 			transformAdaptee = transform;
