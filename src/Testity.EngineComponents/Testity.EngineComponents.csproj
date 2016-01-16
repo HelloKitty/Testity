@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\EngineComponentAdapterAttribute .cs" />
+    <Compile Include="Attributes\EngineComponentAdapterConstructorAttribute.cs" />
     <Compile Include="Attributes\EngineComponentInterfaceAttribute.cs" />
     <Compile Include="Attributes\EngineComponentConcreteAttribute.cs" />
     <Compile Include="Attributes\EngineEventInterfaceAttribute.cs" />

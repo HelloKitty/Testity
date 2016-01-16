@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace Testity.BuildProcess.Unity3D
 {
-	class AddMemberInitializationMethodStep
+	public class AddMemberInitializationMethodStep : ITestityBuildStep
 	{
-
+		public void Process(IClassBuilder builder, Type typeToParse)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
