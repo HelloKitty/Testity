@@ -102,6 +102,7 @@
     <Compile Include="Extensions\MemberImplementationModifierExtensions.cs" />
     <Compile Include="Extensions\SerializedMemberParserExtensions.cs" />
     <Compile Include="ITypeRelationalMapper.cs" />
+    <Compile Include="Member Providers\Defaults\DefaultMemberImplementationProvider.cs" />
     <Compile Include="Member Providers\IMemberImplementationProvider.cs" />
     <Compile Include="Member Providers\IBlockBodyProvider.cs" />
     <Compile Include="Member Providers\IParameterImplementationProvider.cs" />

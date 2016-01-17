@@ -75,13 +75,20 @@ namespace Testity.BuildProcess.Unity3D
 			mappers.Add(new EngineTypeRelationalMapper());
 			mappers.Add(new PrimitiveTypeRelationalMapper(new UnityPrimitiveTypeExclusion()));
 			mappers.Add(new DefaultTypeRelationalMapper());
-
 			UnityBuildProcessTypeRelationalMapper chainMapper = new UnityBuildProcessTypeRelationalMapper(mappers);
+
+			//create the InitializationExpressionBuilder
+			List<IInitializationExpressionBuilderProvider> initProviders = new List<IInitializationExpressionBuilderProvider>();
+			initProviders.Add(new ComponentAdapterInitializationExpressionBuilderProvider(new UnityComponentAdapterParser()));
+			initProviders.Add(new DefaultInitializationExpressionBuilderProvider());
+
+			ChainInitializationExpressionBuilderProvider chainInitProvider = new ChainInitializationExpressionBuilderProvider(initProviders);
 
 			//Create build steps
 			List<ITestityBuildStep> buildSteps = new List<ITestityBuildStep>();
 			buildSteps.Add(new AddTestityBehaviourBaseClassMemberStep());
 			buildSteps.Add(new AddSerializedMemberStep(chainMapper, new SerializedMemberParser()));
+			buildSteps.Add(new AddMemberInitializationMethodStep(chainMapper, new SerializedMemberParser(), chainInitProvider));
 
 			foreach (Type t in potentialBehaviourTypes)
 			{

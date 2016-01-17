@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Fasterflect;
+using Testity.Common;
+using Testity.EngineComponents.Unity3D;
 
 namespace Testity.BuildProcess.Unity3D
 {
@@ -13,21 +16,46 @@ namespace Testity.BuildProcess.Unity3D
 
 		private readonly ITypeMemberParser typeParser;
 
-		public AddMemberInitializationMethodStep(ITypeRelationalMapper mapper, ITypeMemberParser parser)
-		{
+		private readonly IInitializationExpressionBuilderProvider initExpressionBuildProvider;
+
+		public AddMemberInitializationMethodStep(ITypeRelationalMapper mapper, ITypeMemberParser parser, IInitializationExpressionBuilderProvider provider)
+        {
 			typeResolver = mapper;
 			typeParser = parser;
-		}
+			initExpressionBuildProvider = provider;
+        }
 
 		public void Process(IClassBuilder builder, Type typeToParse)
 		{
-			//Gather all fields and properties
-			IEnumerable<MemberInfo> infos = typeParser.Parse(MemberTypes.Field | MemberTypes.Property, typeToParse);
+			IEnumerable<MemberInfo> serializedMemberInfos = typeParser.Parse(MemberTypes.Field | MemberTypes.Property, typeToParse);
+			List<IInitializationExpression> initExpressions = new List<IInitializationExpression>(serializedMemberInfos.Count());
 
-			//foreach serialized Type we need to take the actual Type and then Serialize type and use it to find an adapter
-			//foreach()
+			foreach (MemberInfo mi in serializedMemberInfos)
+			{
+				//find a an experssion builder for the source -> dest type
+				IInitializationExpressionBuilder expressionBuilder = initExpressionBuildProvider.FromReflectionData(typeResolver.ResolveMappedType(mi.Type()), mi.Type());
 
-            //mi.Name, typeResolver.ResolveMappedType(mi.Type()), new Common.Unity3D.WiredToAttribute(mi.MemberType, mi.Name, mi.Type())));
+				if (expressionBuilder == null)
+					continue; //this is for testing. Don't do this in the future.
+				else
+				{
+					IInitializationExpression expression = expressionBuilder.Build(new InitializationExpressionData(mi.Name, mi.MemberType, mi.Name), 
+						typeof(TestityBehaviour<>).MembersWith<ImplementationField>(MemberTypes.Field, Flags.InstanceAnyVisibility).First().Name);  //get the testity field we need to assign this too
+
+					if (expression == null)
+						Console.Beep();
+
+					initExpressions.Add(expression);
+				}	
+			}
+
+			//Give the block provider the expressions we want and find the name of the field in the MonoBehaviour that must be set.
+			UnityInitializationMethodImplementationProvider blockProvider =
+				new UnityInitializationMethodImplementationProvider(initExpressions);
+			
+			//Using the default member provider and the block provider we quite complexly just built above we can add the initialization method.
+			builder.AddMemberMethod(new DefaultMemberImplementationProvider(typeof(void), MemberImplementationModifier.Override | MemberImplementationModifier.Public, nameof(ITestityBehaviour.Initialize)),
+				blockProvider);
 		}
 	}
 }
