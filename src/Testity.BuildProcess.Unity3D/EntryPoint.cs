@@ -80,6 +80,7 @@ namespace Testity.BuildProcess.Unity3D
 			//create the InitializationExpressionBuilder
 			List<IInitializationExpressionBuilderProvider> initProviders = new List<IInitializationExpressionBuilderProvider>();
 			initProviders.Add(new ComponentAdapterInitializationExpressionBuilderProvider(new UnityComponentAdapterParser()));
+			initProviders.Add(new SameTypeInitializationExpressionBuilderProvider());
 			initProviders.Add(new DefaultInitializationExpressionBuilderProvider());
 
 			ChainInitializationExpressionBuilderProvider chainInitProvider = new ChainInitializationExpressionBuilderProvider(initProviders);

@@ -18,7 +18,7 @@ namespace Testity.BuildProcess.Unity3D
 		{
 			public IInitializationExpression Build(InitializationExpressionData data, string targetEngineComponentFieldName)
 			{
-				return new DefaultInitializationExpressionBuilder(data, targetEngineComponentFieldName);
+				return new DefaultInitializationExpression(data, targetEngineComponentFieldName);
             }
 		}
 

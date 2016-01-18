@@ -21,7 +21,6 @@ namespace Testity.BuildProcess
 
 		public DefaultMemberImplementationProvider(Type memberType, MemberImplementationModifier modifiers, string name)
 		{
-			//Attributes = SyntaxFactory.List<AttributeListSyntax>();
 			MemberName = SyntaxFactory.Identifier(name);
 			Modifiers = SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x)));
 			Type = SyntaxFactory.ParseTypeName(memberType != typeof(void) ? memberType.FullName : "void"); //we can't use void fullname or else we end up with System.Void which is rejected

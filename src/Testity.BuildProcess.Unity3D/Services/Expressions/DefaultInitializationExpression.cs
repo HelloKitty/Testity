@@ -9,11 +9,11 @@ using Microsoft.CodeAnalysis;
 
 namespace Testity.BuildProcess.Unity3D
 {
-	public class DefaultInitializationExpressionBuilder : IInitializationExpression
+	public class DefaultInitializationExpression : IInitializationExpression
 	{
 		public ExpressionStatementSyntax Statement { get; private set; }
 
-		public DefaultInitializationExpressionBuilder(InitializationExpressionData data, string targetEngineComponentFieldName)
+		public DefaultInitializationExpression(InitializationExpressionData data, string targetEngineComponentFieldName)
 		{
             string fasterFlectMethodName = data.DestinationMemberType == System.Reflection.MemberTypes.Field ?
 					@"SetFieldValue" : @"SetPropertyValue"; //can't use nameof with extension method I think. Will
