@@ -34,6 +34,10 @@
       <HintPath>..\..\packages\fasterflect.2.1.3\lib\net35\Fasterflect.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MiscUtil, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d3c42c4bfacf7596, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JonSkeet.MiscUtil.0.1\lib\net35-Client\MiscUtil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Net35Essentials">
       <HintPath>..\..\lib\Dependency Builds\Net35Essentials\DLLs\Net35Essentials.dll</HintPath>
     </Reference>
@@ -50,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Attributes\WiredToAttribute.cs" />
     <Compile Include="Caching\EngineScriptComponentFactory.cs" />
+    <Compile Include="Extensions\ToEngineTypeExtensions.cs" />
     <Compile Include="Extensions\UnityQuaternionExtensions.cs" />
     <Compile Include="Extensions\UnityVectorExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
