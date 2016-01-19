@@ -107,6 +107,7 @@
     <Compile Include="UnitTests\AttributeTests.cs" />
     <Compile Include="UnitTests\ClassSerializedMemberBuildTest.cs" />
     <Compile Include="UnitTests\TypeMappingTests.cs" />
+    <Compile Include="UnitTests\TypeMapping\ActionTypeRelationalMapperTests.cs" />
     <Compile Include="UnitTests\UnitySerializedFieldImplementationProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>

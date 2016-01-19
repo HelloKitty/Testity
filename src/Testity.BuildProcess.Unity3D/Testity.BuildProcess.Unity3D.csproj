@@ -124,6 +124,7 @@
     <Compile Include="Services\ExpressionProviders\SameTypeInitializationExpressionBuilderProvider.cs" />
     <Compile Include="Services\IInitializationExpressionBuilderProvider.cs" />
     <Compile Include="Services\UnityComponentAdapterParser.cs" />
+    <Compile Include="TypeMapping\TestityToUnity\ActionTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\TestityToUnity\DefaultTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\Shared\Exclusions\UnityPrimitiveTypeExclusion.cs" />
     <Compile Include="TypeMapping\Shared\PrimitiveTypeRelationalMapper.cs" />
