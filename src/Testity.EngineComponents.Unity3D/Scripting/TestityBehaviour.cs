@@ -27,10 +27,18 @@ namespace Testity.EngineComponents.Unity3D
 		/// </summary>
 		public TScriptComponentType ScriptComponent { get { return _InternalSerializableComponent; } }
 
+		public object GetUntypedScriptComponent
+		{
+			get
+			{
+				return _InternalSerializableComponent;
+			}
+		}
+
 		/// <summary>
 		/// Indicates if the <see cref="TestityBehaviour{TScriptComponentType}"/> has been initialized.
 		/// </summary>
-		
+
 		private bool isInitialized = false;
 
 		protected virtual void Start()
@@ -60,9 +68,9 @@ namespace Testity.EngineComponents.Unity3D
 		/// Initializes the internal Testity component with the serialized values.
 		/// </summary>
 		/// <param name="component"></param>
-		protected  void InitializeScriptComponentMemberValues()
+		protected void InitializeScriptComponentMemberValues()
 		{
-			//TODO: Later versions of Testity should improve on this by making init part of the build process.
+			/*//TODO: Later versions of Testity should improve on this by making init part of the build process.
 			//This was a shortcut to save development time
 
 			//This will be slow for the first time for a Type however future calls for the same
@@ -83,7 +91,7 @@ namespace Testity.EngineComponents.Unity3D
 					ScriptComponent.GetType().Field(wiredAttri.WiredMemberName).SetValue(ScriptComponent, ((FieldInfo)rdata.Key).GetValue(this));
 				else
 					ScriptComponent.GetType().Property(wiredAttri.WiredMemberName).SetValue(ScriptComponent, ((FieldInfo)rdata.Key).GetValue(this), null);
-			}
+			}*/
 		}
 	}
 }

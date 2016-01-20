@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine.Events;
 
 namespace Testity.BuildProcess.Unity3D
 {
@@ -17,7 +18,7 @@ namespace Testity.BuildProcess.Unity3D
 				return null;
 
 			//if(typeToFindRelation.IsGenericType)
-			return null;
+			return FindValidUnityEventType(typeToFindRelation);
 		}
 
 		public bool isActionType(Type t)
@@ -28,8 +29,43 @@ namespace Testity.BuildProcess.Unity3D
 
 		private Type FindValidUnityEventType(Type actionType)
 		{
-			//if(actionType == typeof())
-			return null;
+			if (actionType == typeof(Action))
+				return typeof(UnityEvent);
+
+			//should be a generic type at this point
+			if (actionType.IsGenericType)
+			{
+				//grabs the <..> inner type args from the type
+				Type[] genericArgs = actionType.GetGenericArguments();
+
+				Type unityEventType = FindUnityEventTypeByArgCount(genericArgs.Count());
+
+				//Now we build a generic UnityEvent Type with the args and generic type.
+				return unityEventType.MakeGenericType(genericArgs);
+			}
+			else
+				return null;
+		}
+
+		public Type FindUnityEventTypeByArgCount(int argCount)
+		{
+			switch(argCount)
+			{
+				//Shouldn't need to do this
+				case 0:
+					return typeof(UnityEvent);
+				case 1:
+					return typeof(UnityEvent<>);
+				case 2:
+					return typeof(UnityEvent<,>);
+				case 3:
+					return typeof(UnityEvent<,,>);
+				case 4:
+					return typeof(UnityEvent<,,,>);
+
+				default:
+					throw new ArgumentException("Cannot generate " + nameof(UnityEvent) + " generic type with " + argCount + " limit is 0-4 type args.");
+			}
 		}
 	}
 }
