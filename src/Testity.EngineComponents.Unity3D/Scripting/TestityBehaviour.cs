@@ -68,8 +68,8 @@ namespace Testity.EngineComponents.Unity3D
 		/// Initializes the internal Testity component with the serialized values.
 		/// </summary>
 		/// <param name="component"></param>
-		protected void InitializeScriptComponentMemberValues()
-		{
+		protected abstract void InitializeScriptComponentMemberValues();
+		//{
 			/*//TODO: Later versions of Testity should improve on this by making init part of the build process.
 			//This was a shortcut to save development time
 
@@ -92,6 +92,6 @@ namespace Testity.EngineComponents.Unity3D
 				else
 					ScriptComponent.GetType().Property(wiredAttri.WiredMemberName).SetValue(ScriptComponent, ((FieldInfo)rdata.Key).GetValue(this), null);
 			}*/
-		}
+		//}
 	}
 }
