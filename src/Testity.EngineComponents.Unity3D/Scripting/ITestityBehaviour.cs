@@ -15,5 +15,7 @@ namespace Testity.EngineComponents.Unity3D
 	public interface ITestityBehaviour
 	{
 		void Initialize();
+
+		object GetUntypedScriptComponent { get; }
 	}
 }
