@@ -43,7 +43,7 @@ namespace Testity.BuildProcess.Unity3D
 						typeof(TestityBehaviour<>).MembersWith<ImplementationField>(MemberTypes.Field, Flags.InstanceAnyVisibility).First().Name);  //get the testity field we need to assign this too
 
 					if (expression == null)
-						Console.Beep();
+						throw new InvalidOperationException("Unable to build expression for init for Member: " + mi.Name + " in Type: " + mi.Type().ToString());
 
 					initExpressions.Add(expression);
 				}	
