@@ -38,6 +38,8 @@ namespace Testity.BuildProcess
 					return SyntaxKind.StaticKeyword;
 				case MemberImplementationModifier.Sealed:
 					return SyntaxKind.SealedKeyword;
+				case MemberImplementationModifier.Protected:
+					return SyntaxKind.ProtectedKeyword;
 				default:
 					throw new ArgumentException(nameof(MemberImplementationModifier) + " arg is in an invalid state. Could not handle Value: " + mod.ToString(), nameof(mod));
 			}

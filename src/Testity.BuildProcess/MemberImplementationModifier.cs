@@ -14,6 +14,7 @@ namespace Testity.BuildProcess
 		Virtual = 1 << 3,
 		Override = 1 << 4,
 		Static = 1 << 5,
-		Sealed = 1 << 6
+		Sealed = 1 << 6,
+		Protected = 1 << 7
 	}
 }
