@@ -74,6 +74,7 @@ namespace Testity.BuildProcess.Unity3D
 			mappers.Add(new StringTypeRelationalMapper());
 			mappers.Add(new EngineTypeRelationalMapper());
 			mappers.Add(new PrimitiveTypeRelationalMapper(new UnityPrimitiveTypeExclusion()));
+			mappers.Add(new ActionTypeRelationalMapper());
 			mappers.Add(new DefaultTypeRelationalMapper());
 			UnityBuildProcessTypeRelationalMapper chainMapper = new UnityBuildProcessTypeRelationalMapper(mappers);
 
