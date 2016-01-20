@@ -14,10 +14,13 @@ namespace Testity.BuildProcess.Unity3D
 
 		private readonly ITypeMemberParser typeParser;
 
-		public AddSerializedMemberStep(ITypeRelationalMapper mapper, ITypeMemberParser parser)
+		private readonly ITypeExclusion typesNotToSerialize;
+
+		public AddSerializedMemberStep(ITypeRelationalMapper mapper, ITypeMemberParser parser, ITypeExclusion typeExclusionService)
 		{
 			typeResolver = mapper;
 			typeParser = parser;
+			typesNotToSerialize = typeExclusionService;
         }
 
 		public void Process(IClassBuilder builder, Type typeToParse)
@@ -28,6 +31,10 @@ namespace Testity.BuildProcess.Unity3D
 			//handle serialized fields and properties
 			foreach (MemberInfo mi in typeParser.Parse(MemberTypes.Field | MemberTypes.Property, typeToParse))
 			{
+				//Some types are no serialized or are serialized in later steps
+				if (typesNotToSerialize.isExcluded(mi.Type()))
+					continue;
+
 				builder.AddClassField(new UnitySerializedFieldImplementationProvider(mi.Name, typeResolver.ResolveMappedType(mi.Type()), new Common.Unity3D.WiredToAttribute(mi.MemberType, mi.Name, mi.Type())));
             }
 		}
