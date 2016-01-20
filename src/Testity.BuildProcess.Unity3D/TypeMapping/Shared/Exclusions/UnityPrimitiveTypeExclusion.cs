@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Testity.BuildProcess.Unity3D
 {
-	public class UnityPrimitiveTypeExclusion : IEnumerable<Type>
+	public class UnityPrimitiveTypeExclusion : IEnumerable<Type>, ITypeExclusion
 	{
 		private readonly Type[] excludedPrimitiveTypes
 			= new Type[] { typeof(IntPtr), typeof(UIntPtr) };
@@ -21,6 +21,11 @@ namespace Testity.BuildProcess.Unity3D
 		{
 			return excludedPrimitiveTypes.AsEnumerable<Type>().GetEnumerator();
         }
+
+		public bool isExcluded(Type t)
+		{
+			return excludedPrimitiveTypes.Contains(t);
+		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
