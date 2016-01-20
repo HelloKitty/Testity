@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testity.Unity3D.Events;
 using UnityEngine.Events;
 
 namespace Testity.BuildProcess.Unity3D
@@ -47,10 +48,10 @@ namespace Testity.BuildProcess.Unity3D
 		}
 
 		[Test(Author = "Andrew Blakely", Description = "Tests to verify that the mapper maps to expected type.", TestOf = typeof(ActionTypeRelationalMapper))]
-		[TestCase(typeof(Action), typeof(UnityEvent))]
-		[TestCase(typeof(Action<int>), typeof(UnityEvent<int>))]
-		[TestCase(typeof(Action<Action, int, string>), typeof(UnityEvent<Action, int, string>))]
-		[TestCase(typeof(Action), typeof(UnityEvent))]
+		[TestCase(typeof(Action), typeof(TestityEvent))]
+		[TestCase(typeof(Action<int>), typeof(TestityEvent<int>))]
+		[TestCase(typeof(Action<Action, int, string>), typeof(TestityEvent<Action, int, string>))]
+		[TestCase(typeof(Action<string, object>), typeof(TestityEvent<string, object>))]
 		public static void Test_ActionTypeMapper_Maps_To_Expected_UnityEvent_Type(Type t, Type expectedType)
 		{
 			//arrange

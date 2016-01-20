@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Testity.Unity3D.Events;
 using UnityEngine.Events;
 
 namespace Testity.BuildProcess.Unity3D
@@ -30,7 +31,7 @@ namespace Testity.BuildProcess.Unity3D
 		private Type FindValidUnityEventType(Type actionType)
 		{
 			if (actionType == typeof(Action))
-				return typeof(UnityEvent);
+				return typeof(TestityEvent);
 
 			//should be a generic type at this point
 			if (actionType.IsGenericType)
@@ -53,18 +54,18 @@ namespace Testity.BuildProcess.Unity3D
 			{
 				//Shouldn't need to do this
 				case 0:
-					return typeof(UnityEvent);
+					return typeof(TestityEvent);
 				case 1:
-					return typeof(UnityEvent<>);
+					return typeof(TestityEvent<>);
 				case 2:
-					return typeof(UnityEvent<,>);
+					return typeof(TestityEvent<,>);
 				case 3:
-					return typeof(UnityEvent<,,>);
+					return typeof(TestityEvent<,,>);
 				case 4:
-					return typeof(UnityEvent<,,,>);
+					return typeof(TestityEvent<,,,>);
 
 				default:
-					throw new ArgumentException("Cannot generate " + nameof(UnityEvent) + " generic type with " + argCount + " limit is 0-4 type args.");
+					throw new ArgumentException("Cannot generate " + nameof(TestityEvent) + " generic type with " + argCount + " limit is 0-4 type args.");
 			}
 		}
 	}
