@@ -54,8 +54,8 @@ namespace Testity.BuildProcess.Unity3D
 				new UnityInitializationMethodImplementationProvider(initExpressions);
 			
 			//Using the default member provider and the block provider we quite complexly just built above we can add the initialization method.
-			builder.AddMemberMethod(new DefaultMemberImplementationProvider(typeof(void), MemberImplementationModifier.Override | MemberImplementationModifier.Public, nameof(ITestityBehaviour.Initialize)),
-				blockProvider);
+			builder.AddMemberMethod(new DefaultMemberImplementationProvider(typeof(void), MemberImplementationModifier.Override | MemberImplementationModifier.Protected, "InitializeScriptComponentMemberValues"),
+                blockProvider);
 		}
 	}
 }
