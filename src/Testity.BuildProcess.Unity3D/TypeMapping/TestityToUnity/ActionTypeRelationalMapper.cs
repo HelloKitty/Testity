@@ -10,7 +10,12 @@ namespace Testity.BuildProcess.Unity3D
 {
 	public class ActionTypeRelationalMapper : ITypeRelationalMapper
 	{
-		private Type[] validGenericActionTypes = new Type[] { typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>) };
+		private readonly IEnumerable<Type> validGenericActionTypes;// = new Type[] { typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>) };
+
+		public ActionTypeRelationalMapper(IEnumerable<Type> acceptableGenericActionTypes)
+		{
+			validGenericActionTypes = acceptableGenericActionTypes;
+		}
 
 		public Type ResolveMappedType(Type typeToFindRelation)
 		{
