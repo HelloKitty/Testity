@@ -35,8 +35,13 @@ namespace Testity.BuildProcess.Unity3D
 											SyntaxFactory.SeparatedList<ArgumentSyntax>(
 												new SyntaxNodeOrToken[]{
 													SyntaxFactory.Argument(
-														SyntaxFactory.IdentifierName(
-															data.DestinationFieldName)),
+														SyntaxFactory.LiteralExpression(
+															SyntaxKind.StringLiteralExpression,
+															SyntaxFactory.Literal(
+																SyntaxFactory.TriviaList(),
+																@"""" + data.DestinationFieldName + @"""",
+																@"""" + data.DestinationFieldName + @"""",
+																SyntaxFactory.TriviaList()))),
 													SyntaxFactory.Token(
 														SyntaxKind.CommaToken),
 													SyntaxFactory.Argument(
