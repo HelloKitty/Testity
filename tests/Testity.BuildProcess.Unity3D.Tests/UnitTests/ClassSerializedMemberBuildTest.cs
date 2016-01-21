@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,11 +31,16 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			mappers.Add(new PrimitiveTypeRelationalMapper(new UnityPrimitiveTypeExclusion()));
 			mappers.Add(new DefaultTypeRelationalMapper());
 
+			Mock<ITypeExclusion> exclusionMock = new Mock<ITypeExclusion>(MockBehavior.Strict);
+
+			//setup always false exclusion
+			exclusionMock.Setup(x => x.isExcluded(It.IsAny<Type>())).Returns(false);
+
 			TestityClassBuilder<TestSerializedClass> builder = new TestityClassBuilder<TestSerializedClass>();
 
 			UnityBuildProcessTypeRelationalMapper chainMapper = new UnityBuildProcessTypeRelationalMapper(mappers);
 
-			AddSerializedMemberStep buildStep = new AddSerializedMemberStep(chainMapper, new SerializedMemberParser());
+			AddSerializedMemberStep buildStep = new AddSerializedMemberStep(chainMapper, new SerializedMemberParser(), exclusionMock.Object);
 
 			buildStep.Process(builder, typeof(TestSerializedClass));
 

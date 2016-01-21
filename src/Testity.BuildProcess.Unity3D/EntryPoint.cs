@@ -86,10 +86,14 @@ namespace Testity.BuildProcess.Unity3D
 
 			ChainInitializationExpressionBuilderProvider chainInitProvider = new ChainInitializationExpressionBuilderProvider(initProviders);
 
+			//Create the serializedmember type exclusion service. Indicates what types should be excluded when serializing types
+			SerializedMemberStepTypeExclusionService excluder = new SerializedMemberStepTypeExclusionService()
+				.AddExclusionRules(new ActionDelegateTypeExclusion(new Type[] { typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>) }));
+
 			//Create build steps
 			List<ITestityBuildStep> buildSteps = new List<ITestityBuildStep>();
 			buildSteps.Add(new AddTestityBehaviourBaseClassMemberStep());
-			buildSteps.Add(new AddSerializedMemberStep(chainMapper, new SerializedMemberParser()));
+			buildSteps.Add(new AddSerializedMemberStep(chainMapper, new SerializedMemberParser(), excluder));
 			buildSteps.Add(new AddMemberInitializationMethodStep(chainMapper, new SerializedMemberParser(), chainInitProvider));
 
 			foreach (Type t in potentialBehaviourTypes)

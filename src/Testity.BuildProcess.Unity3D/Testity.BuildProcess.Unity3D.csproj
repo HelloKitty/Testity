@@ -117,6 +117,8 @@
     <Compile Include="DataUnits\InitializationExpressionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ChainInitializationExpressionBuilderProvider.cs" />
+    <Compile Include="Services\Exclusion\ActionDelegateTypeExclusion.cs" />
+    <Compile Include="Services\Exclusion\SerializedMemberStepTypeExclusionService.cs" />
     <Compile Include="Services\Expressions\ComponentAdapterInitializationExpression.cs" />
     <Compile Include="Services\Expressions\DefaultInitializationExpression.cs" />
     <Compile Include="Services\Expressions\IInitializationExpression.cs" />
@@ -127,10 +129,10 @@
     <Compile Include="Services\ExpressionProviders\SameTypeInitializationExpressionBuilderProvider.cs" />
     <Compile Include="Services\IInitializationExpressionBuilderProvider.cs" />
     <Compile Include="Services\UnityComponentAdapterParser.cs" />
-    <Compile Include="TypeMapping\Shared\Exclusions\ITypeExclusion.cs" />
+    <Compile Include="Services\Exclusion\ITypeExclusion.cs" />
     <Compile Include="TypeMapping\TestityToUnity\ActionTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\TestityToUnity\DefaultTypeRelationalMapper.cs" />
-    <Compile Include="TypeMapping\Shared\Exclusions\UnityPrimitiveTypeExclusion.cs" />
+    <Compile Include="Services\Exclusion\UnityPrimitiveTypeExclusion.cs" />
     <Compile Include="TypeMapping\Shared\PrimitiveTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\Shared\StringTypeRelationalMapper.cs" />
     <Compile Include="TypeMapping\TestityToUnity\UnityBuildProcessTypeRelationalMapper.cs" />
@@ -170,7 +172,9 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TypeMapping\Shared\Exclusions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
