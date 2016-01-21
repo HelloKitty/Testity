@@ -67,7 +67,7 @@ namespace Testity.BuildProcess.Unity3D
 				return false;
 			}
 
-			List<Task<ClassFile>> classCompilationResults = new List<Task<ClassFile>>(potentialBehaviourTypes.Count());
+			List<Task<ClassFile>> monobehaviourClassCompilationResults = new List<Task<ClassFile>>(potentialBehaviourTypes.Count());
 
 			//Create the type mapper
 			List<ITypeRelationalMapper> mappers = new List<ITypeRelationalMapper>();
@@ -90,11 +90,14 @@ namespace Testity.BuildProcess.Unity3D
 			SerializedMemberStepTypeExclusionService excluder = new SerializedMemberStepTypeExclusionService()
 				.AddExclusionRules(new ActionDelegateTypeExclusion(new Type[] { typeof(Action<>), typeof(Action<,>), typeof(Action<,,>), typeof(Action<,,,>) }));
 
+			//TestityEventTracking service. It tracks all used TestityEvent types
+			TestityGenericEventTracker tracker = new TestityGenericEventTracker();
+
 			//Create build steps
 			List<ITestityBuildStep> buildSteps = new List<ITestityBuildStep>();
 			buildSteps.Add(new AddTestityBehaviourBaseClassMemberStep());
 			buildSteps.Add(new AddSerializedMemberStep(chainMapper, new SerializedMemberParser(), excluder));
-			buildSteps.Add(new AddTestityEventSerializedDelegateStep(new ActionTypeRelationalMapper(), new TestityGenericEventTracker(), new SerializedMemberParser()));
+			buildSteps.Add(new AddTestityEventSerializedDelegateStep(new ActionTypeRelationalMapper(), tracker, new SerializedMemberParser()));
 			buildSteps.Add(new AddMemberInitializationMethodStep(chainMapper, new SerializedMemberParser(), chainInitProvider));
 
 			//Handle all the behaviour types
@@ -102,7 +105,7 @@ namespace Testity.BuildProcess.Unity3D
 			foreach (Type t in potentialBehaviourTypes)
 			{
 				Task<ClassFile> classCompile = Task.Factory.StartNew(() => new ClassFile(GenerateMonobehaviourClass(chainMapper, buildSteps, t), t.Name + "Script"));
-				classCompilationResults.Add(classCompile);
+				monobehaviourClassCompilationResults.Add(classCompile);
 			}
 
 			string outputPath = dllPath.TrimEnd(".dll".ToCharArray()) + @"MonoBehaviours\";
@@ -110,14 +113,28 @@ namespace Testity.BuildProcess.Unity3D
 			if (!Directory.CreateDirectory(outputPath).Exists)
 				throw new InvalidOperationException("Failed to create MonoBehaviour directory.");
 			
-			while(classCompilationResults.Count != 0)
+			//write out all the MonoBehaviours
+			while(monobehaviourClassCompilationResults.Count != 0)
 			{
-				Task<ClassFile> newFile = await Task.WhenAny(classCompilationResults);
+				Task<ClassFile> newFile = await Task.WhenAny(monobehaviourClassCompilationResults);
 
 				WriteMonobehaviourToFile(outputPath, newFile.Result);
 
+				//We should check for new genericTestityEvents after a class has been generated
+				//This isn't that slow since it will usually be empty
+				//TODO: Change this so it buffers them into another collection.
+				//We want to handle them seperately and write them to a seperate folder to avoid collisions
+				foreach (var kvp in tracker.GetAdditionsAndClear())
+				{
+					Console.WriteLine("New File: " + kvp.Key);
+					Console.ReadKey();
+
+					Task<ClassFile> classCompile = Task.Factory.StartNew(() => new ClassFile(GenerateTestityGenericEventSerializableClass(kvp.Key, kvp.Value), kvp.Key));
+					monobehaviourClassCompilationResults.Add(classCompile);
+				}
+
 				//Remove the file. If you don't we're stuck in the loop forever
-				classCompilationResults.Remove(newFile);
+				monobehaviourClassCompilationResults.Remove(newFile);
 			}
 
 			return true;

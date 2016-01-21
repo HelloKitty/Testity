@@ -10,16 +10,14 @@ namespace Testity.BuildProcess.Unity3D
 	{
 		private readonly object syncObj = new object();
 
-		private readonly Dictionary<string, IEnumerable<Type>> eventNameToGenericArgsMap;
+		private readonly Dictionary<string, object> handledGenericClassNames;
 
-		public IEnumerable<KeyValuePair<string, IEnumerable<Type>>> GenericTestityEventData
-		{
-			get { return eventNameToGenericArgsMap; }
-		}
+		private readonly Dictionary<string, IEnumerable<Type>> eventFreshNameToGenericArgsMap;
 
 		public TestityGenericEventTracker()
 		{
-			eventNameToGenericArgsMap = new Dictionary<string, IEnumerable<Type>>();
+			eventFreshNameToGenericArgsMap = new Dictionary<string, IEnumerable<Type>>();
+			handledGenericClassNames = new Dictionary<string, object>();
         }
 
 		public void Register(string key, IEnumerable<Type> value)
@@ -27,11 +25,28 @@ namespace Testity.BuildProcess.Unity3D
 			//very possible this will be called during a threated build step/task
 			lock(syncObj)
 			{
-
-				if (eventNameToGenericArgsMap.ContainsKey(key))
+				//if we've recently cached it or it has been handled already then we don't need to add it
+				if (eventFreshNameToGenericArgsMap.ContainsKey(key) || handledGenericClassNames.ContainsKey(key))
 					return;
 
-				eventNameToGenericArgsMap[key] = value;
+				Console.WriteLine(key + " been added to tracker.");
+
+				eventFreshNameToGenericArgsMap[key] = value;
+			}
+		}
+
+		public IEnumerable<KeyValuePair<string, IEnumerable<Type>>> GetAdditionsAndClear()
+		{
+			lock(syncObj)
+			{
+				IEnumerable<KeyValuePair<string, IEnumerable<Type>>> temp = eventFreshNameToGenericArgsMap.ToList(); //snap shot the dictionary
+
+				foreach (var kvp in temp)
+					handledGenericClassNames.Add(kvp.Key, new object());
+
+				eventFreshNameToGenericArgsMap.Clear(); //clear out the new added values
+
+				return temp;
 			}
 		}
 	}

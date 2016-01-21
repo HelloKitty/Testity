@@ -13,7 +13,7 @@ namespace Testity.BuildProcess.Tests
 	[TestFixture]
 	public static class EngineScriptComponentLocatorTests
 	{
-		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation addition of using statements TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation addition of using statements TestityClassBuilder.", TestOf = typeof(TestityClassBuilder))]
 		[TestCase(typeof(TestClass1), true)]
 		[TestCase(typeof(TestClass2), true)]
 		[TestCase(typeof(TestClass4), true)] //down the hierarchy should be found
