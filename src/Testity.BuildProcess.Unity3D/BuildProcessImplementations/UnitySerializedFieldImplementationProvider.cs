@@ -34,6 +34,20 @@ namespace Testity.BuildProcess.Unity3D
 			Attributes = GenerateUnityAttributes(wiredAttribute);
 		}
 
+		public UnitySerializedFieldImplementationProvider(string memberName, string fullMemberName, WiredToAttribute wiredAttribute)
+		{
+			MemberName = SyntaxFactory.Identifier(memberName);
+			Type = SyntaxFactory.ParseName(fullMemberName);
+
+			//These modifiers are the same for all unity members. We make them private because we've no reason to do otherwise
+			//Modifiers: Private
+			Modifiers = SyntaxFactory.TokenList(MemberImplementationModifier.Private.ToSyntaxKind().Select(x => SyntaxFactory.Token(x)));
+
+			//Unity fields require two attributes.
+			//Attributes: SerializeField and WiredToAttribute
+			Attributes = GenerateUnityAttributes(wiredAttribute);
+		}
+
 		private SyntaxList<AttributeListSyntax> GenerateUnityAttributes(WiredToAttribute wiredAttribute)
 		{
 
