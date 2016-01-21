@@ -36,7 +36,7 @@ namespace Testity.BuildProcess.Unity3D.Tests
 			//setup always false exclusion
 			exclusionMock.Setup(x => x.isExcluded(It.IsAny<Type>())).Returns(false);
 
-			TestityClassBuilder<TestSerializedClass> builder = new TestityClassBuilder<TestSerializedClass>();
+			TestityClassBuilder builder = new TestityClassBuilder(typeof(TestSerializedClass).Name + "Script");
 
 			UnityBuildProcessTypeRelationalMapper chainMapper = new UnityBuildProcessTypeRelationalMapper(mappers);
 

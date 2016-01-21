@@ -16,5 +16,8 @@ namespace Testity.BuildProcess
 			where TClassType : class;
 
 		void AddBaseClass(ITypeSyntaxBuilder builder, Type classType);
+
+		void AddParameterlessAttributeToClass<TAttributeType>()
+			where TAttributeType : Attribute, new();
 	}
 }

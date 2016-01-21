@@ -15,7 +15,7 @@ using Testity.EngineComponents;
 
 namespace Testity.BuildProcess
 {
-	public static class TestityClassBuilder
+	/*public static class TestityClassBuilder
 	{
 		public static IClassBuilder Create(Type t)
 		{
@@ -26,10 +26,9 @@ namespace Testity.BuildProcess
 		{
 			return Activator.CreateInstance(typeof(TestityClassBuilder<>).MakeGenericType(t), modifiers) as IClassBuilder;
 		}
-	}
+	}*/
 
-	public class TestityClassBuilder<TType> : IClassBuilder
-		where TType : EngineScriptComponent
+	public class TestityClassBuilder : IClassBuilder
 	{
 		private readonly object syncObj = new object();
 
@@ -41,19 +40,19 @@ namespace Testity.BuildProcess
 
 		private bool hasBaseclass = false;	
 
-		public TestityClassBuilder(MemberImplementationModifier modifiers)
+		public TestityClassBuilder(string className, MemberImplementationModifier modifiers)
 		{
 			rosylnCompilationUnit = SyntaxFactory.CompilationUnit();
-			rosylnClassUnit = SyntaxFactory.ClassDeclaration(typeof(TType).Name + "Script")
+			rosylnClassUnit = SyntaxFactory.ClassDeclaration(className)
 				.WithModifiers(SyntaxFactory.TokenList(modifiers.ToSyntaxKind().Select(x => SyntaxFactory.Token(x))));
 
 			memberSyntax = new List<MemberDeclarationSyntax>();
 		}
 
-		public TestityClassBuilder()
+		public TestityClassBuilder(string className)
 		{
 			rosylnCompilationUnit = SyntaxFactory.CompilationUnit();
-			rosylnClassUnit = SyntaxFactory.ClassDeclaration(typeof(TType).Name + "Script");
+			rosylnClassUnit = SyntaxFactory.ClassDeclaration(className);
 
 			memberSyntax = new List<MemberDeclarationSyntax>();
 		}
@@ -164,5 +163,20 @@ namespace Testity.BuildProcess
 						}
 					});
 		}
+
+		public void AddParameterlessAttributeToClass<TAttributeType>() where TAttributeType : Attribute, new()
+		{
+			var attriList =
+				SyntaxFactory.AttributeList(
+					SyntaxFactory.SeparatedList<AttributeSyntax>()
+						.Add(SyntaxFactory.Attribute(SyntaxFactory.IdentifierName(typeof(TAttributeType).FullName))));
+
+			//add the attribute to the class
+			lock(syncObj)
+			{
+				rosylnClassUnit = rosylnClassUnit
+					.AddAttributeLists(attriList);
+			}
+        }
 	}
 }

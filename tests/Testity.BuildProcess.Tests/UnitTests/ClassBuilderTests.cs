@@ -15,11 +15,11 @@ namespace Testity.BuildProcess.Tests
 	[TestFixture]
 	public static class ClassBuilderTests
 	{
-		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation addition of using statements TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation addition of using statements TestityClassBuilder.", TestOf = typeof(TestityClassBuilder))]
 		public static void Test_TestityClassBuilder_TestAddedField()
 		{
 			//arrange
-			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
+			TestityClassBuilder scriptBuilder = new TestityClassBuilder(typeof(EngineScriptComponent).Name + "Script");
 			Mock<IMemberImplementationProvider> implementationProvider = BuildMemberImplementationMock("testField", typeof(EngineScriptComponent), MemberImplementationModifier.Private, new Type[] { typeof(ExposeDataMemeberAttribute) });
 
 			//act
@@ -30,11 +30,11 @@ namespace Testity.BuildProcess.Tests
 			Assert.IsTrue(scriptBuilder.Compile().Contains("[" + typeof(ExposeDataMemeberAttribute).FullName+ "]"));
         }
 
-		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a base class with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a base class with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder))]
 		public static void Test_TestityClassBuilder_Test_Adding_Base_Class()
 		{
 			//arrange
-			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
+			TestityClassBuilder scriptBuilder = new TestityClassBuilder(typeof(EngineScriptComponent).Name + "Script");
 
 			//act
 			scriptBuilder.AddBaseClass<EngineScriptComponent>(new DefaultTypeSyntaxBuilder());
@@ -46,11 +46,11 @@ namespace Testity.BuildProcess.Tests
 			Assert.IsTrue(scriptBuilder.Compile().Contains(", " + typeof(ICloneable).FullName));
 		}
 
-		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a method with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder<>))]
+		[Test(Author = "Andrew Blakely", Description = "Tests the Rosyln compilation adding of a method with TestityClassBuilder.", TestOf = typeof(TestityClassBuilder))]
 		public static void Test_TestityClassBuilder_Test_Adding_Method()
 		{
 			//arrange
-			TestityClassBuilder<EngineScriptComponent> scriptBuilder = new TestityClassBuilder<EngineScriptComponent>();
+			TestityClassBuilder scriptBuilder = new TestityClassBuilder(typeof(EngineScriptComponent).Name + "Script");
 
 			Mock<IMemberImplementationProvider> implementationProvider = BuildMemberImplementationMock("TestMethod", typeof(string), MemberImplementationModifier.Public, Enumerable.Empty<Type>());
 

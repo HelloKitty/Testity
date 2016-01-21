@@ -97,6 +97,8 @@ namespace Testity.BuildProcess.Unity3D
 			buildSteps.Add(new AddTestityEventSerializedDelegateStep(new ActionTypeRelationalMapper(), new TestityGenericEventTracker(), new SerializedMemberParser()));
 			buildSteps.Add(new AddMemberInitializationMethodStep(chainMapper, new SerializedMemberParser(), chainInitProvider));
 
+			//Handle all the behaviour types
+			//These are not the only types that need handling
 			foreach (Type t in potentialBehaviourTypes)
 			{
 				Task<ClassFile> classCompile = Task.Factory.StartNew(() => new ClassFile(GenerateMonobehaviourClass(chainMapper, buildSteps, t), t.Name + "Script"));
@@ -121,11 +123,18 @@ namespace Testity.BuildProcess.Unity3D
 			return true;
         }
 
+		private static string GenerateTestityGenericEventSerializableClass(string genericEventNewTypeName, IEnumerable<Type> genericTypeArgs)
+		{
+			IClassBuilder builder = new TestityClassBuilder(genericEventNewTypeName);
+
+			return builder.ToString();
+		}
+
 		private static string GenerateMonobehaviourClass(ITypeRelationalMapper mapper, IEnumerable<ITestityBuildStep> buildSteps, Type typeToBuildFrom)
 		{
-			IClassBuilder builder = TestityClassBuilder.Create(typeToBuildFrom, MemberImplementationModifier.Public | MemberImplementationModifier.Sealed);
+			IClassBuilder builder = new TestityClassBuilder(typeToBuildFrom.Name + "Script", MemberImplementationModifier.Public | MemberImplementationModifier.Sealed);
 
-			foreach(ITestityBuildStep step in buildSteps)
+			foreach (ITestityBuildStep step in buildSteps)
 			{
 				step.Process(builder, typeToBuildFrom);
 			}
