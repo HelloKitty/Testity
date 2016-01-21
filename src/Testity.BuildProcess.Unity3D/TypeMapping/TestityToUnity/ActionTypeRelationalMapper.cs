@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Testity.Unity3D.Events;
 using UnityEngine.Events;
@@ -27,6 +29,21 @@ namespace Testity.BuildProcess.Unity3D
 			//It must either be Action or Action<...>
 			return typeof(Action) == t || (t.IsGenericType && validGenericActionTypes.Contains((t.GetGenericTypeDefinition())));
         }
+
+		public bool isGenericActionType(Type t)
+		{
+			return isActionType(t) && t.IsGenericType;
+		}
+
+		public string GetSharedGenericEventTypeName(IEnumerable<Type> genericTypeArgs)
+		{
+			if (genericTypeArgs == null)
+				throw new ArgumentNullException(nameof(genericTypeArgs), "Cannot be a null collection of args.");
+
+			//Regex: http://stackoverflow.com/questions/3210393/how-do-i-remove-all-non-alphanumeric-characters-from-a-string-except-dash
+			//Removes non-alpha numeric characters to make a valid TypeName
+			return Regex.Replace(nameof(TestityEvent) + genericTypeArgs.Aggregate("", (x, y) => x + y.FullName), @"[^a-zA-Z0-9 -]", string.Empty); 
+		}
 
 		private Type FindValidUnityEventType(Type actionType)
 		{

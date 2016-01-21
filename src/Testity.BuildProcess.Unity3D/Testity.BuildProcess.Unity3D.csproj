@@ -112,6 +112,7 @@
     <Compile Include="BuildSteps\AddMemberInitializationMethodStep.cs" />
     <Compile Include="BuildSteps\AddTestityBehaviourBaseClassMemberStep.cs" />
     <Compile Include="BuildSteps\AddSerializedMemberStep.cs" />
+    <Compile Include="BuildSteps\AddTestityEventSerializedDelegateStep.cs" />
     <Compile Include="DataUnits\ClassFile.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="DataUnits\InitializationExpressionData.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Services\ExpressionProviders\DefaultInitializationExpressionBuilderProvider.cs" />
     <Compile Include="Services\ExpressionProviders\SameTypeInitializationExpressionBuilderProvider.cs" />
     <Compile Include="Services\IInitializationExpressionBuilderProvider.cs" />
+    <Compile Include="Services\TestityGenericEventTracker.cs" />
     <Compile Include="Services\UnityComponentAdapterParser.cs" />
     <Compile Include="Services\Exclusion\ITypeExclusion.cs" />
     <Compile Include="TypeMapping\TestityToUnity\ActionTypeRelationalMapper.cs" />

@@ -94,6 +94,7 @@ namespace Testity.BuildProcess.Unity3D
 			List<ITestityBuildStep> buildSteps = new List<ITestityBuildStep>();
 			buildSteps.Add(new AddTestityBehaviourBaseClassMemberStep());
 			buildSteps.Add(new AddSerializedMemberStep(chainMapper, new SerializedMemberParser(), excluder));
+			buildSteps.Add(new AddTestityEventSerializedDelegateStep(new ActionTypeRelationalMapper(), new TestityGenericEventTracker(), new SerializedMemberParser()));
 			buildSteps.Add(new AddMemberInitializationMethodStep(chainMapper, new SerializedMemberParser(), chainInitProvider));
 
 			foreach (Type t in potentialBehaviourTypes)
